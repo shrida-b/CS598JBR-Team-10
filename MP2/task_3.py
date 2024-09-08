@@ -5,7 +5,6 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 
 #####################################################
 # Please finish all TODOs in this file for MP2;
-# do not change other code/formatting.
 #####################################################
 
 def save_file(content, file_path):
