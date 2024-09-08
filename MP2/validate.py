@@ -74,11 +74,15 @@ def validate_repo(repo_name):
         return False
 
     jsonl_files_with_seed = [
+        f"task_1_{seed_value}.jsonl",
+        f"task_2_{seed_value}.jsonl",
         f"task_3_{seed_value}.jsonl",
         f"task_3_{seed_value}.jsonl_results.jsonl",
     ]
 
     required_files = [
+        "task_1_prompt.log",
+        "task_2_prompt.log",
         "task_3_prompt.log",
         "task_3_evaluate.log",
     ]
