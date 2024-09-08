@@ -6,12 +6,14 @@
 ! git clone [Your GitHub Link]
 %cd [Your GitHub Repo]
 
-# Use the same dataset generated in MP1
-input_dataset = "selected_humaneval_**.jsonl"
+# TODO: Replace the file path of selected_humaneval_[seed].jsonl generated in MP1
+input_dataset = ""# selected_humaneval_[seed].jsonl
 
 # Set up requirements for model prompting
 ! bash -x MP2/setup_models.sh
 
+# TODO: add your seed generated in MP1
+seed = "<your_seed>"
 task_1_json = "task_1_" + seed + ".jsonl"
 task_2_json = "task_2_" + seed + ".jsonl"
 task_3_json = "task_3_" + seed + ".jsonl"
