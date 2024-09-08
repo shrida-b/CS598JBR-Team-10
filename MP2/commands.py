@@ -2,16 +2,9 @@
 # This is a list of all commands you need to run for MP2 on Colab.
 ###################################################################
 
-# TODO: Update Your NetIDs in alphabetical order
-# NetIDs = ["sampleID1", "sampleID2", "sampleID3", "sampleID4"]
-# NetIDs_str = " ".join(NetIDs)
-
 # TODO: Clone your GitHub repository
 ! git clone [Your GitHub Link]
 %cd [Your GitHub Repo]
-
-# Set up requirements for dataset generation
-# ! bash -x MP2/setup_dataset.sh
 
 # Use the same dataset generated in MP1
 input_dataset = "selected_humaneval_**.jsonl"
