@@ -142,6 +142,8 @@ def validate_jsonl_files(repo_name):
     jsonl_files_with_seed = [
         f"task_1_{seed_value}_vanilla.jsonl",
         f"task_1_{seed_value}_crafted.jsonl",
+        f"task_2_{seed_value}_vanilla.jsonl",
+        f"task_2_{seed_value}_crafted.jsonl",
     ]
 
     for file in jsonl_files_with_seed:
