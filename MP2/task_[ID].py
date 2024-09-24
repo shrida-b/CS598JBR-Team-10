@@ -34,8 +34,8 @@ def prompt_model(dataset, model_name = "deepseek-ai/deepseek-coder-6.7b-base", q
 
         # TODO: process the response and save it to results
 
-        print(f"Task_ID {case['task_id']}:\nPrompt:\n{prompt}\nResponse:\n{response}\nResponse:\n{processed_response}")
-        results.append(dict(task_id=case["task_id"], completion=processed_response))
+        print(f"Task_ID {case['task_id']}:\nprompt:\n{prompt}\nresponse:\n{response}\nis_correct:\n{verdict}")
+        
     return results
 
 def read_jsonl(file_path):
