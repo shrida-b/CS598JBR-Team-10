@@ -15,9 +15,9 @@ input_dataset = ""# selected_humaneval_[seed].jsonl
 # TODO: add your seed generated in MP1
 seed = "<your_seed>"
 task_1_vanilla_json = "task_1" + seed + "_vanilla.jsonl"
-task_1_json = "task_1_" + seed + ".jsonl"
+task_1_json = "task_1_" + seed + "_prompting.jsonl"
 task_2_vanilla_json = "task_2" + seed + "_vanilla.jsonl"
-task_2_json = "task_2_" + seed + ".jsonl"
+task_2_json = "task_2_" + seed + "_prompting.jsonl"
 
 # Prompt the models, you can create your `MP2/task_1.py, MP2/task_2.py` by modifying `MP2/task_[ID].py` 
 # The {input_dataset} is the JSON file consisting of 20 unique programs for your group that you generated in MP1 (selected_humaneval_[seed].jsonl)
