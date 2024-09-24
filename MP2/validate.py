@@ -81,12 +81,18 @@ def validate_repo(repo_name):
     jsonl_files_with_seed = [
         f"task_1_{seed_value}_vanilla.jsonl",
         f"task_1_{seed_value}_crafted.jsonl",
+        f"task_2_{seed_value}_vanilla.jsonl",
+        f"task_2_{seed_value}_crafted.jsonl",
     ]
 
     required_files = [
         "task_1.py",
         "task_1_vanilla.log",
         "task_1_crafted.log",
+        "task_2.py",
+        "task_2_vanilla.log",
+        "task_2_crafted.log",
+        "Coverage",
     ]
 
     all_required_files = required_files + jsonl_files_with_seed
