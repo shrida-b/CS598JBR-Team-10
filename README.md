@@ -8,4 +8,5 @@
 
 ## Link of Google Colab Notebook
 - MP1 - [link](URL)
+- MP2 - [link](URL)
 - ...
