@@ -26,6 +26,8 @@ task_2_json = "task_2_" + seed + "_prompting.jsonl"
 ! python3 MP2/task_2.py {input_dataset} "deepseek-ai/deepseek-coder-6.7b-instruct" {task_2_vanilla_json} "True" |& tee Task_2_vanilla.log
 ! python3 MP2/task_2.py {input_dataset} "deepseek-ai/deepseek-coder-6.7b-instruct" {task_2_json} "True" |& tee Task_2_prompting.log
 
+# Commands to generate coverage reports
+
 %cd ..
 
 # git push all nessacery files (e.g., *jsonl, *log) to your GitHub repository
