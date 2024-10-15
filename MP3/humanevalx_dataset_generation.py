@@ -24,9 +24,13 @@ def download_humanevalx_dataset(language):
     print(f"Entire {language} dataset saved to {all_problems_output}")
     return dataset["test"]
 
-def write_dataset(selected_problems, selected_problems_output):
+def write_dataset(selected_problems, selected_problems_output, language):
     with jsonlines.open(selected_problems_output, "w") as f:
         for item in selected_problems:
+            if language == "Python":
+                item["task_id"] = item["task_id"].replace("Python", "HumanEval")
+            elif language == "Java":
+                item["task_id"] = item["task_id"].replace("Java", "HumanEval")
             f.write_all([item])
     print(f"{len(selected_problems)} saved to {selected_problems_output}")
     
@@ -43,11 +47,11 @@ def select_random_problems(mp1_humaneval_dataset, num_problems=20):
 
     selected_python_problems = find_dataset(IDs, python_dataset)
     selected_python_problems_output = f"selected_humanevalx_python_{seed}.jsonl"
-    write_dataset(selected_python_problems, selected_python_problems_output)
+    write_dataset(selected_python_problems, selected_python_problems_output, "Python")
 
     selected_java_promblems = find_dataset(IDs, java_dataset)
     selected_java_problems_output = f"selected_humanevalx_java_{seed}.jsonl"
-    write_dataset(selected_java_promblems, selected_java_problems_output)
+    write_dataset(selected_java_promblems, selected_java_problems_output, "Java")
 
 if __name__ == "__main__":
     args = sys.argv[1:]

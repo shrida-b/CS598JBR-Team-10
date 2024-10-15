@@ -4,7 +4,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 
 #####################################################
-# Please finish all TODOs in this file for MP3;
+# Please finish all TODOs in this file for MP3/task_2;
 #####################################################
 
 def save_file(content, file_path):
@@ -54,9 +54,9 @@ def write_jsonl(results, file_path):
 
 if __name__ == "__main__":
     """
-    This Python script is to run prompt LLMs for code synthesis.
+    This Python script is to run prompt LLMs for bug detection.
     Usage:
-    `python3 Task_2.py <input_dataset> <model> <output_file> <if_vanilla>`|& tee prompt.log
+    `python3 task_2.py <input_dataset> <model> <output_file> <if_vanilla>`|& tee prompt.log
 
     Inputs:
     - <input_dataset>: A `.jsonl` file, which should be your team's dataset containing 20 HumanEval problems.
