@@ -41,8 +41,8 @@ task_2_vanilla_json = "task_2_" + seed + "_vanilla.jsonl"
 task_2_crafted_json = "task_2_" + seed + "_crafted.jsonl"
 humanevalpack_input_dataset = "selected_humanevalpack_" + seed + ".jsonl"
 
-! python3 task_2.py {input_dataset} "deepseek-ai/deepseek-coder-6.7b-instruct" {task_2_vanilla_json} "True" |& tee task_2_vanilla.log
-! python3 task_2.py {input_dataset} "deepseek-ai/deepseek-coder-6.7b-instruct" {task_2_crafted_json} "False" |& tee task_2_crafted.log
+! python3 task_2.py {humanevalpack_input_dataset} "deepseek-ai/deepseek-coder-6.7b-instruct" {task_2_vanilla_json} "True" |& tee task_2_vanilla.log
+! python3 task_2.py {humanevalpack_input_dataset} "deepseek-ai/deepseek-coder-6.7b-instruct" {task_2_crafted_json} "False" |& tee task_2_crafted.log
 
 %cd ..
 
