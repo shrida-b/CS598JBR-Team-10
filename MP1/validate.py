@@ -137,6 +137,10 @@ def validate_jsonl_files(repo_name):
         f"base_prompt_{seed_value}.jsonl_results.jsonl",
         f"instruct_prompt_{seed_value}.jsonl",
         f"instruct_prompt_{seed_value}.jsonl_results.jsonl",
+        f"base_prompt_processed_{seed_value}.jsonl",
+        f"instruct_prompt_processed_{seed_value}.jsonl",
+        f"base_prompt_processed_{seed_value}.jsonl_results.jsonl",
+        f"instruct_prompt_processed_{seed_value}.jsonl_results.jsonl",
     ]
 
     for file in jsonl_files_with_seed:
