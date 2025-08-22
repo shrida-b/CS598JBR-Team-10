@@ -7,6 +7,6 @@
 - [Team member4], [NetID]
 
 ## Link of Google Colab Notebook
-- MP1 - [link](URL)
-- MP2 - [link](URL)
-- ...
+- MP1 - [link](URL) (please add the link here)
+- MP2 - [link](URL) (please add the link here)
+- MP3 - [link](URL) (please add the link here)
