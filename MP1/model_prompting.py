@@ -82,4 +82,4 @@ if __name__ == "__main__":
     dataset = read_jsonl(input_dataset)
     results, results_processed = prompt_model(dataset, model, quantization)
     write_jsonl(results, output_file)
-    write_jsonl(results, output_file_processed)
+    write_jsonl(results_processed, output_file_processed)
