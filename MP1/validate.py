@@ -86,6 +86,8 @@ def validate_repo(repo_name):
         "base_evaluate.log",
         "instruct_prompt.log",
         "instruct_evaluate.log",
+        "instruct_evaluate_processed.log",
+        "base_evaluate_processed.log"
     ]
 
     all_required_files = required_files + jsonl_files_with_seed
