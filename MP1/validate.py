@@ -86,6 +86,8 @@ def validate_repo(repo_name):
         "base_evaluate.log",
         "instruct_prompt.log",
         "instruct_evaluate.log",
+        "instruct_evaluate_processed.log",
+        "base_evaluate_processed.log"
     ]
 
     all_required_files = required_files + jsonl_files_with_seed
@@ -137,6 +139,10 @@ def validate_jsonl_files(repo_name):
         f"base_prompt_{seed_value}.jsonl_results.jsonl",
         f"instruct_prompt_{seed_value}.jsonl",
         f"instruct_prompt_{seed_value}.jsonl_results.jsonl",
+        f"base_prompt_processed_{seed_value}.jsonl",
+        f"instruct_prompt_processed_{seed_value}.jsonl",
+        f"base_prompt_processed_{seed_value}.jsonl_results.jsonl",
+        f"instruct_prompt_processed_{seed_value}.jsonl_results.jsonl",
     ]
 
     for file in jsonl_files_with_seed:
