@@ -59,16 +59,17 @@ if __name__ == "__main__":
     """
     This Python script is to run prompt LLMs for code synthesis.
     Usage:
-    `python3 model_prompting.py <input_dataset> <model> <output_file> <if_quantization>`|& tee prompt.log
+    `python3 model_prompting.py <input_dataset> <model> <output_file> <output_file_processed> <if_quantization> `|& tee prompt.log
 
     Inputs:
     - <input_dataset>: A `.jsonl` file, which should be your team's dataset containing 20 HumanEval problems.
     - <model>: Specify the model to use. Options are "deepseek-ai/deepseek-coder-6.7b-base" or "deepseek-ai/deepseek-coder-6.7b-instruct".
     - <output_file>: A `.jsonl` file where the results will be saved.
+    - <output_file_processed>: A `.jsonl` file where the processed results will be saved
     - <if_quantization>: Set to 'True' or 'False' to enable or disable model quantization.
     
     Outputs:
-    - You can check <output_file> for detailed information.
+    - You can check <output_file> and  <output_file_processed> for detailed information.
     """
     args = sys.argv[1:]
     input_dataset = args[0]
