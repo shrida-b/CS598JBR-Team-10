@@ -4,7 +4,7 @@ pip3 install peft==0.4.0
 pip3 install accelerate==0.21.0
 pip3 install einops==0.6.1
 pip3 install evaluate==0.4.0
-pip3 install scikit-learn==1.2.2
+# pip3 install scikit-learn==1.2.2
 pip3 install sentencepiece==0.1.99
 pip3 install wandb==0.15.3
 pip3 install jsonlines
