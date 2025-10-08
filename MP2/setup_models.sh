@@ -6,3 +6,4 @@ pip3 install einops==0.6.1
 pip3 install evaluate==0.4.0
 pip3 install sentencepiece==0.1.99
 pip3 install jsonlines
+pip install pytest-cov
