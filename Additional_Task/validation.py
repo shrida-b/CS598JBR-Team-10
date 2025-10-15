@@ -3,7 +3,6 @@
 # You can run this script to see a formatted report of the analysis results.
 # Make sure you don't missing any keys in the JSON file.
 
-# for bonus trajs , you don't need to do question 2 and 5, just print the keys and empty values
 import json
 import os
 from pprint import pprint
