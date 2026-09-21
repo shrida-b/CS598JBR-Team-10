@@ -1,10 +1,10 @@
-# CS598JBR-Team-0
+# CS598JBR-Team-10
 
 ## Group members
-- [Team member1], [NetID]
-- [Team member2], [NetID]
-- [Team member3], [NetID]
-- [Team member4], [NetID]
+- Shrida Bhat, shridab2
+- Sahana Hariharan, sahanah2
+- Michael Pollack, mfp7
+
 
 ## Link of Google Colab Notebook
 - MP1 - [link](URL) (please add the link here)
