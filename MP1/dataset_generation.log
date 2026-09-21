@@ -1,0 +1,14 @@
+NetIDs ['mfp7', 'sahanah2', 'shridab2'] with seed 81076962711735457459641171352011328184
+
+Downloading readme: 0.00B [00:00, ?B/s]
+Downloading readme: 6.52kB [00:00, 23.1MB/s]
+
+Downloading data:   0%|          | 0.00/83.9k [00:00<?, ?B/s]
+Downloading data: 100%|██████████| 83.9k/83.9k [00:00<00:00, 190kB/s]
+Downloading data: 100%|██████████| 83.9k/83.9k [00:00<00:00, 190kB/s]
+
+Generating test split:   0%|          | 0/164 [00:00<?, ? examples/s]
+Generating test split: 100%|██████████| 164/164 [00:00<00:00, 4765.86 examples/s]
+Entire Dataset saved to humaneval.jsonl
+Selected 20 problems saved to selected_humaneval_81076962711735457459641171352011328184.jsonl
+
