@@ -7,8 +7,8 @@ NetIDs = ["mfp7", "sahanah2", "shridab2"]
 NetIDs_str = " ".join(NetIDs)
 
 # TODO: Clone your GitHub repository
-! git clone [Your GitHub Link]
-%cd [Your GitHub Repo]
+! git clone https://github.com/shrida-b/CS598JBR-Team-10.git
+%cd CS598JBR-Team-10
 
 # Set up requirements for dataset generation
 ! bash -x MP1/setup_dataset.sh
@@ -16,7 +16,7 @@ NetIDs_str = " ".join(NetIDs)
 # dataset generation
 ! python3 MP1/dataset_generation.py {NetIDs_str} |& tee dataset_generation.log
 
-seed = "<your_seed>"
+seed = "81076962711735457459641171352011328184"
 # TODO: Replace the file path of selected_humaneval_[seed].jsonl generated in previous step
 input_dataset = "selected_humaneval_" + seed + ".jsonl"
 
