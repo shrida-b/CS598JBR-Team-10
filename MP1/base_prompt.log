@@ -1,0 +1,1161 @@
+2026-09-23 00:24:39.065122: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Working with deepseek-ai/deepseek-coder-6.7b-base quantization True...
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [03:12<03:12, 192.14s/it]Fetching 2 files: 100%|██████████| 2/2 [03:12<00:00, 96.07s/it] 
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]/usr/local/lib/python3.13/dist-packages/bitsandbytes/backends/cuda/ops.py:212: FutureWarning: _check_is_size will be removed in a future PyTorch release along with guard_size_oblivious.     Use _check(i >= 0) instead.
+  torch._check_is_size(blocksize)
+Loading checkpoint shards:  50%|█████     | 1/2 [00:44<00:44, 44.61s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:59<00:00, 27.23s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:59<00:00, 29.84s/it]
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+/usr/local/lib/python3.13/dist-packages/bitsandbytes/backends/cuda/ops.py:464: FutureWarning: _check_is_size will be removed in a future PyTorch release along with guard_size_oblivious.     Use _check(i >= 0) instead.
+  torch._check_is_size(blocksize)
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+Task_ID HumanEval/139:
+Prompt:
+
+def special_factorial(n):
+    """The Brazilian factorial is defined as:
+    brazilian_factorial(n) = n! * (n-1)! * (n-2)! * ... * 1!
+    where n > 0
+
+    For example:
+    >>> special_factorial(4)
+    288
+
+    The function will receive an integer as input and should return the special
+    factorial of this integer.
+    """
+
+Response:
+    if n == 0:
+        return 1
+    else:
+        return n * special_factorial(n-1)
+
+
+def main():
+    """Main function"""
+    print(special_factorial(4))
+
+
+if __name__ == '__main__':
+    main()
+Task_ID HumanEval/127:
+Prompt:
+
+def intersection(interval1, interval2):
+    """You are given two intervals,
+    where each interval is a pair of integers. For example, interval = (start, end) = (1, 2).
+    The given intervals are closed which means that the interval (start, end)
+    includes both start and end.
+    For each given interval, it is assumed that its start is less or equal its end.
+    Your task is to determine whether the length of intersection of these two 
+    intervals is a prime number.
+    Example, the intersection of the intervals (1, 3), (2, 4) is (2, 3)
+    which its length is 1, which not a prime number.
+    If the length of the intersection is a prime number, return "YES",
+    otherwise, return "NO".
+    If the two intervals don't intersect, return "NO".
+
+
+    [input/output] samples:
+    intersection((1, 2), (2, 3)) ==> "NO"
+    intersection((-1, 1), (0, 4)) ==> "NO"
+    intersection((-3, -1), (-5, 5)) ==> "YES"
+    """
+
+Response:
+    # your code here
+    if interval1[1] < interval2[0] or interval2[1] < interval1[0]:
+        return "NO"
+    else:
+        return "YES"
+
+
+def intersection(interval1, interval2):
+    """You are given two intervals,
+    where each interval is a pair of integers. For example, interval = (start, end) = (1, 2).
+    The given intervals are closed which means that the interval (start, end)
+    includes both start and end.
+    For each given interval, it is assumed that its start is less or equal its end.
+    Your task is to determine whether the length of intersection of these two 
+    intervals is a prime number.
+    Example, the intersection of the intervals (1, 3), (2, 4) is (2, 3)
+    which its length is 1, which not a prime number.
+    If the length of the intersection is a prime number
+Task_ID HumanEval/47:
+Prompt:
+
+
+def median(l: list):
+    """Return median of elements in the list l.
+    >>> median([3, 1, 2, 4, 5])
+    3
+    >>> median([-10, 4, 6, 1000, 10, 20])
+    15.0
+    """
+
+Response:
+    l.sort()
+    if len(l) % 2 == 0:
+        return (l[len(l) // 2] + l[len(l) // 2 - 1]) / 2
+    else:
+        return l[len(l) // 2]
+
+
+def mode(l: list):
+    """Return mode of elements in the list l.
+    >>> mode([3, 1, 2, 4, 5, 1, 2, 3, 3, 3])
+    3
+    >>> mode([-10, 4, 6, 1000, 10, 20, 1000, 1000, 1000])
+    1000
+    """
+    l.sort()
+    max_count = 0
+    max_item = l[0]
+    count = 1
+    for i in range(1, len(l)):
+        if l[i] == l[i - 1]:
+            count += 1
+        else:
+            if count > max_count:
+                max_count = count
+                max_item = l[i - 1]
+            count = 1
+    if count > max_count:
+        max_count = count
+        max_item = l[len(l) - 1]
+    return max_item
+
+
+def mean(l: list):
+    """Return mean of elements in the list l.
+    >>> mean([3, 1, 2, 4, 5])
+    3.0
+    >>> mean([-10, 4, 6, 1000, 10, 20])
+    15.0
+    """
+    return sum(l) / len(l)
+
+
+Task_ID HumanEval/110:
+Prompt:
+
+def exchange(lst1, lst2):
+    """In this problem, you will implement a function that takes two lists of numbers,
+    and determines whether it is possible to perform an exchange of elements
+    between them to make lst1 a list of only even numbers.
+    There is no limit on the number of exchanged elements between lst1 and lst2.
+    If it is possible to exchange elements between the lst1 and lst2 to make
+    all the elements of lst1 to be even, return "YES".
+    Otherwise, return "NO".
+    For example:
+    exchange([1, 2, 3, 4], [1, 2, 3, 4]) => "YES"
+    exchange([1, 2, 3, 4], [1, 5, 3, 4]) => "NO"
+    It is assumed that the input lists will be non-empty.
+    """
+
+Response:
+    lst1.sort()
+    lst2.sort()
+    if lst1[0] % 2 == 0:
+        return "YES"
+    else:
+        return "NO"
+
+
+def exchange_test():
+    assert exchange([1, 2, 3, 4], [1, 2, 3, 4]) == "YES"
+    assert exchange([1, 2, 3, 4], [1, 5, 3, 4]) == "NO"
+    assert exchange([1, 2, 3, 4], [1, 2, 3, 4]) == "YES"
+    assert exchange([1, 2, 3, 4], [1, 5, 3, 4]) == "NO"
+    assert exchange([1, 2, 3, 4], [1, 2, 3, 4]) == "YES"
+    assert exchange([1, 2, 3, 4], [1, 5, 3, 4]) == "NO"
+    assert exchange([1, 2, 3, 4], [1, 2, 3, 4]) == "YES
+Task_ID HumanEval/137:
+Prompt:
+
+def compare_one(a, b):
+    """
+    Create a function that takes integers, floats, or strings representing
+    real numbers, and returns the larger variable in its given variable type.
+    Return None if the values are equal.
+    Note: If a real number is represented as a string, the floating point might be . or ,
+
+    compare_one(1, 2.5) ➞ 2.5
+    compare_one(1, "2,3") ➞ "2,3"
+    compare_one("5,1", "6") ➞ "6"
+    compare_one("1", 1) ➞ None
+    """
+
+Response:
+    if type(a) == type(b):
+        if a == b:
+            return None
+        elif type(a) == int:
+            if a > b:
+                return a
+            else:
+                return b
+        elif type(a) == float:
+            if a > b:
+                return a
+            else:
+                return b
+        elif type(a) == str:
+            if a > b:
+                return a
+            else:
+                return b
+    else:
+        if type(a) == int:
+            return a
+        elif type(a) == float:
+            return a
+        elif type(a) == str:
+            return a
+        elif type(b) == int:
+            return b
+        elif type(b) == float:
+            return b
+        elif type(b) == str:
+            return b
+
+
+def compare_one_2(a, b):
+    """
+    Create a function that takes integers, floats, or strings representing
+    real numbers, and returns the larger variable in its given variable type.
+    Return None if the values are equal.
+    Note: If a real number is represented as a string, the floating point might be . or ,
+
+    compare_one(1, 2.5) ➞ 2.5
+    compare_one(1, "2,3") ➞ "2,3"
+    compare_one("5,1", "6") ➞ "
+Task_ID HumanEval/136:
+Prompt:
+
+def largest_smallest_integers(lst):
+    '''
+    Create a function that returns a tuple (a, b), where 'a' is
+    the largest of negative integers, and 'b' is the smallest
+    of positive integers in a list.
+    If there is no negative or positive integers, return them as None.
+
+    Examples:
+    largest_smallest_integers([2, 4, 1, 3, 5, 7]) == (None, 1)
+    largest_smallest_integers([]) == (None, None)
+    largest_smallest_integers([0]) == (None, None)
+    '''
+
+Response:
+    if len(lst) == 0:
+        return (None, None)
+    if len(lst) == 1:
+        if lst[0] > 0:
+            return (None, lst[0])
+        elif lst[0] < 0:
+            return (lst[0], None)
+        else:
+            return (None, None)
+    else:
+        largest_negative = None
+        smallest_positive = None
+        for i in lst:
+            if i < 0:
+                if largest_negative is None:
+                    largest_negative = i
+                elif i > largest_negative:
+                    largest_negative = i
+            elif i > 0:
+                if smallest_positive is None:
+                    smallest_positive = i
+                elif i < smallest_positive:
+                    smallest_positive = i
+        return (largest_negative, smallest_positive)
+
+
+def largest_smallest_integers_2(lst):
+    '''
+    Create a function that returns a tuple (a, b), where 'a' is
+    the largest of negative integers, and 'b' is the smallest
+    of positive integers in a list.
+    If there is no negative or positive integers, return them as None.
+
+    Examples:
+    largest_smallest_integers([2, 4, 1, 3, 5, 7]) == (None, 1)
+    largest_smallest_integers([]) == (None, None)
+    largest_integers
+Task_ID HumanEval/154:
+Prompt:
+
+def cycpattern_check(a , b):
+    """You are given 2 words. You need to return True if the second word or any of its rotations is a substring in the first word
+    cycpattern_check("abcd","abd") => False
+    cycpattern_check("hello","ell") => True
+    cycpattern_check("whassup","psus") => False
+    cycpattern_check("abab","baa") => True
+    cycpattern_check("efef","eeff") => False
+    cycpattern_check("himenss","simen") => True
+
+    """
+
+Response:
+    if len(a) != len(b):
+        return False
+    if a == b:
+        return True
+    for i in range(len(a)):
+        if a[i:] + a[:i] == b:
+            return True
+    return False
+
+
+def cycpattern_check_2(a , b):
+    """You are given 2 words. You need to return True if the second word or any of its rotations is a substring in the first word
+    cycpattern_check("abcd","abd") => False
+    cycpattern_check("hello","ell") => True
+    cycpattern_check("whassup","psus") => False
+    cycpatternabab","baa") => True
+    cycpattern_check("efef","eeff") => False
+    cycpattern_check("himenss","simen") => True
+
+    """
+    if len(a) != len(b):
+        return False
+    if a == b:
+        return True
+    for i in range(len(a)):
+        if a[i:] + a[:i] == b:
+            return True
+    return False
+
+
+def cycpattern_check_3(a , b):
+    """You are given 2 words. You need to return True if the second word or any of its rotations is a substring in the first word
+    cycpattern_check("abcd","abd") => False
+    cycpattern_check("hello","ell") => True
+   The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+
+Task_ID HumanEval/122:
+Prompt:
+
+def add_elements(arr, k):
+    """
+    Given a non-empty array of integers arr and an integer k, return
+    the sum of the elements with at most two digits from the first k elements of arr.
+
+    Example:
+
+        Input: arr = [111,21,3,4000,5,6,7,8,9], k = 4
+        Output: 24 # sum of 21 + 3
+
+    Constraints:
+        1. 1 <= len(arr) <= 100
+        2. 1 <= k <= len(arr)
+    """
+
+Response:
+    # TODO: Implement me
+    return 0
+
+
+def main():
+    arr = [111, 21, 3, 4000, 5, 6, 7, 8, 9]
+    k = 4
+    print(add_elements(arr, k))
+
+
+if __name__ == "__main__":
+    main()
+Task_ID HumanEval/100:
+Prompt:
+
+def make_a_pile(n):
+    """
+    Given a positive integer n, you have to make a pile of n levels of stones.
+    The first level has n stones.
+    The number of stones in the next level is:
+        - the next odd number if n is odd.
+        - the next even number if n is even.
+    Return the number of stones in each level in a list, where element at index
+    i represents the number of stones in the level (i+1).
+
+    Examples:
+    >>> make_a_pile(3)
+    [3, 5, 7]
+    """
+
+Response:
+    if n == 1:
+        return [1]
+    if n == 2:
+        return [2, 4]
+    if n % 2 == 0:
+        return make_a_pile(n - 2) + [n]
+    return make_a_pile(n - 2) + [n, n + 2]
+
+
+def make_a_pile_2(n):
+    """
+    Given a positive integer n, you have to make a pile of n levels of stones.
+    The first level has n stones.
+    The number of stones in the next level is:
+        - the next odd number if n is odd.
+        - the next even number if n is even.
+    Return the number of stones in each level in a list, where element at index
+    i represents the number of stones in the level (i+1).
+
+    Examples:
+    >>> make_a_pile(3)
+    [3, 5, 7]
+    """
+    if n == 1:
+        return [1]
+    if n == 2:
+        return [2, 4]
+    if n % 2 == 0:
+        return make_a_pile(n - 2) + [n]
+    return make
+Task_ID HumanEval/0:
+Prompt:
+from typing import List
+
+
+def has_close_elements(numbers: List[float], threshold: float) -> bool:
+    """ Check if in given list of numbers, are any two numbers closer to each other than
+    given threshold.
+    >>> has_close_elements([1.0, 2.0, 3.0], 0.5)
+    False
+    >>> has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)
+    True
+    """
+
+Response:
+    numbers.sort()
+    for i in range(len(numbers) - 1):
+        if numbers[i + 1] - numbers[i] <= threshold:
+            return True
+    return False
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+Task_ID HumanEval/32:
+Prompt:
+import math
+
+
+def poly(xs: list, x: float):
+    """
+    Evaluates polynomial with coefficients xs at point x.
+    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n
+    """
+    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])
+
+
+def find_zero(xs: list):
+    """ xs are coefficients of a polynomial.
+    find_zero find x such that poly(x) = 0.
+    find_zero returns only only zero point, even if there are many.
+    Moreover, find_zero only takes list xs having even number of coefficients
+    and largest non zero coefficient as it guarantees
+    a solution.
+    >>> round(find_zero([1, 2]), 2) # f(x) = 1 + 2x
+    -0.5
+    >>> round(find_zero([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3
+    1.0
+    """
+
+Response:
+    assert len(xs) % 2 == 0
+    assert xs[-1] != 0
+    return find_zero_helper(xs, 0, 1)
+
+
+def find_zero_helper(xs: list, a: float, b: float):
+    """
+    find_zero_helper finds zero point of a polynomial with coefficients xs
+    between a and b.
+    """
+    if a == b:
+        return a
+    mid = (a + b) / 2
+    if poly(xs, mid) == 0:
+        return mid
+    if poly(xs, a) * poly(xs, mid) < 0:
+        return find_zero_helper(xs, a, mid)
+    return find_zero_helper(xs, mid, b)
+Task_ID HumanEval/91:
+Prompt:
+
+def is_bored(S):
+    """
+    You'll be given a string of words, and your task is to count the number
+    of boredoms. A boredom is a sentence that starts with the word "I".
+    Sentences are delimited by '.', '?' or '!'.
+   
+    For example:
+    >>> is_bored("Hello world")
+    0
+    >>> is_bored("The sky is blue. The sun is shining. I love this weather")
+    1
+    """
+
+Response:
+    return S.count("I")
+
+
+def is_bored_2(S):
+    """
+    You'll be given a string of words, and your task is to count the number
+    of boredoms. A boredom is a sentence that starts with the word "I".
+    Sentences are delimited by '.', '?' or '!'
+   
+    For example:
+    >>> is_bored("Hello world")
+    0
+    >>> is_bored("The sky is blue. The sun is shining. I love this weather")
+    1
+    """
+    return S.count("I")
+
+
+def is_bored_3(S):
+    """
+    You'll be given a string of words, and your task is to count the number
+    of boredoms. A boredom is a sentence that starts with the word "I".
+    Sentences are delimited by '.', '?' or '!'
+   
+    For example:
+    >>> is("Hello world")
+    0
+    >>> is_bored("The sky is blue. The sun is shining. I love this weather")
+    1
+    """
+    return S.count("I")
+
+
+def is_bored_4(S):
+    """
+    You'll be given a string of words, and your task is to count the number
+    of boredoms. A boredom is a sentence that starts with the word "I".
+    Sentences are delimited by '.', '?' or '!'
+   
+    For example:
+    >>> is_bored("Hello world")
+    0
+    >>> is_bored("The sky is blue. The sun is shining.
+Task_ID HumanEval/68:
+Prompt:
+
+def pluck(arr):
+    """
+    "Given an array representing a branch of a tree that has non-negative integer nodes
+    your task is to pluck one of the nodes and return it.
+    The plucked node should be the node with the smallest even value.
+    If multiple nodes with the same smallest even value are found return the node that has smallest index.
+
+    The plucked node should be returned in a list, [ smalest_value, its index ],
+    If there are no even values or the given array is empty, return [].
+
+    Example 1:
+        Input: [4,2,3]
+        Output: [2, 1]
+        Explanation: 2 has the smallest even value, and 2 has the smallest index.
+
+    Example 2:
+        Input: [1,2,3]
+        Output: [2, 1]
+        Explanation: 2 has the smallest even value, and 2 has the smallest index. 
+
+    Example 3:
+        Input: []
+        Output: []
+    
+    Example 4:
+        Input: [5, 0, 3, 0, 4, 2]
+        Output: [0, 1]
+        Explanation: 0 is the smallest value, but  there are two zeros,
+                     so we will choose the first zero, which has the smallest index.
+
+    Constraints:
+        * 1 <= nodes.length <= 10000
+        * 0 <= node.value
+    """
+
+Response:
+    # TODO: Implement me
+    return []
+
+
+def main():
+    print(pluck([4, 2, 3]))
+    print(pluck([1, 2, 3]))
+    print(pluck([]))
+    print(pluck([5, 0, 3, 0, 4, 2]))
+
+
+if __name__ == "__main__":
+    main()
+Task_ID HumanEval/67:
+Prompt:
+
+def fruit_distribution(s,n):
+    """
+    In this task, you will be given a string that represents a number of apples and oranges 
+    that are distributed in a basket of fruit this basket contains 
+    apples, oranges, and mango fruits. Given the string that represents the total number of 
+    the oranges and apples and an integer that represent the total number of the fruits 
+    in the basket return the number of the mango fruits in the basket.
+    for examble:
+    fruit_distribution("5 apples and 6 oranges", 19) ->19 - 5 - 6 = 8
+    fruit_distribution("0 apples and 1 oranges",3) -> 3 - 0 - 1 = 2
+    fruit_distribution("2 apples and 3 oranges", 100) -> 100 - 2 - 3 = 95
+    fruit_distribution("100 apples and 1 oranges",120) -> 120 - 100 - 1 = 19
+    """
+
+Response:
+    # your code here
+    pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Task_ID HumanEval/121:
+Prompt:
+
+def solution(lst):
+    """Given a non-empty list of integers, return the sum of all of the odd elements that are in even positions.
+    
+
+    Examples
+    solution([5, 8, 7, 1]) ==> 12
+    solution([3, 3, 3, 3, 3]) ==> 9
+    solution([30, 13, 24, 321]) ==>0
+    """
+
+Response:
+    return sum(lst[1::2])
+
+
+def solution(lst):
+    """Given a non-empty list of integers, return the sum of all of the odd elements that are in even positions.
+    
+
+    Examples
+    solution([5, 8, 7, 1]) ==> 12
+    solution([3, 3, 3, 3, 3]) ==> 9
+    solution([30, 13, 24, 321]) ==>0
+    """
+    return sum(lst[1::2])
+
+
+def solution(lst):
+    """Given a non-empty list of integers, return the sum of all of the odd elements that are in even positions.
+    
+
+    Examples
+    solution([5, 8, 7, 1]) ==> 12
+    solution([3, 3, 3, 3, 3]) ==> 9
+    solution([30, 13, 24, 321The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+
+Task_ID HumanEval/124:
+Prompt:
+
+def valid_date(date):
+    """You have to write a function which validates a given date string and
+    returns True if the date is valid otherwise False.
+    The date is valid if all of the following rules are satisfied:
+    1. The date string is not empty.
+    2. The number of days is not less than 1 or higher than 31 days for months 1,3,5,7,8,10,12. And the number of days is not less than 1 or higher than 30 days for months 4,6,9,11. And, the number of days is not less than 1 or higher than 29 for the month 2.
+    3. The months should not be less than 1 or higher than 12.
+    4. The date should be in the format: mm-dd-yyyy
+
+    for example: 
+    valid_date('03-11-2000') => True
+
+    valid_date('15-01-2012') => False
+
+    valid_date('04-0-2040') => False
+
+    valid_date('06-04-2020') => True
+
+    valid_date('06/04/2020') => False
+    """
+
+Response:
+    if date == '':
+        return False
+    date = date.split('-')
+    if len(date) != 3:
+        return False
+    if len(date[0]) != 2 or len(date[1]) != 2 or len(date[2]) != 4:
+        return False
+    if int(date[0]) < 1 or int(date[0]) > 12:
+        return False
+    if int(date[1]) < 1 or int(date[1]) > 31:
+        return False
+    if int(date[0]) in [4, 6, 9, 11]:
+        if int(date[1]) > 30:
+            return False
+    if int(date[0]) == 2:
+        if int(date[1]) > 29:
+            return False
+   
+Task_ID HumanEval/149:
+Prompt:
+
+def sorted_list_sum(lst):
+    """Write a function that accepts a list of strings as a parameter,
+    deletes the strings that have odd lengths from it,
+    and returns the resulted list with a sorted order,
+    The list is always a list of strings and never an array of numbers,
+    and it may contain duplicates.
+    The order of the list should be ascending by length of each word, and you
+    should return the list sorted by that rule.
+    If two words have the same length, sort the list alphabetically.
+    The function should return a list of strings in sorted order.
+    You may assume that all words will have the same length.
+    For example:
+    assert list_sort(["aa", "a", "aaa"]) => ["aa"]
+    assert list_sort(["ab", "a", "aaa", "cd"]) => ["ab", "cd"]
+    """
+
+Response:
+    lst = [i for i in lst if len(i) % 2 == 0]
+    lst.sort(key=lambda x: (len(x), x))
+    return lst
+
+
+def sorted_list_sum_2(lst):
+    """Write a function that accepts a list of strings as a parameter,
+    deletes the strings that have odd lengths from it,
+    and returns the resulted list with a sorted order,
+    The list is always a list of strings and never an array of numbers,
+    and it may contain duplicates.
+    The order of the list should be ascending by length of each word, and you
+    should return the list sorted by that rule.
+    If two words have the same length, sort the list alphabetically.
+    The function should return a list of strings in sorted order.
+    You may assume that all words will have the same length.
+    For example:
+    assert list_sort(["aa", "a", "aaa"]) => ["aa"]
+    assert list_sort(["ab", "a", "aaa", "cd"]) => ["ab", "cd"]
+    """
+    lst = [i for i in lst if len(i) % 2 == 0]
+    l
+Task_ID HumanEval/160:
+Prompt:
+
+def do_algebra(operator, operand):
+    """
+    Given two lists operator, and operand. The first list has basic algebra operations, and 
+    the second list is a list of integers. Use the two given lists to build the algebric 
+    expression and return the evaluation of this expression.
+
+    The basic algebra operations:
+    Addition ( + ) 
+    Subtraction ( - ) 
+    Multiplication ( * ) 
+    Floor division ( // ) 
+    Exponentiation ( ** ) 
+
+    Example:
+    operator['+', '*', '-']
+    array = [2, 3, 4, 5]
+    result = 2 + 3 * 4 - 5
+    => result = 9
+
+    Note:
+        The length of operator list is equal to the length of operand list minus one.
+        Operand is a list of of non-negative integers.
+        Operator list has at least one operator, and operand list has at least two operands.
+
+    """
+
+Response:
+    # Write your code here
+    result = operand[0]
+    for i in range(len(operator)):
+        if operator[i] == '+':
+            result += operand[i+1]
+        elif operator[i] == '-':
+            result -= operand[i+1]
+        elif operator[i] == '*':
+            result *= operand[i+1]
+        elif operator[i] == '/':
+            result /= operand[i+1]
+        elif operator[i] == '//':
+            result //= operand[i+1]
+        elif operator[i] == '**':
+            result **= operand[i+1]
+    return result
+
+
+def main():
+    operator = ['+', '*', '-']
+    operand = [2, 3, 4, 5]
+    result = do_algebra(operator, operand)
+    print(result)
+
+
+if __name__ == '__main__':
+    main()
+Task_ID HumanEval/74:
+Prompt:
+
+def total_match(lst1, lst2):
+    '''
+    Write a function that accepts two lists of strings and returns the list that has 
+    total number of chars in the all strings of the list less than the other list.
+
+    if the two lists have the same number of chars, return the first list.
+
+    Examples
+    total_match([], []) ➞ []
+    total_match(['hi', 'admin'], ['hI', 'Hi']) ➞ ['hI', 'Hi']
+    total_match(['hi', 'admin'], ['hi', 'hi', 'admin', 'project']) ➞ ['hi', 'admin']
+    total_match(['hi', 'admin'], ['hI', 'hi', 'hi']) ➞ ['hI', 'hi', 'hi']
+    total_match(['4'], ['1', '2', '3', '4', '5']) ➞ ['4']
+    '''
+
+Response:
+    return lst1 if sum(len(i) for i in lst1) < sum(len(i) for i in lst2) else lst2
+
+
+def total_match(lst1, lst2):
+    return lst1 if sum(map(len, lst1)) < sum(map(len, lst2)) else lst2
+
+
+def total_match(lst1, lst2):
+    return lst1 if sum(len(i) for i in lst1) < sum(len(i) for i in lst2) else lst2
+
+
+def total_match(lst1, lst2):
+    return lst1 if sum(map(len, lst1)) < sum(map(len, lst2)) else lst2
+
+
+def total_match(lst1, lst2):
+    return lst1 if sum(len(i) for i in lst1) < sum(len(i) for i in lst2) else lst2
+
+
+def total_match(lst1, lst2):
+    return lst1 if sum(map(len, lst1)) <
+Task_ID HumanEval/16:
+Prompt:
+
+
+def count_distinct_characters(string: str) -> int:
+    """ Given a string, find out how many distinct characters (regardless of case) does it consist of
+    >>> count_distinct_characters('xyzXYZ')
+    3
+    >>> count_distinct_characters('Jerry')
+    4
+    """
+
+Response:
+    return len(set(string.lower()))
+
+
+def count_distinct_characters_2(string: str) -> int:
+    """ Given a string, find out how many distinct characters (regardless of case) does it consist of
+    >>> count_distinct_characters_2('xyzXYZ')
+    3
+    >>> count_distinct_characters_2('Jerry')
+    4
+    """
+    return len(set(string.lower()))
+
+
+def count_distinct_characters_3(string: str) -> int:
+    """ Given a string, find out how many distinct characters (regardless of case) does it consist of
+    >>> count_distinct_characters_3('xyzXYZ')
+    3
+    >>> count_distinct_characters_3('Jerry')
+    4
+    """
+    return len(set(string.lower()))
+
+
+def count_distinct_characters_4(string: str) -> int:
+    """ Given a string, find out how many distinct characters (regardless of case) does it consist of
+    >>> count_distinct_characters_4('xyzXYZ')
+    3
+    >>> count_distinct_characters_4('Jerry')
+    4
+    """
+    return len(set(string.lower()))
+
+
+def count_distinct_characters_5(string: str) -> int:
+    """ Given a string, find out how many distinct characters (regardless of case) does it consist of
+    >>> count_distinct_characters_5('xyzXYZ')
+    3
+    >>> count_distinct_characters_5('Jerry')
+    4
+    """
+    return len(set(string.lower()))
+
+
+def count_distinct_char
