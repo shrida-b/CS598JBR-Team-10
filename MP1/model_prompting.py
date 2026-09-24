@@ -113,10 +113,14 @@ def prompt_model(dataset, model_name = "deepseek-ai/deepseek-coder-6.7b-base", q
     results = []
     results_processed = []
     for case in dataset:
-        prompt = case['prompt']
+        prompt = case["prompt"]
+        # experiment - change prompt to see if it generates better code and is valid
+        model_prompt = prompt + "    # Complete the function body below. Return only valid Python code.\n"
+
+        inputs = tokenizer(model_prompt, return_tensors="pt").to(model.device)
         
-        # TODO: prompt the model and get the response
-        inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+        # # TODO: prompt the model and get the response
+        # inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
 
         outputs = model.generate(
                 **inputs,
