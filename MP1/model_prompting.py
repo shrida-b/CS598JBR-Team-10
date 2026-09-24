@@ -1,5 +1,6 @@
 import jsonlines
 import sys
+import re
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 import ast
@@ -12,6 +13,65 @@ import ast
 def save_file(content, file_path):
     with open(file_path, 'w') as file:
         file.write(content)
+
+
+def _extract_code_candidate(response: str) -> str:
+    """Extract the actual Python code from model output while dropping narrative text."""
+    text = response.strip()
+    if not text:
+        return ""
+
+    # Handle fenced code blocks first.
+    code_blocks = re.findall(r"```(?:python)?\s*(.*?)```", text, flags=re.DOTALL | re.IGNORECASE)
+    if code_blocks:
+        text = "\n\n".join(code_blocks)
+
+    if text.startswith("```"):
+        text = re.sub(r"^```(?:python)?\s*", "", text, flags=re.IGNORECASE)
+    if text.endswith("```"):
+        text = re.sub(r"\s*```\s*$", "", text)
+
+    lines = text.splitlines()
+
+    # Skip explanatory preamble before the first real code line.
+    start_idx = 0
+    while start_idx < len(lines):
+        stripped = lines[start_idx].strip()
+        if not stripped:
+            start_idx += 1
+            continue
+        if stripped.startswith("```"):
+            start_idx += 1
+            continue
+        if stripped.lower().startswith(("here is", "sure", "certainly", "below is", "the answer is", "code:")):
+            start_idx += 1
+            continue
+        if stripped.startswith(("def ", "class ", "import ", "from ", "return ", "if ", "for ", "while ", "try:", "with ", "@")):
+            break
+        if stripped.startswith((" ", "\t")) and any(token in stripped for token in ["return ", "if ", "for ", "while ", "try:", "except ", "assert ", "import ", "from ", ":"]):
+            break
+        if re.match(r"^[A-Za-z][A-Za-z0-9_\s]*:$", stripped) and "def " not in stripped:
+            start_idx += 1
+            continue
+        break
+
+    # Drop commentary or test scaffolding after the real code block.
+    end_idx = len(lines)
+    for i in range(len(lines) - 1, start_idx - 1, -1):
+        stripped = lines[i].strip()
+        if not stripped:
+            continue
+        if stripped.startswith(("print(", "assert ", "if __name__ ==", "import unittest", ">>>")):
+            end_idx = i
+            continue
+        if stripped.startswith(("def ", "class ")) and i > start_idx:
+            end_idx = i
+            break
+        break
+
+    candidate = "\n".join(lines[start_idx:end_idx]).strip()
+    return candidate if candidate else text.strip()
+
 
 def prompt_model(dataset, model_name = "deepseek-ai/deepseek-coder-6.7b-base", quantization = True):
     print(f"Working with {model_name} quantization {quantization}...")
