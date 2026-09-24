@@ -120,7 +120,7 @@ def prompt_model(dataset, model_name = "deepseek-ai/deepseek-coder-6.7b-base", q
 
         outputs = model.generate(
                 **inputs,
-                max_new_tokens=300,
+                max_new_tokens=500,
                 temperature=0.0,
                 do_sample=False,
                 pad_token_id=tokenizer.eos_token_id
