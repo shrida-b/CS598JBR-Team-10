@@ -1,10 +1,9 @@
-2026-09-24 16:41:33.207015: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+2026-09-24 22:45:34.115075: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
 To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
 Working with deepseek-ai/deepseek-coder-6.7b-instruct quantization True...
-Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [07:59<07:59, 479.49s/it]Fetching 2 files: 100%|██████████| 2/2 [07:59<00:00, 239.74s/it]
 Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]/usr/local/lib/python3.13/dist-packages/bitsandbytes/backends/cuda/ops.py:212: FutureWarning: _check_is_size will be removed in a future PyTorch release along with guard_size_oblivious.     Use _check(i >= 0) instead.
   torch._check_is_size(blocksize)
-Loading checkpoint shards:  50%|█████     | 1/2 [00:45<00:45, 45.38s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:00<00:00, 27.70s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:00<00:00, 30.35s/it]
+Loading checkpoint shards:  50%|█████     | 1/2 [00:46<00:46, 46.10s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:02<00:00, 28.52s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:02<00:00, 31.15s/it]
 The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
 /usr/local/lib/python3.13/dist-packages/bitsandbytes/backends/cuda/ops.py:464: FutureWarning: _check_is_size will be removed in a future PyTorch release along with guard_size_oblivious.     Use _check(i >= 0) instead.
   torch._check_is_size(blocksize)
@@ -61,21 +60,7 @@ if __name__ == '__main__':
     brazilian_factorial(n) = n * (n-1) * (n-2) * ... * 1
     where n > 0
 
-    For example:
-    >>> special_factorial(4)
-    24
-
-    The function will receive an integer as input and should return the special
-    factorial of this integer.
-    """
-    if n == 0:
-        return 1
-    else:
-        return n * special_factorial(n - 1)
-
-
-if __name__ == "__main__":
-    import doct
+    For example
 Task_ID HumanEval/127:
 Prompt:
 
@@ -124,7 +109,10 @@ Response:
 print(intersection((1, 2), (2, 3)))  # "NO"
 print(intersection((-1, 1), (0, 4)))  # "NO"
 print(intersection((-3, -1), (-5, 5)))  # "YES"
-print(intersection((1, 3),
+print(intersection((1, 3), (2, 4)))  # "NO"
+print(intersection((1, 5), (3, 7)))  # "YES"
+print(intersection((1, 10), (2, 8)))  # "YES"
+print(intersection((1, 10), (10, 20))) 
 Task_ID HumanEval/47:
 Prompt:
 
@@ -167,20 +155,7 @@ def mean(l: list):
     """Return mean of elements in the list l.
     >>> mean([1, 2, 3, 4, 5])
     3.0
-    >>> mean([-10, 4, 6, 1000, 10, 20])
-    157.5
-    """
-    return sum(l) / len(l)
-
-
-def variance(l: list):
-    """Return variance of elements in the list l.
-    >>> variance([1, 2, 3, 4, 5])
-    2.5
-    >>> variance([-10, 4, 6, 1000, 10, 20])
-    34250.0
-    """
-    m = mean(l
+    >>> mean([-10, 4, 6, 1000, 10, 20
 Task_ID HumanEval/110:
 Prompt:
 
@@ -213,7 +188,8 @@ print(exchange([1, 2, 3, 4], [1, 2, 3, 4]))
 print(exchange([1, 2, 3, 4], [1, 2, 3, 4]))
 print(exchange([1, 2, 3, 4], [1, 2, 3, 4]))
 print(exchange([1, 2, 3, 4], [1, 2, 3, 4]))
-print(exchange([1, 2, 3, 4], [1, 
+print(exchange([1, 2, 3, 4], [1, 2, 3, 4]))
+print(exchange([1, 
 Task_ID HumanEval/137:
 Prompt:
 
@@ -257,9 +233,7 @@ def compare_two(a, b):
     Return None if the values are equal.
     Note: If a real number is represented as a string, the floating point might be . or ,
 
-    compare_two(1, 2.5) ➞ 2.5
-    compare_two(1, "2,3") ➞ "2,3"
-    compare_two
+    compare_two(1, 
 Task_ID HumanEval/136:
 Prompt:
 
@@ -298,8 +272,7 @@ print(largest_smallest_integers([]))  # == (None, None)
 print(largest_smallest_integers([0]))  # == (None, None)
 print(largest_smallest_integers([-2, -4, -1, -3, -5, -7]))  # == (-7, None)
 print(largest_smallest_integers([2, 4, 1, 3, 5, 7]))  # == (None, 1)
-print(largest_smallest_integers([-2, 4, 1, 3, -5, 7]))  # == (-2, 1)
-print(largest_smallest_integers([-2, -4, 1, 3, -5, 7]))  # == (-2, 1)
+print(largest_smallest_integers([-2, 4, 1, 3, -5, 7]))  # ==
 Task_ID HumanEval/154:
 Prompt:
 
@@ -335,10 +308,8 @@ print(cycpattern_check("himenss","simen")) # True
 # 5. The function uses a for loop to check all possible rotations of the second string.
 # 6. The function uses the in operator to check if a rotation is a substring of the first string.
 # 7. The function uses string slicing to rotate the second string.
-# 8. The function uses the or operator to return True if any rotation is found in the first string.
-# 9. The function uses the not operator to return False if no rotation is found in the first string.
-# 10. The function uses the def keyword to define the function.
-# 11. TheThe following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+# 8. The function uses the or operator to return True if any rotation is foundThe following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
 The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
 The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
 The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
@@ -377,8 +348,7 @@ def test_add_elements():
     assert add_elements([111,21,3,4000,5,6,7,8,9], 4) == 24
     assert add_elements([1,2,3,4,5,6,7,8,9], 3) == 6
     assert add_elements([111,21,3,4000,5,6,7,8,9], 4) == 24
-    assert add_elements([1,2,3,4,5,6,7,8,9], 3) == 6
-    assert add_elements([111,21,3,4000,5,6,7,8,9], 
+    assert add_elements([1
 Task_ID HumanEval/100:
 Prompt:
 
@@ -428,11 +398,7 @@ def make_a_pile_v3(n):
     """
     Given a positive integer n, you have to make a pile of n levels of stones.
     The first level has n stones.
-    The number of stones in the next level is:
-        - the next odd number if n is odd.
-        - the next even number if n is even.
-    Return the number of stones in each level in a list, where element at index
-    i represents the number of stones in
+    The number of stones in the next
 Task_ID HumanEval/0:
 Prompt:
 from typing import List
@@ -465,8 +431,7 @@ if __name__ == "__main__":
 # 1.0, 2.0, 3.0, 4.0, 5.0, 2.0 -> False
 # 1.0, 2.8, 3.0, 4.0, 5.0, 2.0 -> True
 # 1.0, 2.0, 3.0, 4.0, 5.0, 2.0 -> False
-# 1.0, 2.8, 3.0, 4.0, 5.0, 2.0 -> True
-# 1.0, 2.0, 3.0, 4.0, 5.0, 2.0 ->
+# 
 Task_ID HumanEval/32:
 Prompt:
 import math
@@ -513,7 +478,17 @@ def find_all_zeros(xs: list):
     """
     if len(xs) % 2 == 1:
         raise ValueError("xs must have even number of coefficients")
-   
+    if xs[-1] == 0:
+        raise ValueError("largest coefficient must not be zero")
+
+    a, b = xs[-2], xs[-1]
+    return [-b / a]
+
+
+def find_roots(xs: list):
+    """ xs are coefficients of a polynomial.
+    find_roots find all x such that poly(x) = 0.
+    find_roots
 Task_ID HumanEval/91:
 Prompt:
 
@@ -558,16 +533,7 @@ def is_bored_v3(S):
     For example:
     >>> is_bored_v3("Hello world")
     0
-    >>> is_bored_v3("The sky is blue. The sun is shining. I love this weather")
-    1
-    """
-    return sum(1 for c in S if c in '.?!')
-
-
-def is_bored_v4(S):
-    """
-    You'll be given a string of words, and your task is to count the number
-    of boredoms. A boredom is a sentence that starts with the
+    >>> is_bored_v3("The sky is blue. The sun is shining. I
 Task_ID HumanEval/68:
 Prompt:
 
@@ -622,14 +588,12 @@ Response:
 
 
 print(pluck([4, 2, 3]))  # [2, 1]
-print(pluck([1,The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-
+print(pluck([1, 2, 3]))  # [2, 1]
+print(pluck([]))  # []
+print(pluck([5, 0, 3, 0, 4, 2]))  # [0, 1]
+print(pluck([1, 1, 1, 1, 1, 1, 1, 1, 1, 1]))  # []
+print(pluck([2, 2, 2, 2, 2, 2, 2, 2, 2, 2]))  # [2, 0]
+print(pluck([1, 3, 5, 7, 
 Task_ID HumanEval/67:
 Prompt:
 
@@ -671,7 +635,18 @@ def count_vowels(s):
     """
     This function takes a string as an input and returns the number of vowels in the string.
     For example:
-    count_vowels("hello")
+    count_vowels("hello") -> 2
+    count_vowels("world") -> 1
+    count_vowels("python") -> 2
+    """
+    vowels = "aeiou"
+   The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+
 Task_ID HumanEval/121:
 Prompt:
 
@@ -715,17 +690,7 @@ print(solution([30, 13, 24, 321]) ==>0)
 # 5
 
 # 3, 3, 3, 3, 3
-# 3, 3, 3, 3
-# 3, 3, 3
-# 3, 3
-# 3
-
-# 30, 13, 24, 321
-# 30, 24, 321
-# 30, 321
-# 30
-
-# 5, 8, 7,
+#
 Task_ID HumanEval/124:
 Prompt:
 
@@ -770,7 +735,18 @@ Response:
     elif month == 2:
         if day > 29:
             return False
-    elif month in [4, 
+    elif month in [4, 6, 9, 11]:
+        if day > 30:
+            return False
+    else:
+        if day > 31:
+            return False
+    return True
+
+
+print(valid_date('03-11-2000'))  # True
+print(valid_date('15-01-2012'))  # False
+print(valid_date('04-0-2040'))  # False
 Task_ID HumanEval/149:
 Prompt:
 
@@ -814,7 +790,7 @@ print(sorted_listum(["aa", "a", "aaa"]))
 #     lst = [i for i in lst if len(i) % 2 == 0]
 #     return sorted(lst)
 
-# print(sorted_list_sum(
+# print(sorted_list_sum(["ab", "a", "aaa", "cd"]
 Task_ID HumanEval/160:
 Prompt:
 
@@ -863,7 +839,8 @@ Response:
 
 print(do_algebra(['+', '*', '-'], [2, 3, 4, 5]))  # 9
 print(do_algebra(['+', '*', '-', '//', '**'], [2, 3, 4, 5, 6, 7]))  # 10
-print(do.do_algebra(['+', '*', '-', '//', '**'], [2, 3, 4, 5, 6, 7]))
+print(do.do_algebra(['+', '*', '-', '//', '**'], [2, 3, 4, 5, 6, 7]))  # 10
+print(do_algebra(['+', '*', '-', '//', '**'], [2, 3, 4, 5, 
 Task_ID HumanEval/74:
 Prompt:
 
@@ -909,7 +886,7 @@ print(total_match(['4'], ['1', '2', '3', '4', '5']))
 
 # Explanation:
 # In the first example, both lists are empty, so the function returns an empty list.
-# In the second example,
+# In the second example, the total number of chars in the first list is 10, and in the second list is 12.
 Task_ID HumanEval/16:
 Prompt:
 
@@ -950,17 +927,4 @@ def count_distinct_characters_v4(string: str) -> int:
     """ Given a string, find out how many distinct characters (regardless of case) does it consist of
     >>> count_distinct_characters_v4('xyzXYZ')
     3
-    >>> count_distinct_characters_v4('Jerry')
-    4
-    """
-    return len(set(string.lower()))
-
-
-def count_distinct_characters_v5(string: str) -> int:
-    """ Given a string, find out how many distinct characters (regardless of case) does it consist of
-    >>> count_distinct_characters_v5('xyzXYZ')
-    3
-    >>> count_distinct_characters_v5('Jerry')
-    4
-    """
-    return len(set(string
+    >>> count_distinct_characters_v4('Jerry
