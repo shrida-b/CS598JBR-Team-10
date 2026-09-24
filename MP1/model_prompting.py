@@ -78,9 +78,14 @@ def prompt_model(dataset, model_name = "deepseek-ai/deepseek-coder-6.7b-base", q
         lines = response_processed.split("\n")
         cleaned_lines = []
         for line in lines:
-            # a function body is always indented; an unindented non-blank line means the model moved on
-            if line.strip() and not line[0].isspace():
+            stripped = line.strip()
+            # Stop if another top-level function or class definition starts
+            if cleaned_lines and (line.startswith("def ") or line.startswith("class ")):
                 break
+            # Only stop for top-level prints/tests AFTER we've accumulated actual function lines
+            if cleaned_lines and line and not (line.startswith(" ") or line.startswith("\t")):
+                if stripped.startswith(("print(", "print ", "if __name__", "import unittest", "<jupyter")):
+                    break
             cleaned_lines.append(line)
 
         candidate_code = "\n".join(cleaned_lines).rstrip()
@@ -99,7 +104,7 @@ def prompt_model(dataset, model_name = "deepseek-ai/deepseek-coder-6.7b-base", q
                 else:
                     break  # Keep original candidate_code if AST parsing cannot recover syntax
         
-        response_processed = candidate_code
+        response_processed = candidate_code if candidate_code.strip() else response
         
         # response_processed = ""
         results_processed.append(dict(task_id=case["task_id"], completion=response_processed))
