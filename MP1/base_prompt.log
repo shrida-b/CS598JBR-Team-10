@@ -1,10 +1,10 @@
-2026-09-23 00:24:39.065122: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+2026-09-24 16:30:37.409386: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
 To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
 Working with deepseek-ai/deepseek-coder-6.7b-base quantization True...
-Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [03:12<03:12, 192.14s/it]Fetching 2 files: 100%|██████████| 2/2 [03:12<00:00, 96.07s/it] 
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [01:46<01:46, 106.83s/it]Fetching 2 files: 100%|██████████| 2/2 [01:46<00:00, 53.42s/it] 
 Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]/usr/local/lib/python3.13/dist-packages/bitsandbytes/backends/cuda/ops.py:212: FutureWarning: _check_is_size will be removed in a future PyTorch release along with guard_size_oblivious.     Use _check(i >= 0) instead.
   torch._check_is_size(blocksize)
-Loading checkpoint shards:  50%|█████     | 1/2 [00:44<00:44, 44.61s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:59<00:00, 27.23s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:59<00:00, 29.84s/it]
+Loading checkpoint shards:  50%|█████     | 1/2 [00:44<00:44, 44.62s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:59<00:00, 27.32s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:59<00:00, 29.91s/it]
 The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
 /usr/local/lib/python3.13/dist-packages/bitsandbytes/backends/cuda/ops.py:464: FutureWarning: _check_is_size will be removed in a future PyTorch release along with guard_size_oblivious.     Use _check(i >= 0) instead.
   torch._check_is_size(blocksize)
