@@ -64,15 +64,20 @@ def _extract_code_candidate(response: str, entry_point: str = "") -> str:
             kept_lines.append(line)
             continue
 
-        if stripped.startswith(("if __name__ ==", "import unittest", ">>>", "doctest.")):
+        if stripped.startswith(("if __name__ ==", "import unittest", ">>>", "doctest.", "<jupyter_")):
             break
         if stripped.startswith(("def main(", "def test_", "class Test")):
+            break
+        if re.match(r"^def\s+\w+_test\s*\(", stripped):
             break
         if stripped.startswith(("assert ", "print(")) and not line.startswith((" ", "\t")):
             break
 
         duplicate_entry = entry_point and re.match(rf"^def\s+{re.escape(entry_point)}\s*\(", stripped)
+        numbered_duplicate = entry_point and re.match(rf"^def\s+{re.escape(entry_point)}_\d+\s*\(", stripped)
         if duplicate_entry and kept_lines:
+            break
+        if numbered_duplicate:
             break
 
         kept_lines.append(line)
