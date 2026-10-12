@@ -1,10 +1,10 @@
 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-I0000 00:00:1791838189.800798   13449 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+I0000 00:00:1791839851.267618   20771 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
 To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-I0000 00:00:1791838192.804525   13449 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1791839854.763838   20771 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
 Working with deepseek-ai/deepseek-coder-6.7b-instruct prompt type True...
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:43<00:43, 43.09s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:58<00:00, 26.59s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:58<00:00, 29.07s/it]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:47<00:47, 47.48s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:04<00:00, 29.31s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:04<00:00, 32.04s/it]
 The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
 The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
 The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
