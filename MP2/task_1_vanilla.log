@@ -1,15 +1,11 @@
 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-I0000 00:00:1791839851.267618   20771 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+I0000 00:00:1791843005.127425    5138 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
 To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-I0000 00:00:1791839854.763838   20771 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1791843007.658264    5138 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
 Working with deepseek-ai/deepseek-coder-6.7b-instruct prompt type True...
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:47<00:47, 47.48s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:04<00:00, 29.31s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:04<00:00, 32.04s/it]
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [05:56<05:56, 356.63s/it]Fetching 2 files: 100%|██████████| 2/2 [05:56<00:00, 178.32s/it]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:48<00:48, 48.24s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:05<00:00, 29.75s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:05<00:00, 32.53s/it]
 Task_ID HumanEval/139:
 selected_test: candidate(7) == 125411328000
 prompt:
@@ -233,12 +229,7 @@ So, the output of the function for the input ("1", 1) will be:
 
 [Output]None[/Output]
 is_correct:
-TrueThe following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-
+True
 Task_ID HumanEval/136:
 selected_test: candidate([7, 3, 8, 4, 9, 2, 5, -9]) == (-9, 2)
 prompt:
@@ -442,11 +433,7 @@ So, the output will be:
 
 [Output]True[/Output]
 is_correct:
-TrueThe following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-
+True
 Task_ID HumanEval/32:
 selected_test: candidate([-1, 7, -6, -4, 3, 2, -5, 9]) == 0.17007400892907754
 prompt:
@@ -650,12 +637,7 @@ The function splits the string `s` into a list of words, and for each word, it c
 
 The function then returns the difference between `n` and the sum of
 is_correct:
-FalseThe following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-
+False
 Task_ID HumanEval/121:
 selected_test: candidate([5, 8, 7, 1]) == 12
 prompt:
@@ -895,8 +877,7 @@ def total_match(lst1, lst2):
     for st in lst1:
         l1 += len(st)
 is_correct:
-FalseThe following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-
+False
 Task_ID HumanEval/16:
 selected_test: candidate('aaaaAAAAaaaa') == 1
 prompt:
