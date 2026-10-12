@@ -3,17 +3,18 @@
 ###################################################################
 
 # TODO: Clone your GitHub repository
-! git clone [Your GitHub Link]
-% cd [Your GitHub Repo]/MP2
+! git clone https://github.com/shrida-b/CS598JBR-Team-10.git
+% cd CS598JBR-Team-10/MP2
 
 # TODO: Replace the file path of selected_humaneval_[seed].jsonl generated in MP1
-input_dataset = ""# selected_humaneval_[seed].jsonl
+! cp ../MP1/selected_humaneval_81076962711735457459641171352011328184.jsonl .
+input_dataset = "selected_humaneval_81076962711735457459641171352011328184.jsonl"
 
 # Set up requirements for model prompting
 ! bash -x setup_models.sh
 
 # TODO: add your seed generated in MP1
-seed = "<your_seed>"
+seed = "81076962711735457459641171352011328184"
 task_1_vanilla_json = "task_1_" + seed + "_vanilla.jsonl"
 task_1_crafted_json = "task_1_" + seed + "_crafted.jsonl"
 task_2_vanilla_json = "task_2_" + seed + "_vanilla.jsonl"
