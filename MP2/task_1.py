@@ -219,14 +219,14 @@ def build_prompt(entry, vanilla=True):
     else:
         signature = _function_signature(entry)
         instruction = (
-            f"Trace the Python function call {function_call} for the program below.\n\n"
-            "Follow these rules:\n"
-            "1. Treat the provided code as authoritative, even if the docstring examples differ.\n"
-            "2. Track variable values, loop iterations, branches, and return statements carefully.\n"
-            "3. After reasoning, put only the final Python return value between [Output] and [/Output] tags.\n"
-            "4. Do not include explanations inside the output tags.\n\n"
+            "Carefully evaluate and trace the execution of the Python function call {function_call} for the program below.\n\n"
+            "Follow these strict rules:\n"
+            "1. Track variable states, loop iterations, and conditional checks step by step.\n"
+            "2. Pay special attention to edge cases and boundary conditions.\n"
+            "3. Output ONLY the final return value enclosed strictly between [Output] and [/Output] tags (e.g., [Output]True[/Output]).\n"
+            "4. Do not include markdown code blocks, explanations, or extra text inside the tags.\n\n"
             f"Function signature: {signature}\n"
-            f"Call to evaluate: {function_call}\n\n"
+            f"Target call: {function_call}\n\n"
             f"{program}"
         )
 
@@ -274,6 +274,7 @@ def _model_device(model):
 
 def _generate_response(tokenizer, model, prompt, vanilla):
     inputs = tokenizer(prompt, return_tensors="pt").to(_model_device(model))
+    
     with torch.no_grad():
         outputs = model.generate(
             **inputs,
