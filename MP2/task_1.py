@@ -219,12 +219,11 @@ def build_prompt(entry, vanilla=True):
     else:
         signature = _function_signature(entry)
         instruction = (
-            "Carefully evaluate and trace the execution of the Python function call {function_call} for the program below.\n\n"
-            "Follow these strict rules:\n"
-            "1. Track variable states, loop iterations, and conditional checks step by step.\n"
-            "2. Pay special attention to edge cases and boundary conditions.\n"
-            "3. Output ONLY the final return value enclosed strictly between [Output] and [/Output] tags (e.g., [Output]True[/Output]).\n"
-            "4. Do not include markdown code blocks, explanations, or extra text inside the tags.\n\n"
+            f"Perform the following steps carefully to evaluate the execution of the Python function call {function_call}:\n\n"
+            "1. Read the provided program code and trace how the input parameters are processed step-by-step.\n"
+            "2. Pay close attention to index boundaries, loops, and conditional logic to prevent logical errors.\n"
+            "3. Determine the exact final return value.\n"
+            "4. Output ONLY the final return value enclosed strictly between [Output] and [/Output] tags, with no markdown code blocks or additional text inside the tags (e.g., [Output]True[/Output]).\n\n"
             f"Function signature: {signature}\n"
             f"Target call: {function_call}\n\n"
             f"{program}"
