@@ -66,12 +66,20 @@ def _normalize_for_compare(value):
 
 def _parse_model_output(response):
     """Return the value enclosed in [Output] tags when it can be parsed."""
-    match = re.search(
-        r"\[Output\](.*?)\[(?:/|\\)Output\]",
+    # match = re.search(
+    #     r"\[Output\](.*?)\[(?:/|\\)Output\]",
+    #     response,
+    #     flags=re.IGNORECASE | re.DOTALL,
+    # )
+    # text = match.group(1).strip() if match else response.strip()
+    # text = text.strip("` \n\t")
+
+    matches = re.findall(
+        r"\[Output\](.*?)(?:\[(?:/|\\)Output\]|$)",
         response,
         flags=re.IGNORECASE | re.DOTALL,
     )
-    text = match.group(1).strip() if match else response.strip()
+    text = (matches[-1] if matches else response).strip()
     text = text.strip("` \n\t")
 
     # If the model included a sentence inside the tag, keep the last plausible
@@ -219,14 +227,21 @@ def build_prompt(entry, vanilla=True):
     else:
         signature = _function_signature(entry)
         instruction = (
-            f"Perform the following steps carefully to evaluate the execution of the Python function call {function_call}:\n\n"
-            "1. Read the provided program code and trace how the input parameters are processed step-by-step.\n"
-            "2. Pay close attention to index boundaries, loops, and conditional logic to prevent logical errors.\n"
-            "3. Determine the exact final return value.\n"
-            "4. Output ONLY the final return value enclosed strictly between [Output] and [/Output] tags, with no markdown code blocks or additional text inside the tags (e.g., [Output]True[/Output]).\n\n"
-            f"Function signature: {signature}\n"
-            f"Target call: {function_call}\n\n"
-            f"{program}"
+            f"Predict the exact return value of this Python call: {function_call}\n\n"
+            "Work through the code like an interpreter. Track every variable's value after each "
+            "loop iteration or branch, write out every intermediate calculation explicitly, and "
+            "double-check arithmetic, indexing, string lengths, and comparisons. Use the actual "
+            "input values, not the docstring examples.\n"
+            "After your reasoning, the LAST line of your response must be exactly of the form "
+            "[Output]value[/Output], where value is a Python literal (strings in quotes, tuples in "
+            "parentheses, lists in brackets). Write nothing after that line.\n\n"
+            "Example:\n"
+            "def f(xs):\n    t = 0\n    for i, x in enumerate(xs):\n        if i % 2 == 0:\n            t += x\n    return t\n"
+            "Call: f([4, 5, 6])\n"
+            "Trace: i=0, x=4, even index, t=0+4=4. i=1, x=5, odd index, skip. "
+            "i=2, x=6, even index, t=4+6=10. Loop ends.\n"
+            "[Output]10[/Output]\n\n"
+            f"Now do the same for the real task.\nCall: {function_call}\n\n{program}"
         )
 
     prompt = f"{BASE_SYSTEM_PROMPT}\n\n### Instruction:\n\n{instruction}\n\n### Response:\n"
@@ -279,7 +294,6 @@ def _generate_response(tokenizer, model, prompt, vanilla):
             **inputs,
             max_new_tokens=128 if vanilla else 700,
             do_sample=False,
-            temperature=0.0,
             pad_token_id=tokenizer.pad_token_id,
             eos_token_id=tokenizer.eos_token_id,
         )
