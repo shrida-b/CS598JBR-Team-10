@@ -1,0 +1,2419 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Working with deepseek-ai/deepseek-coder-6.7b-instruct prompt type False...
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   0%|          | 1/291 [00:00<04:43,  1.02it/s]Loading weights:   1%|          | 2/291 [00:02<04:55,  1.02s/it]Loading weights:   1%|▏         | 4/291 [00:02<02:31,  1.89it/s]Loading weights:   2%|▏         | 5/291 [00:02<02:09,  2.21it/s]Loading weights:   2%|▏         | 6/291 [00:03<02:00,  2.36it/s]Loading weights:   3%|▎         | 8/291 [00:03<01:12,  3.90it/s]Loading weights:   3%|▎         | 9/291 [00:03<01:03,  4.43it/s]Loading weights:   3%|▎         | 10/291 [00:03<00:56,  4.96it/s]Loading weights:   4%|▍         | 11/291 [00:03<00:51,  5.46it/s]Loading weights:   4%|▍         | 13/291 [00:04<00:50,  5.50it/s]Loading weights:   5%|▍         | 14/291 [00:04<01:02,  4.44it/s]Loading weights:   5%|▌         | 15/291 [00:04<01:11,  3.86it/s]Loading weights:   6%|▌         | 17/291 [00:04<00:48,  5.63it/s]Loading weights:   6%|▌         | 18/291 [00:05<00:45,  5.96it/s]Loading weights:   7%|▋         | 19/291 [00:05<00:43,  6.24it/s]Loading weights:   7%|▋         | 20/291 [00:05<00:41,  6.50it/s]Loading weights:   8%|▊         | 22/291 [00:05<00:44,  6.04it/s]Loading weights:   8%|▊         | 23/291 [00:06<00:56,  4.73it/s]Loading weights:   8%|▊         | 24/291 [00:06<01:06,  4.02it/s]Loading weights:   9%|▉         | 26/291 [00:06<00:45,  5.81it/s]Loading weights:   9%|▉         | 27/291 [00:06<00:43,  6.10it/s]Loading weights:  10%|▉         | 28/291 [00:06<00:41,  6.41it/s]Loading weights:  10%|▉         | 29/291 [00:06<00:39,  6.66it/s]Loading weights:  11%|█         | 31/291 [00:07<00:42,  6.11it/s]Loading weights:  11%|█         | 32/291 [00:07<00:54,  4.78it/s]Loading weights:  11%|█▏        | 33/291 [00:07<01:03,  4.05it/s]Loading weights:  12%|█▏        | 35/291 [00:08<00:43,  5.84it/s]Loading weights:  12%|█▏        | 36/291 [00:08<00:41,  6.14it/s]Loading weights:  13%|█▎        | 37/291 [00:08<00:39,  6.44it/s]Loading weights:  13%|█▎        | 38/291 [00:08<00:37,  6.69it/s]Loading weights:  14%|█▎        | 40/291 [00:08<00:40,  6.15it/s]Loading weights:  14%|█▍        | 41/291 [00:09<00:52,  4.80it/s]Loading weights:  14%|█▍        | 42/291 [00:09<01:01,  4.07it/s]Loading weights:  15%|█▌        | 44/291 [00:09<00:42,  5.86it/s]Loading weights:  15%|█▌        | 45/291 [00:09<00:39,  6.17it/s]Loading weights:  16%|█▌        | 46/291 [00:10<00:37,  6.45it/s]Loading weights:  16%|█▌        | 47/291 [00:10<00:36,  6.69it/s]Loading weights:  17%|█▋        | 49/291 [00:10<00:39,  6.16it/s]Loading weights:  17%|█▋        | 50/291 [00:10<00:50,  4.80it/s]Loading weights:  18%|█▊        | 51/291 [00:11<00:59,  4.07it/s]Loading weights:  18%|█▊        | 53/291 [00:11<00:40,  5.86it/s]Loading weights:  19%|█▊        | 54/291 [00:11<00:38,  6.17it/s]Loading weights:  19%|█▉        | 55/291 [00:11<00:36,  6.45it/s]Loading weights:  19%|█▉        | 56/291 [00:11<00:35,  6.70it/s]Loading weights:  20%|█▉        | 58/291 [00:12<00:37,  6.15it/s]Loading weights:  20%|██        | 59/291 [00:12<00:48,  4.80it/s]Loading weights:  21%|██        | 60/291 [00:12<00:56,  4.06it/s]Loading weights:  21%|██▏       | 62/291 [00:12<00:39,  5.86it/s]Loading weights:  22%|██▏       | 63/291 [00:13<00:36,  6.17it/s]Loading weights:  22%|██▏       | 64/291 [00:13<00:35,  6.45it/s]Loading weights:  22%|██▏       | 65/291 [00:13<00:33,  6.69it/s]Loading weights:  23%|██▎       | 67/291 [00:13<00:36,  6.15it/s]Loading weights:  23%|██▎       | 68/291 [00:14<00:46,  4.80it/s]Loading weights:  24%|██▎       | 69/291 [00:14<00:54,  4.07it/s]Loading weights:  24%|██▍       | 71/291 [00:14<00:37,  5.86it/s]Loading weights:  25%|██▍       | 72/291 [00:14<00:35,  6.17it/s]Loading weights:  25%|██▌       | 73/291 [00:14<00:33,  6.45it/s]Loading weights:  25%|██▌       | 74/291 [00:14<00:32,  6.70it/s]Loading weights:  26%|██▌       | 76/291 [00:15<00:34,  6.15it/s]Loading weights:  26%|██▋       | 77/291 [00:15<00:44,  4.80it/s]Loading weights:  27%|██▋       | 78/291 [00:16<00:52,  4.07it/s]Loading weights:  27%|██▋       | 80/291 [00:16<00:36,  5.81it/s]Loading weights:  28%|██▊       | 81/291 [00:16<00:34,  6.15it/s]Loading weights:  28%|██▊       | 82/291 [00:16<00:32,  6.43it/s]Loading weights:  29%|██▊       | 83/291 [00:16<00:31,  6.69it/s]Loading weights:  29%|██▉       | 85/291 [00:16<00:33,  6.15it/s]Loading weights:  30%|██▉       | 86/291 [00:17<00:42,  4.80it/s]Loading weights:  30%|██▉       | 87/291 [00:17<00:48,  4.21it/s]Loading weights:  31%|███       | 89/291 [00:17<00:33,  6.02it/s]Loading weights:  31%|███       | 90/291 [00:17<00:31,  6.41it/s]Loading weights:  31%|███▏      | 91/291 [00:17<00:29,  6.90it/s]Loading weights:  32%|███▏      | 92/291 [00:18<00:27,  7.34it/s]Loading weights:  32%|███▏      | 94/291 [00:18<00:30,  6.48it/s]Loading weights:  33%|███▎      | 95/291 [00:18<00:40,  4.90it/s]Loading weights:  33%|███▎      | 96/291 [00:19<00:47,  4.08it/s]Loading weights:  34%|███▎      | 98/291 [00:19<00:33,  5.84it/s]Loading weights:  34%|███▍      | 99/291 [00:19<00:31,  6.13it/s]Loading weights:  34%|███▍      | 100/291 [00:19<00:29,  6.40it/s]Loading weights:  35%|███▍      | 101/291 [00:19<00:28,  6.62it/s]Loading weights:  35%|███▌      | 103/291 [00:20<00:30,  6.09it/s]Loading weights:  36%|███▌      | 104/291 [00:20<00:39,  4.72it/s]Loading weights:  36%|███▌      | 105/291 [00:20<00:46,  3.98it/s]Loading weights:  37%|███▋      | 107/291 [00:20<00:32,  5.75it/s]Loading weights:  37%|███▋      | 108/291 [00:21<00:30,  6.08it/s]Loading weights:  37%|███▋      | 109/291 [00:21<00:28,  6.37it/s]Loading weights:  38%|███▊      | 110/291 [00:21<00:27,  6.62it/s]Loading weights:  38%|███▊      | 112/291 [00:21<00:29,  6.12it/s]Loading weights:  39%|███▉      | 113/291 [00:22<00:37,  4.79it/s]Loading weights:  39%|███▉      | 114/291 [00:22<00:43,  4.06it/s]Loading weights:  40%|███▉      | 116/291 [00:22<00:29,  5.85it/s]Loading weights:  40%|████      | 117/291 [00:22<00:28,  6.16it/s]Loading weights:  41%|████      | 118/291 [00:22<00:26,  6.44it/s]Loading weights:  41%|████      | 119/291 [00:22<00:25,  6.69it/s]Loading weights:  42%|████▏     | 121/291 [00:23<00:27,  6.15it/s]Loading weights:  42%|████▏     | 122/291 [00:23<00:35,  4.80it/s]Loading weights:  42%|████▏     | 123/291 [00:24<00:41,  4.07it/s]Loading weights:  43%|████▎     | 125/291 [00:24<00:28,  5.86it/s]Loading weights:  43%|████▎     | 126/291 [00:24<00:26,  6.17it/s]Loading weights:  44%|████▎     | 127/291 [00:24<00:25,  6.45it/s]Loading weights:  44%|████▍     | 128/291 [00:24<00:24,  6.69it/s]Loading weights:  45%|████▍     | 130/291 [00:24<00:26,  6.15it/s]Loading weights:  45%|████▌     | 131/291 [00:25<00:33,  4.80it/s]Loading weights:  45%|████▌     | 132/291 [00:25<00:39,  4.07it/s]Loading weights:  46%|████▌     | 134/291 [00:25<00:26,  5.86it/s]Loading weights:  46%|████▋     | 135/291 [00:25<00:25,  6.17it/s]Loading weights:  47%|████▋     | 136/291 [00:26<00:24,  6.45it/s]Loading weights:  47%|████▋     | 137/291 [00:26<00:23,  6.69it/s]Loading weights:  48%|████▊     | 139/291 [00:26<00:24,  6.11it/s]Loading weights:  48%|████▊     | 140/291 [00:26<00:31,  4.77it/s]Loading weights:  48%|████▊     | 141/291 [00:27<00:36,  4.06it/s]Loading weights:  49%|████▉     | 143/291 [00:27<00:25,  5.84it/s]Loading weights:  49%|████▉     | 144/291 [00:27<00:23,  6.16it/s]Loading weights:  50%|████▉     | 145/291 [00:27<00:22,  6.44it/s]Loading weights:  50%|█████     | 146/291 [00:27<00:21,  6.69it/s]Loading weights:  51%|█████     | 148/291 [00:28<00:23,  6.15it/s]Loading weights:  51%|█████     | 149/291 [00:28<00:29,  4.80it/s]Loading weights:  52%|█████▏    | 150/291 [00:28<00:34,  4.06it/s]Loading weights:  52%|█████▏    | 152/291 [00:29<00:23,  5.86it/s]Loading weights:  53%|█████▎    | 153/291 [00:29<00:22,  6.17it/s]Loading weights:  53%|█████▎    | 154/291 [00:29<00:21,  6.46it/s]Loading weights:  53%|█████▎    | 155/291 [00:29<00:20,  6.70it/s]Loading weights:  54%|█████▍    | 157/291 [00:29<00:21,  6.15it/s]Loading weights:  54%|█████▍    | 158/291 [00:30<00:27,  4.80it/s]Loading weights:  55%|█████▍    | 159/291 [00:30<00:32,  4.07it/s]Loading weights:  55%|█████▌    | 161/291 [00:30<00:22,  5.85it/s]Loading weights:  56%|█████▌    | 162/291 [00:30<00:20,  6.17it/s]Loading weights:  56%|█████▌    | 163/291 [00:30<00:19,  6.45it/s]Loading weights:  56%|█████▋    | 164/291 [00:31<00:18,  6.69it/s]Loading weights:  57%|█████▋    | 166/291 [00:31<00:20,  6.13it/s]Loading weights:  57%|█████▋    | 167/291 [00:31<00:25,  4.78it/s]Loading weights:  58%|█████▊    | 168/291 [00:32<00:30,  4.07it/s]Loading weights:  58%|█████▊    | 170/291 [00:32<00:20,  5.85it/s]Loading weights:  59%|█████▉    | 171/291 [00:32<00:19,  6.16it/s]Loading weights:  59%|█████▉    | 172/291 [00:32<00:18,  6.45it/s]Loading weights:  59%|█████▉    | 173/291 [00:32<00:17,  6.70it/s]Loading weights:  60%|██████    | 175/291 [00:32<00:18,  6.14it/s]Loading weights:  60%|██████    | 176/291 [00:33<00:23,  4.80it/s]Loading weights:  61%|██████    | 177/291 [00:33<00:28,  4.07it/s]Loading weights:  62%|██████▏   | 179/291 [00:33<00:19,  5.86it/s]Loading weights:  62%|██████▏   | 180/291 [00:33<00:17,  6.17it/s]Loading weights:  62%|██████▏   | 181/291 [00:34<00:17,  6.45it/s]Loading weights:  63%|██████▎   | 182/291 [00:34<00:16,  6.70it/s]Loading weights:  63%|██████▎   | 184/291 [00:34<00:17,  6.14it/s]Loading weights:  64%|██████▎   | 185/291 [00:34<00:22,  4.78it/s]Loading weights:  64%|██████▍   | 186/291 [00:35<00:25,  4.07it/s]Loading weights:  65%|██████▍   | 188/291 [00:35<00:17,  5.85it/s]Loading weights:  65%|██████▍   | 189/291 [00:35<00:16,  6.17it/s]Loading weights:  65%|██████▌   | 190/291 [00:35<00:15,  6.45it/s]Loading weights:  66%|██████▌   | 191/291 [00:35<00:14,  6.69it/s]Loading weights:  66%|██████▋   | 193/291 [00:36<00:15,  6.15it/s]Loading weights:  67%|██████▋   | 194/291 [00:36<00:20,  4.80it/s]Loading weights:  67%|██████▋   | 195/291 [00:36<00:23,  4.07it/s]Loading weights:  68%|██████▊   | 197/291 [00:37<00:16,  5.86it/s]Loading weights:  68%|██████▊   | 198/291 [00:37<00:15,  6.17it/s]Loading weights:  68%|██████▊   | 199/291 [00:37<00:14,  6.45it/s]Loading weights:  69%|██████▊   | 200/291 [00:37<00:13,  6.69it/s]Loading weights:  69%|██████▉   | 202/291 [00:37<00:14,  6.15it/s]Loading weights:  70%|██████▉   | 203/291 [00:38<00:18,  4.80it/s]Loading weights:  70%|███████   | 204/291 [00:38<00:21,  4.06it/s]Loading weights:  71%|███████   | 206/291 [00:38<00:14,  5.86it/s]Loading weights:  71%|███████   | 207/291 [00:38<00:13,  6.16it/s]Loading weights:  71%|███████▏  | 208/291 [00:38<00:12,  6.45it/s]Loading weights:  72%|███████▏  | 209/291 [00:39<00:12,  6.69it/s]Loading weights:  73%|███████▎  | 211/291 [00:39<00:13,  6.15it/s]Loading weights:  73%|███████▎  | 212/291 [00:39<00:16,  4.80it/s]Loading weights:  73%|███████▎  | 213/291 [00:40<00:19,  4.07it/s]Loading weights:  74%|███████▍  | 215/291 [00:40<00:12,  5.85it/s]Loading weights:  74%|███████▍  | 216/291 [00:40<00:12,  6.17it/s]Loading weights:  75%|███████▍  | 217/291 [00:40<00:11,  6.45it/s]Loading weights:  75%|███████▍  | 218/291 [00:40<00:10,  6.70it/s]Loading weights:  76%|███████▌  | 220/291 [00:41<00:11,  6.12it/s]Loading weights:  76%|███████▌  | 221/291 [00:41<00:14,  4.79it/s]Loading weights:  76%|███████▋  | 222/291 [00:41<00:17,  4.05it/s]Loading weights:  77%|███████▋  | 224/291 [00:41<00:11,  5.85it/s]Loading weights:  77%|███████▋  | 225/291 [00:42<00:10,  6.16it/s]Loading weights:  78%|███████▊  | 226/291 [00:42<00:10,  6.45it/s]Loading weights:  78%|███████▊  | 227/291 [00:42<00:09,  6.69it/s]Loading weights:  79%|███████▊  | 229/291 [00:42<00:10,  6.15it/s]Loading weights:  79%|███████▉  | 230/291 [00:43<00:12,  4.79it/s]Loading weights:  79%|███████▉  | 231/291 [00:43<00:14,  4.06it/s]Loading weights:  80%|████████  | 233/291 [00:43<00:09,  5.86it/s]Loading weights:  80%|████████  | 234/291 [00:43<00:09,  6.16it/s]Loading weights:  81%|████████  | 235/291 [00:43<00:08,  6.45it/s]Loading weights:  81%|████████  | 236/291 [00:43<00:08,  6.70it/s]Loading weights:  82%|████████▏ | 238/291 [00:44<00:08,  6.19it/s]Loading weights:  82%|████████▏ | 239/291 [00:44<00:10,  4.83it/s]Loading weights:  82%|████████▏ | 240/291 [00:44<00:12,  4.06it/s]Loading weights:  83%|████████▎ | 242/291 [00:45<00:08,  5.88it/s]Loading weights:  84%|████████▎ | 243/291 [00:45<00:07,  6.18it/s]Loading weights:  84%|████████▍ | 244/291 [00:45<00:07,  6.47it/s]Loading weights:  84%|████████▍ | 245/291 [00:45<00:06,  6.72it/s]Loading weights:  85%|████████▍ | 247/291 [00:45<00:07,  6.10it/s]Loading weights:  85%|████████▌ | 248/291 [00:46<00:08,  4.82it/s]Loading weights:  86%|████████▌ | 249/291 [00:46<00:10,  4.07it/s]Loading weights:  86%|████████▋ | 251/291 [00:46<00:06,  5.88it/s]Loading weights:  87%|████████▋ | 252/291 [00:46<00:06,  6.18it/s]Loading weights:  87%|████████▋ | 253/291 [00:46<00:05,  6.45it/s]Loading weights:  87%|████████▋ | 254/291 [00:47<00:05,  6.71it/s]Loading weights:  88%|████████▊ | 256/291 [00:47<00:05,  6.15it/s]Loading weights:  88%|████████▊ | 257/291 [00:47<00:07,  4.80it/s]Loading weights:  89%|████████▊ | 258/291 [00:48<00:08,  4.07it/s]Loading weights:  89%|████████▉ | 260/291 [00:48<00:05,  5.86it/s]Loading weights:  90%|████████▉ | 261/291 [00:48<00:04,  6.15it/s]Loading weights:  90%|█████████ | 262/291 [00:48<00:04,  6.40it/s]Loading weights:  90%|█████████ | 263/291 [00:48<00:04,  6.61it/s]Loading weights:  91%|█████████ | 265/291 [00:49<00:04,  6.06it/s]Loading weights:  91%|█████████▏| 266/291 [00:49<00:05,  4.70it/s]Loading weights:  92%|█████████▏| 267/291 [00:49<00:06,  3.98it/s]Loading weights:  92%|█████████▏| 269/291 [00:49<00:03,  5.74it/s]Loading weights:  93%|█████████▎| 270/291 [00:50<00:03,  6.08it/s]Loading weights:  93%|█████████▎| 271/291 [00:50<00:03,  6.38it/s]Loading weights:  93%|█████████▎| 272/291 [00:50<00:02,  6.62it/s]Loading weights:  94%|█████████▍| 274/291 [00:50<00:02,  6.11it/s]Loading weights:  95%|█████████▍| 275/291 [00:51<00:03,  4.78it/s]Loading weights:  95%|█████████▍| 276/291 [00:51<00:03,  4.05it/s]Loading weights:  96%|█████████▌| 278/291 [00:51<00:02,  5.85it/s]Loading weights:  96%|█████████▌| 279/291 [00:51<00:01,  6.17it/s]Loading weights:  96%|█████████▌| 280/291 [00:51<00:01,  6.45it/s]Loading weights:  97%|█████████▋| 281/291 [00:51<00:01,  6.69it/s]Loading weights:  97%|█████████▋| 283/291 [00:52<00:01,  6.15it/s]Loading weights:  98%|█████████▊| 284/291 [00:52<00:01,  4.80it/s]Loading weights:  98%|█████████▊| 285/291 [00:53<00:01,  4.04it/s]Loading weights:  99%|█████████▊| 287/291 [00:53<00:00,  5.81it/s]Loading weights:  99%|█████████▉| 288/291 [00:53<00:00,  6.09it/s]Loading weights:  99%|█████████▉| 289/291 [00:53<00:00,  6.37it/s]Loading weights: 100%|█████████▉| 290/291 [00:53<00:00,  6.58it/s]Loading weights: 100%|██████████| 291/291 [00:53<00:00,  5.43it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+ctorial_positive_1 _______________________
+
+    def test_special_factorial_positive_1():
+        """Testing the special_factorial function with positive number"""
+>       assert special_factorial(5) == 5 * 4 * 3 * 2 * 1
+E       assert 34560 == ((((5 * 4) * 3) * 2) * 1)
+E        +  where 34560 = special_factorial(5)
+
+HumanEval_139_test.py:20: AssertionError
+______________________ test_special_factorial_positive_3 _______________________
+
+    def test_special_factorial_positive_3():
+        """Testing the special_factorial function with positive number"""
+>       assert special_factorial(10) == 3628800
+E       assert 6658606584104736522240000000 == 3628800
+E        +  where 6658606584104736522240000000 = special_factorial(10)
+
+HumanEval_139_test.py:28: AssertionError
+_________________________ test_special_factorial_large _________________________
+
+    def test_special_factorial_large():
+        """Testing the special_factorial function with large number"""
+>       assert special_factorial(15) == 1307674368000
+E       assert 903783311123711422...6000000000000000000 == 1307674368000
+E        +  where 903783311123711422...6000000000000000000 = special_factorial(15)
+
+HumanEval_139_test.py:32: AssertionError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_139_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_139_test.py::test_special_factorial_zero - Failed: DID NOT R...
+FAILED HumanEval_139_test.py::test_special_factorial_negative - Failed: DID N...
+FAILED HumanEval_139_test.py::test_special_factorial_positive_1 - assert 3456...
+FAILED HumanEval_139_test.py::test_special_factorial_positive_3 - assert 6658...
+FAILED HumanEval_139_test.py::test_special_factorial_large - assert 903783311...
+5 failed, 1 passed in 0.06s
+
+
+Task_ID HumanEval/139:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_139 import special_factorial`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def special_factorial(n):
+    """The Brazilian factorial is defined as:
+    brazilian_factorial(n) = n! * (n-1)! * (n-2)! * ... * 1!
+    where n > 0
+
+    For example:
+    >>> special_factorial(4)
+    288
+
+    The function will receive an integer as input and should return the special
+    factorial of this integer.
+    """
+    fact_i = 1
+    special_fact = 1
+    for i in range(1, n+1):
+        fact_i *= i
+        special_fact *= fact_i
+    return special_fact
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_139 import special_factorial
+
+def test_special_factorial_zero():
+    """Testing the special_factorial function with 0"""
+    with pytest.raises(ValueError):
+        special_factorial(0)
+
+def test_special_factorial_negative():
+    """Testing the special_factorial function with negative number"""
+    with pytest.raises(ValueError):
+        special_factorial(-1)
+
+def test_special_factorial_positive():
+    """Testing the special_factorial function with positive number"""
+    assert special_factorial(5) == 5*4*3*2*1
+    assert special_factorial(1) == 1
+    assert special_factorial(10) == 3628800
+
+def test_special_factorial_large():
+    """Testing the special_factorial function with large number"""
+    assert special_factorial(15) == 1307674368000
+```
+coverage:
+100.0
+tests: total=6 passed=1 failed=5
+"""
+        Test when the two intervals intersect at nine points.
+        """
+>       assert intersection((-1, 9), (-1, 9)) == 'YES'
+E       AssertionError: assert 'NO' == 'YES'
+E         
+E         - YES
+E         + NO
+
+HumanEval_127_test.py:180: AssertionError
+_________________ test_intersection_intersect_at_nine_points_3 _________________
+
+    def test_intersection_intersect_at_nine_points_3():
+        """
+        Test when the two intervals intersect at nine points.
+        """
+>       assert intersection((3, 11), (3, 11)) == 'YES'
+E       AssertionError: assert 'NO' == 'YES'
+E         
+E         - YES
+E         + NO
+
+HumanEval_127_test.py:186: AssertionError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_127_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_127_test.py::test_intersection_intersect_at_two_points_2 - A...
+FAILED HumanEval_127_test.py::test_intersection_intersect_at_two_points_3 - A...
+FAILED HumanEval_127_test.py::test_intersection_intersect_at_five_points_1 - ...
+FAILED HumanEval_127_test.py::test_intersection_intersect_at_five_points_2 - ...
+FAILED HumanEval_127_test.py::test_intersection_intersect_at_five_points_3 - ...
+FAILED HumanEval_127_test.py::test_intersection_intersect_at_seven_points_1
+FAILED HumanEval_127_test.py::test_intersection_intersect_at_seven_points_2
+FAILED HumanEval_127_test.py::test_intersection_intersect_at_seven_points_3
+FAILED HumanEval_127_test.py::test_intersection_intersect_at_eight_points_2
+FAILED HumanEval_127_test.py::test_intersection_intersect_at_nine_points_1 - ...
+FAILED HumanEval_127_test.py::test_intersection_intersect_at_nine_points_2 - ...
+FAILED HumanEval_127_test.py::test_intersection_intersect_at_nine_points_3 - ...
+12 failed, 18 passed in 0.20s
+
+
+Task_ID HumanEval/127:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_127 import intersection`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def intersection(interval1, interval2):
+    """You are given two intervals,
+    where each interval is a pair of integers. For example, interval = (start, end) = (1, 2).
+    The given intervals are closed which means that the interval (start, end)
+    includes both start and end.
+    For each given interval, it is assumed that its start is less or equal its end.
+    Your task is to determine whether the length of intersection of these two 
+    intervals is a prime number.
+    Example, the intersection of the intervals (1, 3), (2, 4) is (2, 3)
+    which its length is 1, which not a prime number.
+    If the length of the intersection is a prime number, return "YES",
+    otherwise, return "NO".
+    If the two intervals don't intersect, return "NO".
+
+
+    [input/output] samples:
+    intersection((1, 2), (2, 3)) ==> "NO"
+    intersection((-1, 1), (0, 4)) ==> "NO"
+    intersection((-3, -1), (-5, 5)) ==> "YES"
+    """
+    def is_prime(num):
+        if num == 1 or num == 0:
+            return False
+        if num == 2:
+            return True
+        for i in range(2, num):
+            if num%i == 0:
+                return False
+        return True
+
+    l = max(interval1[0], interval2[0])
+    r = min(interval1[1], interval2[1])
+    length = r - l
+    if length > 0 and is_prime(length):
+        return "YES"
+    return "NO"
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_127 import intersection
+
+def test_intersection_no_intersection():
+    """
+    Test when there is no intersection between the two intervals.
+    """
+    assert intersection((1, 2), (3, 4)) == "NO"
+    assert intersection((-1, 1), (2, 4)) == "NO"
+    assert intersection((-3, -1), (-2, -5)) == "NO"
+
+def test_intersection_intersect_at_one_point():
+    """
+    Test when the two intervals intersect at one point.
+    """
+    assert intersection((1, 1), (1, 2)) == "NO"
+    assert intersection((-1, -1), (-5, -5)) == "NO"
+    assert intersection((3, 3), (3, 5)) == "NO"
+
+def test_intersection_intersect_at_two_points():
+    """
+    Test when the two intervals intersect at two points.
+    """
+    assert intersection((1, 2), (1, 3)) == "NO"
+    assert intersection((-1, 1), (-5, 1)) == "NO"
+    assert intersection((3, 5), (3, 7)) == "NO"
+
+def test_intersection_intersect_at_three_points():
+    """
+    Test when the two intervals intersect at three points.
+    """
+    assert intersection((1, 3), (1, 3)) == "YES"
+    assert intersection((-1, 1), (-1, 1)) == "YES"
+    assert intersection((3, 5), (3, 5)) == "YES"
+
+def test_intersection_intersect_at_four_points():
+    """
+    Test when the two intervals intersect at four points.
+    """
+    assert intersection((1, 4), (1, 4)) == "YES"
+    assert intersection((-1, 4), (-1, 4)) == "YES"
+    assert intersection((3, 6), (3, 6)) == "YES"
+
+def test_intersection_intersect_at_five_points():
+    """
+    Test when the two intervals intersect at five points.
+    """
+    assert intersection((1, 5), (1, 5)) == "YES"
+    assert intersection((-1, 5), (-1, 5)) == "YES"
+    assert intersection((3, 7), (3, 7)) == "YES"
+
+def test_intersection_intersect_at_six_points():
+    """
+    Test when the two intervals intersect at six points.
+    """
+    assert intersection((1, 6), (1, 6)) == "YES"
+    assert intersection((-1, 6), (-1, 6)) == "YES"
+    assert intersection((3, 8), (3, 8)) == "YES"
+
+def test_intersection_intersect_at_seven_points():
+    """
+    Test when the two intervals intersect at seven points.
+    """
+    assert intersection((1, 7), (1, 7)) == "YES"
+    assert intersection((-1, 7), (-1, 7)) == "YES"
+    assert intersection((3, 9), (3, 9)) == "YES"
+
+def test_intersection_intersect_at_eight_points():
+    """
+    Test when the two intervals intersect at eight points.
+    """
+    assert intersection((1, 8), (1, 8)) == "YES"
+    assert intersection((-1, 8), (-1, 8)) == "YES"
+    assert intersection((3, 10), (3, 10)) == "YES"
+
+def test_intersection_intersect_at_nine_points():
+    """
+    Test when the two intervals intersect at nine points.
+    """
+    assert intersection((1, 9), (1, 9)) == "YES"
+    assert intersection((-1, 9), (-1, 9)) == "YES"
+    assert intersection((3, 11), (3, 11)) == "YES"
+
+def test_intersection_intersect_at_ten_points():
+    """
+coverage:
+100.0
+tests: total=30 passed=18 failed=12
+F....F...                                                                [100%]
+=================================== FAILURES ===================================
+_______________________________ test_empty_list ________________________________
+
+    def test_empty_list():
+        """Test with an empty list"""
+>       assert median([]) == None
+               ^^^^^^^^^^
+
+HumanEval_47_test.py:10: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+l = []
+
+    def median(l: list):
+        """Return median of elements in the list l.
+        >>> median([3, 1, 2, 4, 5])
+        3
+        >>> median([-10, 4, 6, 1000, 10, 20])
+        15.0
+        """
+        l = sorted(l)
+        if len(l) % 2 == 1:
+            return l[len(l) // 2]
+        else:
+>           return (l[len(l) // 2 - 1] + l[len(l) // 2]) / 2.0
+                    ^^^^^^^^^^^^^^^^^^
+E           IndexError: list index out of range
+
+HumanEval_47.py:14: IndexError
+______________________ test_positive_and_negative_numbers ______________________
+
+    def test_positive_and_negative_numbers():
+        """Test with positive and negative numbers"""
+>       assert median([-3, -2, 1, 2, 3]) == 0
+E       assert 1 == 0
+E        +  where 1 = median([-3, -2, 1, 2, 3])
+
+HumanEval_47_test.py:30: AssertionError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_47_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_47_test.py::test_empty_list - IndexError: list index out of ...
+FAILED HumanEval_47_test.py::test_positive_and_negative_numbers - assert 1 == 0
+2 failed, 7 passed in 0.07s
+
+
+Task_ID HumanEval/47:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_47 import median`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+
+def median(l: list):
+    """Return median of elements in the list l.
+    >>> median([3, 1, 2, 4, 5])
+    3
+    >>> median([-10, 4, 6, 1000, 10, 20])
+    15.0
+    """
+    l = sorted(l)
+    if len(l) % 2 == 1:
+        return l[len(l) // 2]
+    else:
+        return (l[len(l) // 2 - 1] + l[len(l) // 2]) / 2.0
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_47 import median
+
+def test_empty_list():
+    """Test with an empty list"""
+    assert median([]) == None
+
+def test_single_element():
+    """Test with a single element"""
+    assert median([5]) == 5
+
+def test_even_length_list():
+    """Test with an even length list"""
+    assert median([1, 2, 3, 4]) == 2.5
+
+def test_odd_length_list():
+    """Test with an odd length list"""
+    assert median([1, 2, 3]) == 2
+
+def test_negative_numbers():
+    """Test with negative numbers"""
+    assert median([-1, -2, -3]) == -2
+
+def test_positive_and_negative_numbers():
+    """Test with positive and negative numbers"""
+    assert median([-3, -2, 1, 2, 3]) == 0
+
+def test_large_numbers():
+    """Test with large numbers"""
+    assert median([1000000, 2000000, 3000000]) == 2000000
+
+def test_duplicates():
+    """Test with duplicate numbers"""
+    assert median([1, 1, 2, 2]) == 1.5
+
+def test_non_integer_numbers():
+    """Test with non-integer numbers"""
+    assert median([1.5, 2.5, 3.5]) == 2.5
+```
+coverage:
+100.0
+tests: total=9 passed=7 failed=2
+..F.F.F.                                                                 [100%]
+=================================== FAILURES ===================================
+________________________ test_exchange_all_odd_numbers _________________________
+
+    def test_exchange_all_odd_numbers():
+        """Test with all odd numbers"""
+>       assert exchange([1, 3, 5, 7], [2, 4, 6, 8]) == 'NO'
+E       AssertionError: assert 'YES' == 'NO'
+E         
+E         - NO
+E         + YES
+
+HumanEval_110_test.py:18: AssertionError
+_______________________ test_exchange_with_large_inputs ________________________
+
+    def test_exchange_with_large_inputs():
+        """Test with large inputs"""
+        lst1 = [i for i in range(1, 10000)]
+        lst2 = [i for i in range(10001, 20000)]
+>       assert exchange(lst1, lst2) == 'YES'
+E       AssertionError: assert 'NO' == 'YES'
+E         
+E         - YES
+E         + NO
+
+HumanEval_110_test.py:28: AssertionError
+_______________ test_exchange_with_positive_and_negative_numbers _______________
+
+    def test_exchange_with_positive_and_negative_numbers():
+        """Test with positive and negative numbers"""
+>       assert exchange([-1, -3, -5, -7], [2, 4, 6, 8]) == 'NO'
+E       AssertionError: assert 'YES' == 'NO'
+E         
+E         - NO
+E         + YES
+
+HumanEval_110_test.py:36: AssertionError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_110_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_110_test.py::test_exchange_all_odd_numbers - AssertionError:...
+FAILED HumanEval_110_test.py::test_exchange_with_large_inputs - AssertionErro...
+FAILED HumanEval_110_test.py::test_exchange_with_positive_and_negative_numbers
+3 failed, 5 passed in 0.08s
+
+
+Task_ID HumanEval/110:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_110 import exchange`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def exchange(lst1, lst2):
+    """In this problem, you will implement a function that takes two lists of numbers,
+    and determines whether it is possible to perform an exchange of elements
+    between them to make lst1 a list of only even numbers.
+    There is no limit on the number of exchanged elements between lst1 and lst2.
+    If it is possible to exchange elements between the lst1 and lst2 to make
+    all the elements of lst1 to be even, return "YES".
+    Otherwise, return "NO".
+    For example:
+    exchange([1, 2, 3, 4], [1, 2, 3, 4]) => "YES"
+    exchange([1, 2, 3, 4], [1, 5, 3, 4]) => "NO"
+    It is assumed that the input lists will be non-empty.
+    """
+    odd = 0
+    even = 0
+    for i in lst1:
+        if i%2 == 1:
+            odd += 1
+    for i in lst2:
+        if i%2 == 0:
+            even += 1
+    if even >= odd:
+        return "YES"
+    return "NO"
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_110 import exchange
+
+def test_exchange_empty_lists():
+    """Test with empty lists"""
+    assert exchange([], []) == "YES"
+
+def test_exchange_all_even_numbers():
+    """Test with all even numbers"""
+    assert exchange([2, 4, 6, 8], [1, 3, 5, 7]) == "YES"
+
+def test_exchange_all_odd_numbers():
+    """Test with all odd numbers"""
+    assert exchange([1, 3, 5, 7], [2, 4, 6, 8]) == "NO"
+
+def test_exchange_mix_of_odd_and_even_numbers():
+    """Test with mix of odd and even numbers"""
+    assert exchange([1, 2, 3, 4], [1, 2, 3, 4]) == "YES"
+
+def test_exchange_with_large_inputs():
+    """Test with large inputs"""
+    lst1 = [i for i in range(1, 10000)]
+    lst2 = [i for i in range(10001, 20000)]
+    assert exchange(lst1, lst2) == "YES"
+
+def test_exchange_with_negative_numbers():
+    """Test with negative numbers"""
+    assert exchange([-2, -4, -6, -8], [-1, -3, -5, -7]) == "YES"
+
+def test_exchange_with_positive_and_negative_numbers():
+    """Test with positive and negative numbers"""
+    assert exchange([-1, -3, -5, -7], [2, 4, 6, 8]) == "NO"
+
+def test_exchange_with_zero():
+    """Test with zero"""
+    assert exchange([0, 2, 4, 6], [1, 3, 5, 7]) == "YES"
+```
+coverage:
+100.0
+tests: total=8 passed=5 failed=3
+................F..                                                      [100%]
+=================================== FAILURES ===================================
+_____________________________ test_compare_one_17 ______________________________
+
+    def test_compare_one_17():
+>       assert compare_one('3.3', 2) == 3.3
+E       AssertionError: assert '3.3' == 3.3
+E        +  where '3.3' = compare_one('3.3', 2)
+
+HumanEval_137_test.py:57: AssertionError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_137_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_137_test.py::test_compare_one_17 - AssertionError: assert '3...
+1 failed, 18 passed in 0.09s
+
+
+Task_ID HumanEval/137:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_137 import compare_one`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def compare_one(a, b):
+    """
+    Create a function that takes integers, floats, or strings representing
+    real numbers, and returns the larger variable in its given variable type.
+    Return None if the values are equal.
+    Note: If a real number is represented as a string, the floating point might be . or ,
+
+    compare_one(1, 2.5) ➞ 2.5
+    compare_one(1, "2,3") ➞ "2,3"
+    compare_one("5,1", "6") ➞ "6"
+    compare_one("1", 1) ➞ None
+    """
+    temp_a, temp_b = a, b
+    if isinstance(temp_a, str): temp_a = temp_a.replace(',','.')
+    if isinstance(temp_b, str): temp_b = temp_b.replace(',','.')
+    if float(temp_a) == float(temp_b): return None
+    return a if float(temp_a) > float(temp_b) else b
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_137 import compare_one
+
+def test_compare_one():
+    # Test with integers
+    assert compare_one(1, 2) == 2
+    assert compare_one(3, 2) == 3
+    assert compare_one(1, 1) == None
+
+    # Test with floats
+    assert compare_one(1.1, 2.2) == 2.2
+    assert compare_one(3.3, 2.2) == 3.3
+    assert compare_one(1.1, 1.1) == None
+
+    # Test with strings representing integers
+    assert compare_one("2", "3") == "3"
+    assert compare_one("3", "2") == "3"
+    assert compare_one("2", "2") == None
+
+    # Test with strings representing floats
+    assert compare_one("2.2", "3.3") == "3.3"
+    assert compare_one("3.3", "2.2") == "3.3"
+    assert compare_one("2.2", "2.2") == None
+
+    # Test with strings representing floats with ',' as decimal separator
+    assert compare_one("2,2", "3,3") == "3,3"
+    assert compare_one("3,3", "2,2") == "3,3"
+    assert compare_one("2,2", "2,2") == None
+
+    # Test with mixed types
+    assert compare_one(1, "2.2") == "2.2"
+    assert compare_one("3.3", 2) == 3.3
+    assert compare_one("2,2", 2) == "2,2"
+    assert compare_one(2, "2,2") == "2,2"
+```
+coverage:
+100.0
+tests: total=19 passed=18 failed=1
+.....F..F                                                                [100%]
+=================================== FAILURES ===================================
+_______________________________ test_large_input _______________________________
+
+    def test_large_input():
+        lst = list(range(-10000, 10000))
+>       assert largest_smallest_integers(lst) == (-9999, 1)
+E       assert (-1, 1) == (-9999, 1)
+E         
+E         At index 0 diff: -1 != -9999
+E         Use -v to get more diff
+
+HumanEval_136_test.py:25: AssertionError
+____________________________ test_large_mixed_input ____________________________
+
+    def test_large_mixed_input():
+        lst = list(range(-10000, 10000))
+>       assert largest_smallest_integers(lst) == (-9999, 1)
+E       assert (-1, 1) == (-9999, 1)
+E         
+E         At index 0 diff: -1 != -9999
+E         Use -v to get more diff
+
+HumanEval_136_test.py:37: AssertionError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_136_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_136_test.py::test_large_input - assert (-1, 1) == (-9999, 1)
+FAILED HumanEval_136_test.py::test_large_mixed_input - assert (-1, 1) == (-99...
+2 failed, 7 passed in 0.16s
+
+
+Task_ID HumanEval/136:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_136 import largest_smallest_integers`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def largest_smallest_integers(lst):
+    '''
+    Create a function that returns a tuple (a, b), where 'a' is
+    the largest of negative integers, and 'b' is the smallest
+    of positive integers in a list.
+    If there is no negative or positive integers, return them as None.
+
+    Examples:
+    largest_smallest_integers([2, 4, 1, 3, 5, 7]) == (None, 1)
+    largest_smallest_integers([]) == (None, None)
+    largest_smallest_integers([0]) == (None, None)
+    '''
+    smallest = list(filter(lambda x: x < 0, lst))
+    largest = list(filter(lambda x: x > 0, lst))
+    return (max(smallest) if smallest else None, min(largest) if largest else None)
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_136 import largest_smallest_integers
+
+def test_empty_list():
+    assert largest_smallest_integers([]) == (None, None)
+
+def test_single_zero():
+    assert largest_smallest_integers([0]) == (None, None)
+
+def test_positive_integers():
+    assert largest_smallest_integers([1, 2, 3, 4, 5]) == (None, 1)
+
+def test_negative_integers():
+    assert largest_smallest_integers([-1, -2, -3, -4, -5]) == (-1, None)
+
+def test_mixed_positive_and_negative_integers():
+    assert largest_smallest_integers([1, -2, 3, -4, 5]) == (-2, 1)
+
+def test_large_input():
+    lst = list(range(-10000, 10000))
+    assert largest_smallest_integers(lst) == (-9999, 1)
+
+def test_large_negative_input():
+    lst = list(range(-10000, 0))
+    assert largest_smallest_integers(lst) == (-1, None)
+
+def test_large_positive_input():
+    lst = list(range(1, 10000))
+    assert largest_smallest_integers(lst) == (None, 1)
+
+def test_large_mixed_input():
+    lst = list(range(-10000, 10000))
+    assert largest_smallest_integers(lst) == (-9999, 1)
+```
+coverage:
+100.0
+tests: total=9 passed=7 failed=2
+...........F.F.....                                                      [100%]
+=================================== FAILURES ===================================
+___________________________ test_cycpattern_check_12 ___________________________
+
+    def test_cycpattern_check_12():
+>       assert cycpattern_check('a', '') == False
+E       AssertionError: assert True == False
+E        +  where True = cycpattern_check('a', '')
+
+HumanEval_154_test.py:42: AssertionError
+___________________________ test_cycpattern_check_14 ___________________________
+
+    def test_cycpattern_check_14():
+>       assert cycpattern_check('', '') == False
+E       AssertionError: assert True == False
+E        +  where True = cycpattern_check('', '')
+
+HumanEval_154_test.py:48: AssertionError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_154_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_154_test.py::test_cycpattern_check_12 - AssertionError: asse...
+FAILED HumanEval_154_test.py::test_cycpattern_check_14 - AssertionError: asse...
+2 failed, 17 passed in 0.10s
+
+
+Task_ID HumanEval/154:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_154 import cycpattern_check`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def cycpattern_check(a , b):
+    """You are given 2 words. You need to return True if the second word or any of its rotations is a substring in the first word
+    cycpattern_check("abcd","abd") => False
+    cycpattern_check("hello","ell") => True
+    cycpattern_check("whassup","psus") => False
+    cycpattern_check("abab","baa") => True
+    cycpattern_check("efef","eeff") => False
+    cycpattern_check("himenss","simen") => True
+
+    """
+    l = len(b)
+    pat = b + b
+    for i in range(len(a) - l + 1):
+        for j in range(l + 1):
+            if a[i:i+l] == pat[j:j+l]:
+                return True
+    return False
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_154 import cycpattern_check
+
+def test_cycpattern_check():
+    assert cycpattern_check("abcd","abd") == False
+    assert cycpattern_check("hello","ell") == True
+    assert cycpattern_check("whassup","psus") == False
+    assert cycpattern_check("abab","baa") == True
+    assert cycpattern_check("efef","eeff") == False
+    assert cycpattern_check("himenss","simen") == True
+
+    # Testing edge cases
+    assert cycpattern_check("a","a") == True
+    assert cycpattern_check("aa","aa") == True
+    assert cycpattern_check("ab","ab") == True
+    assert cycpattern_check("abc","abc") == True
+    assert cycpattern_check("abcd","abcd") == True
+
+    # Testing boundary conditions
+    assert cycpattern_check("a","") == False
+    assert cycpattern_check("","a") == False
+    assert cycpattern_check("","") == False
+
+    # Testing uncovered conditional branches or loop paths
+    assert cycpattern_check("abc","adc") == False
+    assert cycpattern_check("abcd","ae") == False
+    assert cycpattern_check("abc","ae") == False
+
+    # Testing massive inputs
+    assert cycpattern_check("a"*1000000,"a"*500000 + "a"*500000) == True
+    assert cycpattern_check("a"*1000000,"a"*1000000) == True
+```
+coverage:
+100.0
+tests: total=19 passed=17 failed=2
+8)
+
+HumanEval_122_test.py:15: AssertionError
+_____________________________ test_add_elements_4 ______________________________
+
+    def test_add_elements_4():
+>       assert add_elements([100, 2, 3, 4, 5, 6, 7, 8, 9], 1) == 100
+E       assert 0 == 100
+E        +  where 0 = add_elements([100, 2, 3, 4, 5, 6, ...], 1)
+
+HumanEval_122_test.py:18: AssertionError
+_____________________________ test_add_elements_10 _____________________________
+
+    def test_add_elements_10():
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+HumanEval_122_test.py:36: Failed
+_____________________________ test_add_elements_11 _____________________________
+
+    def test_add_elements_11():
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+HumanEval_122_test.py:40: Failed
+_____________________________ test_add_elements_12 _____________________________
+
+    def test_add_elements_12():
+        arr = [i for i in range(1, 101)]
+>       assert add_elements(arr, 100) == 5050
+E       assert 4950 == 5050
+E        +  where 4950 = add_elements([1, 2, 3, 4, 5, 6, ...], 100)
+
+HumanEval_122_test.py:45: AssertionError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_122_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_122_test.py::test_add_elements_3 - assert 360 == 280
+FAILED HumanEval_122_test.py::test_add_elements_4 - assert 0 == 100
+FAILED HumanEval_122_test.py::test_add_elements_10 - Failed: DID NOT RAISE <c...
+FAILED HumanEval_122_test.py::test_add_elements_11 - Failed: DID NOT RAISE <c...
+FAILED HumanEval_122_test.py::test_add_elements_12 - assert 4950 == 5050
+5 failed, 7 passed in 0.09s
+
+
+Task_ID HumanEval/122:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_122 import add_elements`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def add_elements(arr, k):
+    """
+    Given a non-empty array of integers arr and an integer k, return
+    the sum of the elements with at most two digits from the first k elements of arr.
+
+    Example:
+
+        Input: arr = [111,21,3,4000,5,6,7,8,9], k = 4
+        Output: 24 # sum of 21 + 3
+
+    Constraints:
+        1. 1 <= len(arr) <= 100
+        2. 1 <= k <= len(arr)
+    """
+    return sum(elem for elem in arr[:k] if len(str(elem)) <= 2)
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_122 import add_elements
+
+def test_add_elements():
+    # Test with valid inputs
+    assert add_elements([111,21,3,4000,5,6,7,8,9], 4) == 24
+    assert add_elements([1,2,3,4,5,6,7,8,9], 5) == 15
+    assert add_elements([10,20,30,40,50,60,70,80,90], 8) == 280
+
+    # Test with edge cases
+    assert add_elements([100,2,3,4,5,6,7,8,9], 1) == 100
+    assert add_elements([1,2,3,4,5,6,7,8,9], 9) == 45
+
+    # Test with boundary conditions
+    assert add_elements([1,2,3,4,5,6,7,8,9], 10) == 45
+    assert add_elements([1,2,3,4,5,6,7,8,9], 1) == 1
+
+    # Test with uncovered conditional branches or loop paths
+    assert add_elements([111,21,3,4000,5,6,7,8,9], 2) == 21
+    assert add_elements([1,2,3,4,5,6,7,8,9], 3) == 6
+
+    # Test with invalid inputs
+    with pytest.raises(ValueError):
+        add_elements([1,2,3,4,5,6,7,8,9], 0)
+    with pytest.raises(ValueError):
+        add_elements([1,2,3,4,5,6,7,8,9], 101)
+
+    # Test with massive inputs
+    arr = [i for i in range(1, 101)]
+    assert add_elements(arr, 100) == 5050
+```
+coverage:
+100.0
+tests: total=12 passed=7 failed=5
+....F..F                                                                 [100%]
+=================================== FAILURES ===================================
+__________________________ test_make_a_pile_negative ___________________________
+
+    def test_make_a_pile_negative():
+        """
+        Testing with negative integer
+        """
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+HumanEval_100_test.py:36: Failed
+_______________________ test_make_a_pile_large_integer_2 _______________________
+
+    def test_make_a_pile_large_integer_2():
+        """
+        Testing with large integer
+        """
+        result = make_a_pile(10000)
+>       assert result[-1] == 20000
+E       assert 29998 == 20000
+
+HumanEval_100_test.py:58: AssertionError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_100_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_100_test.py::test_make_a_pile_negative - Failed: DID NOT RAI...
+FAILED HumanEval_100_test.py::test_make_a_pile_large_integer_2 - assert 29998...
+2 failed, 6 passed in 0.07s
+
+
+Task_ID HumanEval/100:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_100 import make_a_pile`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def make_a_pile(n):
+    """
+    Given a positive integer n, you have to make a pile of n levels of stones.
+    The first level has n stones.
+    The number of stones in the next level is:
+        - the next odd number if n is odd.
+        - the next even number if n is even.
+    Return the number of stones in each level in a list, where element at index
+    i represents the number of stones in the level (i+1).
+
+    Examples:
+    >>> make_a_pile(3)
+    [3, 5, 7]
+    """
+    return [n + 2*i for i in range(n)]
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_100 import make_a_pile
+
+def test_make_a_pile_positive_integer():
+    """
+    Testing with positive integer
+    """
+    assert make_a_pile(5) == [5, 7, 9, 11, 13]
+    assert make_a_pile(1) == [1]
+    assert make_a_pile(10) == [10, 12, 14, 16, 18, 20, 22, 24, 26, 28]
+
+def test_make_a_pile_zero():
+    """
+    Testing with zero
+    """
+    assert make_a_pile(0) == []
+
+def test_make_a_pile_negative():
+    """
+    Testing with negative integer
+    """
+    with pytest.raises(ValueError):
+        make_a_pile(-5)
+
+def test_make_a_pile_non_integer():
+    """
+    Testing with non-integer
+    """
+    with pytest.raises(TypeError):
+        make_a_pile('5')
+
+def test_make_a_pile_large_integer():
+    """
+    Testing with large integer
+    """
+    result = make_a_pile(10000)
+    assert len(result) == 10000
+    assert result[-1] == 20000
+```
+coverage:
+100.0
+tests: total=8 passed=6 failed=2
+....FFF..                                                                [100%]
+=================================== FAILURES ===================================
+_________________________ test_close_elements_at_start _________________________
+
+    def test_close_elements_at_start():
+        """
+        Test with close elements at the start
+        """
+>       assert has_close_elements([0.2, 1.0, 2.0, 3.0], 0.5)
+E       assert False
+E        +  where False = has_close_elements([0.2, 1.0, 2.0, 3.0], 0.5)
+
+HumanEval_0_test.py:36: AssertionError
+__________________________ test_close_elements_at_end __________________________
+
+    def test_close_elements_at_end():
+        """
+        Test with close elements at the end
+        """
+>       assert has_close_elements([1.0, 2.0, 3.0, 4.0, 5.0], 0.5)
+E       assert False
+E        +  where False = has_close_elements([1.0, 2.0, 3.0, 4.0, 5.0], 0.5)
+
+HumanEval_0_test.py:42: AssertionError
+________________________ test_close_elements_in_middle _________________________
+
+    def test_close_elements_in_middle():
+        """
+        Test with close elements in the middle
+        """
+>       assert has_close_elements([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], 0.5)
+E       assert False
+E        +  where False = has_close_elements([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], 0.5)
+
+HumanEval_0_test.py:48: AssertionError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_0_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_0_test.py::test_close_elements_at_start - assert False
+FAILED HumanEval_0_test.py::test_close_elements_at_end - assert False
+FAILED HumanEval_0_test.py::test_close_elements_in_middle - assert False
+3 failed, 6 passed in 0.07s
+
+
+Task_ID HumanEval/0:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_0 import has_close_elements`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+from typing import List
+
+
+def has_close_elements(numbers: List[float], threshold: float) -> bool:
+    """ Check if in given list of numbers, are any two numbers closer to each other than
+    given threshold.
+    >>> has_close_elements([1.0, 2.0, 3.0], 0.5)
+    False
+    >>> has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)
+    True
+    """
+    for idx, elem in enumerate(numbers):
+        for idx2, elem2 in enumerate(numbers):
+            if idx != idx2:
+                distance = abs(elem - elem2)
+                if distance < threshold:
+                    return True
+
+    return False
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_0 import has_close_elements
+
+def test_empty_list():
+    """
+    Test with an empty list
+    """
+    assert not has_close_elements([], 0.5)
+
+def test_single_element():
+    """
+    Test with a single element
+    """
+    assert not has_close_elements([1.0], 0.5)
+
+def test_no_close_elements():
+    """
+    Test with no close elements
+    """
+    assert not has_close_elements([1.0, 2.0, 3.0], 0.5)
+
+def test_close_elements():
+    """
+    Test with close elements
+    """
+    assert has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)
+
+def test_close_elements_at_start():
+    """
+    Test with close elements at the start
+    """
+    assert has_close_elements([0.2, 1.0, 2.0, 3.0], 0.5)
+
+def test_close_elements_at_end():
+    """
+    Test with close elements at the end
+    """
+    assert has_close_elements([1.0, 2.0, 3.0, 4.0, 5.0], 0.5)
+
+def test_close_elements_in_middle():
+    """
+    Test with close elements in the middle
+    """
+    assert has_close_elements([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], 0.5)
+
+def test_negative_threshold():
+    """
+    Test with negative threshold
+    """
+    assert not has_close_elements([1.0, 2.0, 3.0], -0.5)
+
+def test_zero_threshold():
+    """
+    Test with zero threshold
+    """
+    assert not has_close_elements([1.0, 2.0, 3.0], 0)
+```
+coverage:
+100.0
+tests: total=9 passed=6 failed=3
+rge_inputs():
+        """
+        Testing large inputs for find_zero function.
+        """
+        with pytest.raises(RecursionError):
+>           find_zero([1] * 1000000)
+
+HumanEval_32_test.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+HumanEval_32.py:30: in find_zero
+    if poly(xs, center) * poly(xs, begin) > 0:
+                          ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+xs = [1, 1, 1, 1, 1, 1, ...], x = -1.0
+
+    def poly(xs: list, x: float):
+        """
+        Evaluates polynomial with coefficients xs at point x.
+        return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n
+        """
+>       return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])
+                            ^^^^^^^^^^^^^^
+E       Failed: Timeout (>10.0s) from pytest-timeout.
+
+HumanEval_32.py:9: Failed
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_32_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_32_test.py::test_poly_edge_cases_3 - assert 15.0 == 6
+FAILED HumanEval_32_test.py::test_poly_boundary_conditions_1 - assert 6.0 == 4
+FAILED HumanEval_32_test.py::test_poly_boundary_conditions_3 - assert 129.0 =...
+FAILED HumanEval_32_test.py::test_find_zero_boundary_conditions_1 - assert -1...
+FAILED HumanEval_32_test.py::test_find_zero_boundary_conditions_2 - assert 1....
+FAILED HumanEval_32_test.py::test_find_zero_uncovered_branches_1 - OverflowEr...
+FAILED HumanEval_32_test.py::test_find_zero_uncovered_branches_2 - OverflowEr...
+FAILED HumanEval_32_test.py::test_find_zero_invalid_inputs - Failed: DID NOT ...
+FAILED HumanEval_32_test.py::test_find_zero_large_inputs - Failed: Timeout (>...
+9 failed, 5 passed in 10.13s
+
+
+Task_ID HumanEval/32:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_32 import find_zero`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+import math
+
+
+def poly(xs: list, x: float):
+    """
+    Evaluates polynomial with coefficients xs at point x.
+    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n
+    """
+    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])
+
+
+def find_zero(xs: list):
+    """ xs are coefficients of a polynomial.
+    find_zero find x such that poly(x) = 0.
+    find_zero returns only only zero point, even if there are many.
+    Moreover, find_zero only takes list xs having even number of coefficients
+    and largest non zero coefficient as it guarantees
+    a solution.
+    >>> round(find_zero([1, 2]), 2) # f(x) = 1 + 2x
+    -0.5
+    >>> round(find_zero([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3
+    1.0
+    """
+    begin, end = -1., 1.
+    while poly(xs, begin) * poly(xs, end) > 0:
+        begin *= 2.0
+        end *= 2.0
+    while end - begin > 1e-10:
+        center = (begin + end) / 2.0
+        if poly(xs, center) * poly(xs, begin) > 0:
+            begin = center
+        else:
+            end = center
+    return begin
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_32 import find_zero
+
+def test_poly_edge_cases():
+    """
+    Testing edge cases for poly function.
+    """
+    assert poly([1, 2, 3], 0) == 1
+    assert poly([0, 0, 0], 1) == 0
+    assert poly([1, 2, 3, 4, 5], 1) == 6
+
+def test_poly_boundary_conditions():
+    """
+    Testing boundary conditions for poly function.
+    """
+    assert poly([1, 2, 3], 1) == 4
+    assert poly([1, 2, 3, 4, 5], 0) == 1
+    assert poly([1, 2, 3, 4, 5], 2) == 11
+
+def test_find_zero_edge_cases():
+    """
+    Testing edge cases for find_zero function.
+    """
+    assert round(find_zero([1, 2]), 2) == -0.5
+    assert round(find_zero([-6, 11, -6, 1]), 2) == 1.0
+
+def test_find_zero_boundary_conditions():
+    """
+    Testing boundary conditions for find_zero function.
+    """
+    assert round(find_zero([1, 0, -1]), 2) == 0.0
+    assert round(find_zero([1, 0, 0, -1]), 2) == 0.0
+
+def test_find_zero_uncovered_branches():
+    """
+    Testing uncovered branches for find_zero function.
+    """
+    assert round(find_zero([1, 1, 1]), 2) == -1.0
+    assert round(find_zero([1, 2, 3, 4, 5]), 2) == -0.64
+
+def test_find_zero_invalid_inputs():
+    """
+    Testing invalid inputs for find_zero function.
+    """
+    with pytest.raises(ZeroDivisionError):
+        find_zero([0, 0, 0])
+
+def test_find_zero_large_inputs():
+    """
+    Testing large inputs for find_zero function.
+    """
+    with pytest.raises(RecursionError):
+        find_zero([1] * 1000000)
+```
+coverage:
+100.0
+tests: total=14 passed=5 failed=9
+..F....                                                                  [100%]
+=================================== FAILURES ===================================
+____________________________ test_multiple_boredoms ____________________________
+
+    def test_multiple_boredoms():
+        """
+        Test the function with a string that contains multiple boredoms.
+        """
+>       assert is_bored('I am bored. I hate this weather. I want to go home.') == 2
+E       AssertionError: assert 3 == 2
+E        +  where 3 = is_bored('I am bored. I hate this weather. I want to go home.')
+
+HumanEval_91_test.py:24: AssertionError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_91_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_91_test.py::test_multiple_boredoms - AssertionError: assert ...
+1 failed, 6 passed in 0.06s
+
+
+Task_ID HumanEval/91:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_91 import is_bored`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def is_bored(S):
+    """
+    You'll be given a string of words, and your task is to count the number
+    of boredoms. A boredom is a sentence that starts with the word "I".
+    Sentences are delimited by '.', '?' or '!'.
+   
+    For example:
+    >>> is_bored("Hello world")
+    0
+    >>> is_bored("The sky is blue. The sun is shining. I love this weather")
+    1
+    """
+    import re
+    sentences = re.split(r'[.?!]\s*', S)
+    return sum(sentence[0:2] == 'I ' for sentence in sentences)
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_91 import is_bored
+
+def test_no_boredoms():
+    """
+    Test the function with a string that does not contain any boredoms.
+    """
+    assert is_bored("Hello world") == 0
+
+def test_one_boredom():
+    """
+    Test the function with a string that contains one boredom.
+    """
+    assert is_bored("The sky is blue. The sun is shining. I love this weather") == 1
+
+def test_multiple_boredoms():
+    """
+    Test the function with a string that contains multiple boredoms.
+    """
+    assert is_bored("I am bored. I hate this weather. I want to go home.") == 2
+
+def test_no_sentences():
+    """
+    Test the function with an empty string.
+    """
+    assert is_bored("") == 0
+
+def test_no_capital_i():
+    """
+    Test the function with a sentence that does not start with 'I'.
+    """
+    assert is_bored("The sky is blue. The sun is shining. love this weather") == 0
+
+def test_no_period():
+    """
+    Test the function with a sentence that does not end with a period.
+    """
+    assert is_bored("I am bored. I hate this weather I want to go home") == 2
+
+def test_no_boredoms_with_capital_i():
+    """
+    Test the function with a string that does not contain any boredoms but starts with 'I'.
+    """
+    assert is_bored("I am bored. The sun is shining. love this weather") == 1
+```
+coverage:
+100.0
+tests: total=7 passed=6 failed=1
+.......                                                                  [100%]
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_68_test_crafted.json
+7 passed in 0.06s
+
+
+Task_ID HumanEval/68:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_68 import pluck`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def pluck(arr):
+    """
+    "Given an array representing a branch of a tree that has non-negative integer nodes
+    your task is to pluck one of the nodes and return it.
+    The plucked node should be the node with the smallest even value.
+    If multiple nodes with the same smallest even value are found return the node that has smallest index.
+
+    The plucked node should be returned in a list, [ smalest_value, its index ],
+    If there are no even values or the given array is empty, return [].
+
+    Example 1:
+        Input: [4,2,3]
+        Output: [2, 1]
+        Explanation: 2 has the smallest even value, and 2 has the smallest index.
+
+    Example 2:
+        Input: [1,2,3]
+        Output: [2, 1]
+        Explanation: 2 has the smallest even value, and 2 has the smallest index. 
+
+    Example 3:
+        Input: []
+        Output: []
+    
+    Example 4:
+        Input: [5, 0, 3, 0, 4, 2]
+        Output: [0, 1]
+        Explanation: 0 is the smallest value, but  there are two zeros,
+                     so we will choose the first zero, which has the smallest index.
+
+    Constraints:
+        * 1 <= nodes.length <= 10000
+        * 0 <= node.value
+    """
+    if(len(arr) == 0): return []
+    evens = list(filter(lambda x: x%2 == 0, arr))
+    if(evens == []): return []
+    return [min(evens), arr.index(min(evens))]
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_68 import pluck
+
+def test_empty_array():
+    """
+    Test the function with an empty array.
+    """
+    assert pluck([]) == []
+
+def test_no_even_numbers():
+    """
+    Test the function with an array that contains no even numbers.
+    """
+    assert pluck([1, 3, 5, 7, 9]) == []
+
+def test_single_even_number():
+    """
+    Test the function with an array that contains a single even number.
+    """
+    assert pluck([2]) == [2, 0]
+
+def test_multiple_even_numbers():
+    """
+    Test the function with an array that contains multiple even numbers.
+    """
+    assert pluck([2, 4, 6, 8, 10]) == [2, 0]
+
+def test_smallest_even_number_at_different_positions():
+    """
+    Test the function with an array that contains multiple even numbers and the smallest even number is at different positions.
+    """
+    assert pluck([3, 2, 5, 4, 7, 6, 9, 8, 10]) == [2, 1]
+
+def test_multiple_smallest_even_numbers():
+    """
+    Test the function with an array that contains multiple smallest even numbers.
+    """
+    assert pluck([2, 2, 2, 2, 2, 2, 2, 2, 2]) == [2, 0]
+
+def test_large_input():
+    """
+    Test the function with a large input array.
+    """
+    arr = list(range(10000))
+    assert pluck(arr) == [0, 0]
+```
+coverage:
+100.0
+tests: total=7 passed=7 failed=0
+......                                                                   [100%]
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_67_test_crafted.json
+6 passed in 0.05s
+
+
+Task_ID HumanEval/67:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_67 import fruit_distribution`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def fruit_distribution(s,n):
+    """
+    In this task, you will be given a string that represents a number of apples and oranges 
+    that are distributed in a basket of fruit this basket contains 
+    apples, oranges, and mango fruits. Given the string that represents the total number of 
+    the oranges and apples and an integer that represent the total number of the fruits 
+    in the basket return the number of the mango fruits in the basket.
+    for examble:
+    fruit_distribution("5 apples and 6 oranges", 19) ->19 - 5 - 6 = 8
+    fruit_distribution("0 apples and 1 oranges",3) -> 3 - 0 - 1 = 2
+    fruit_distribution("2 apples and 3 oranges", 100) -> 100 - 2 - 3 = 95
+    fruit_distribution("100 apples and 1 oranges",120) -> 120 - 100 - 1 = 19
+    """
+    lis = list()
+    for i in s.split(' '):
+        if i.isdigit():
+            lis.append(int(i))
+    return n - sum(lis)
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_67 import fruit_distribution
+
+def test_fruit_distribution():
+    # Test with valid inputs
+    assert fruit_distribution("5 apples and 6 oranges", 19) == 8
+    assert fruit_distribution("0 apples and 1 oranges",3) == 2
+    assert fruit_distribution("2 apples and 3 oranges", 100) == 95
+    assert fruit_distribution("100 apples and 1 oranges",120) == 19
+
+    # Test with edge cases
+    assert fruit_distribution("0 apples and 0 oranges", 0) == 0
+    assert fruit_distribution("0 apples and 0 oranges", 10) == 10
+
+    # Test with boundary conditions
+    assert fruit_distribution("100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+coverage:
+100.0
+tests: total=6 passed=6 failed=0
+________________ test_large_numbers ______________________________
+
+    def test_large_numbers():
+        """Testing with large numbers"""
+>       assert solution([1000000000, 8, 7, 1]) == 1000000000
+E       assert 7 == 1000000000
+E        +  where 7 = solution([1000000000, 8, 7, 1])
+
+HumanEval_121_test.py:31: AssertionError
+__________________________________ test_zero ___________________________________
+
+    def test_zero():
+        """Testing with zero"""
+>       assert solution([0, 8, 7, 1]) == 8
+E       assert 7 == 8
+E        +  where 7 = solution([0, 8, 7, 1])
+
+HumanEval_121_test.py:35: AssertionError
+_______________________________ test_one_element _______________________________
+
+    def test_one_element():
+        """Testing with one element"""
+>       assert solution([5]) == 0
+E       assert 5 == 0
+E        +  where 5 = solution([5])
+
+HumanEval_121_test.py:39: AssertionError
+_____________________________ test_all_odd_numbers _____________________________
+
+    def test_all_odd_numbers():
+        """Testing with all odd numbers"""
+>       assert solution([1, 3, 5, 7, 9]) == 0
+E       assert 15 == 0
+E        +  where 15 = solution([1, 3, 5, 7, 9])
+
+HumanEval_121_test.py:47: AssertionError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_121_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_121_test.py::test_empty_list - Failed: DID NOT RAISE <class ...
+FAILED HumanEval_121_test.py::test_negative_numbers - assert -12 == 0
+FAILED HumanEval_121_test.py::test_large_numbers - assert 7 == 1000000000
+FAILED HumanEval_121_test.py::test_zero - assert 7 == 8
+FAILED HumanEval_121_test.py::test_one_element - assert 5 == 0
+FAILED HumanEval_121_test.py::test_all_odd_numbers - assert 15 == 0
+6 failed, 4 passed in 0.08s
+
+
+Task_ID HumanEval/121:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_121 import solution`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def solution(lst):
+    """Given a non-empty list of integers, return the sum of all of the odd elements that are in even positions.
+    
+
+    Examples
+    solution([5, 8, 7, 1]) ==> 12
+    solution([3, 3, 3, 3, 3]) ==> 9
+    solution([30, 13, 24, 321]) ==>0
+    """
+    return sum([x for idx, x in enumerate(lst) if idx%2==0 and x%2==1])
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_121 import solution
+
+def test_odd_sum_in_even_positions():
+    """Testing the sum of odd numbers in even positions"""
+    assert solution([5, 8, 7, 1]) == 12
+    assert solution([3, 3, 3, 3, 3]) == 9
+    assert solution([30, 13, 24, 321]) == 0
+
+def test_empty_list():
+    """Testing with an empty list"""
+    with pytest.raises(IndexError):
+        solution([])
+
+def test_negative_numbers():
+    """Testing with negative numbers"""
+    assert solution([-5, 8, -7, 1]) == 0
+
+def test_large_numbers():
+    """Testing with large numbers"""
+    assert solution([1000000000, 8, 7, 1]) == 1000000000
+
+def test_zero():
+    """Testing with zero"""
+    assert solution([0, 8, 7, 1]) == 8
+
+def test_one_element():
+    """Testing with one element"""
+    assert solution([5]) == 0
+
+def test_all_even_numbers():
+    """Testing with all even numbers"""
+    assert solution([2, 4, 6, 8, 10]) == 0
+
+def test_all_odd_numbers():
+    """Testing with all odd numbers"""
+    assert solution([1, 3, 5, 7, 9]) == 0
+```
+coverage:
+100.0
+tests: total=10 passed=4 failed=6
+.F.F..F........                                                          [100%]
+=================================== FAILURES ===================================
+______________________________ test_valid_date_2 _______________________________
+
+    def test_valid_date_2():
+        """Test valid dates"""
+>       assert valid_date('12-31-2020') == True
+E       AssertionError: assert False == True
+E        +  where False = valid_date('12-31-2020')
+
+HumanEval_124_test.py:14: AssertionError
+_____________________________ test_invalid_date_1 ______________________________
+
+    def test_invalid_date_1():
+        """Test invalid dates"""
+>       assert valid_date('03-11-2000') == False
+E       AssertionError: assert True == False
+E        +  where True = valid_date('03-11-2000')
+
+HumanEval_124_test.py:22: AssertionError
+_____________________________ test_invalid_date_4 ______________________________
+
+    def test_invalid_date_4():
+        """Test invalid dates"""
+>       assert valid_date('06-04-2020') == False
+E       AssertionError: assert True == False
+E        +  where True = valid_date('06-04-2020')
+
+HumanEval_124_test.py:34: AssertionError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_124_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_124_test.py::test_valid_date_2 - AssertionError: assert Fals...
+FAILED HumanEval_124_test.py::test_invalid_date_1 - AssertionError: assert Tr...
+FAILED HumanEval_124_test.py::test_invalid_date_4 - AssertionError: assert Tr...
+3 failed, 12 passed in 0.08s
+
+
+Task_ID HumanEval/124:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_124 import valid_date`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def valid_date(date):
+    """You have to write a function which validates a given date string and
+    returns True if the date is valid otherwise False.
+    The date is valid if all of the following rules are satisfied:
+    1. The date string is not empty.
+    2. The number of days is not less than 1 or higher than 31 days for months 1,3,5,7,8,10,12. And the number of days is not less than 1 or higher than 30 days for months 4,6,9,11. And, the number of days is not less than 1 or higher than 29 for the month 2.
+    3. The months should not be less than 1 or higher than 12.
+    4. The date should be in the format: mm-dd-yyyy
+
+    for example: 
+    valid_date('03-11-2000') => True
+
+    valid_date('15-01-2012') => False
+
+    valid_date('04-0-2040') => False
+
+    valid_date('06-04-2020') => True
+
+    valid_date('06/04/2020') => False
+    """
+    try:
+        date = date.strip()
+        month, day, year = date.split('-')
+        month, day, year = int(month), int(day), int(year)
+        if month < 1 or month > 12:
+            return False
+        if month in [1,3,5,7,8,10,12] and day < 1 or day > 31:
+            return False
+        if month in [4,6,9,11] and day < 1 or day > 30:
+            return False
+        if month == 2 and day < 1 or day > 29:
+            return False
+    except:
+        return False
+
+    return True
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_124 import valid_date
+
+def test_valid_date():
+    """Test valid dates"""
+    assert valid_date('01-01-2000') == True
+    assert valid_date('12-31-2020') == True
+    assert valid_date('02-29-2020') == True
+
+def test_invalid_date():
+    """Test invalid dates"""
+    assert valid_date('03-11-2000') == False
+    assert valid_date('15-01-2012') == False
+    assert valid_date('04-0-2040') == False
+    assert valid_date('06-04-2020') == False
+
+def test_invalid_format():
+    """Test dates in invalid format"""
+    assert valid_date('06/04/2020') == False
+
+def test_invalid_month():
+    """Test invalid month"""
+    assert valid_date('13-01-2000') == False
+    assert valid_date('00-01-2000') == False
+
+def test_invalid_day():
+    """Test invalid day"""
+    assert valid_date('01-32-2000') == False
+    assert valid_date('01-00-2000') == False
+
+def test_leap_year():
+    """Test leap year"""
+    assert valid_date('02-29-2020') == True
+    assert valid_date('02-30-2020') == False
+
+def test_empty_string():
+    """Test empty string"""
+    assert valid_date('') == False
+```
+coverage:
+100.0
+tests: total=15 passed=12 failed=3
+...F.F.                                                                  [100%]
+=================================== FAILURES ===================================
+_________________________ test_duplicate_elements_list _________________________
+
+    def test_duplicate_elements_list():
+        """Test with a list containing duplicate elements"""
+>       assert sorted_list_sum(['aa', 'aa', 'aaa', 'aa']) == ['aa', 'aaa']
+E       AssertionError: assert ['aa', 'aa', 'aa'] == ['aa', 'aaa']
+E         
+E         At index 1 diff: 'aa' != 'aaa'
+E         Left contains one more item: 'aa'
+E         Use -v to get more diff
+
+HumanEval_149_test.py:22: AssertionError
+_______________________ test_mixed_length_elements_list ________________________
+
+    def test_mixed_length_elements_list():
+        """Test with a list containing elements with mixed length"""
+>       assert sorted_list_sum(['ab', 'a', 'aaa', 'cd', 'abc', 'b']) == ['ab', 'cd', 'b', 'abc']
+E       AssertionError: assert ['ab', 'cd'] == ['ab', 'cd', 'b', 'abc']
+E         
+E         Right contains 2 more items, first extra item: 'b'
+E         Use -v to get more diff
+
+HumanEval_149_test.py:30: AssertionError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_149_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_149_test.py::test_duplicate_elements_list - AssertionError: ...
+FAILED HumanEval_149_test.py::test_mixed_length_elements_list - AssertionErro...
+2 failed, 5 passed in 0.06s
+
+
+Task_ID HumanEval/149:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_149 import sorted_list_sum`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def sorted_list_sum(lst):
+    """Write a function that accepts a list of strings as a parameter,
+    deletes the strings that have odd lengths from it,
+    and returns the resulted list with a sorted order,
+    The list is always a list of strings and never an array of numbers,
+    and it may contain duplicates.
+    The order of the list should be ascending by length of each word, and you
+    should return the list sorted by that rule.
+    If two words have the same length, sort the list alphabetically.
+    The function should return a list of strings in sorted order.
+    You may assume that all words will have the same length.
+    For example:
+    assert list_sort(["aa", "a", "aaa"]) => ["aa"]
+    assert list_sort(["ab", "a", "aaa", "cd"]) => ["ab", "cd"]
+    """
+    lst.sort()
+    new_lst = []
+    for i in lst:
+        if len(i)%2 == 0:
+            new_lst.append(i)
+    return sorted(new_lst, key=len)
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_149 import sorted_list_sum
+
+def test_empty_list():
+    """Test with an empty list"""
+    assert sorted_list_sum([]) == []
+
+def test_single_element_list():
+    """Test with a list containing a single element"""
+    assert sorted_list_sum(["aa"]) == ["aa"]
+
+def test_multiple_elements_list():
+    """Test with a list containing multiple elements"""
+    assert sorted_list_sum(["ab", "a", "aaa", "cd"]) == ["ab", "cd"]
+
+def test_duplicate_elements_list():
+    """Test with a list containing duplicate elements"""
+    assert sorted_list_sum(["aa", "aa", "aaa", "aa"]) == ["aa", "aaa"]
+
+def test_uneven_length_elements_list():
+    """Test with a list containing elements with uneven length"""
+    assert sorted_list_sum(["aa", "a", "aaa"]) == ["aa"]
+
+def test_mixed_length_elements_list():
+    """Test with a list containing elements with mixed length"""
+    assert sorted_list_sum(["ab", "a", "aaa", "cd", "abc", "b"]) == ["ab", "cd", "b", "abc"]
+
+def test_sort_by_length_and_alphabetically():
+    """Test with a list containing elements with same length"""
+    assert sorted_list_sum(["ab", "cd", "ef", "gh"]) == ["ab", "cd", "ef", "gh"]
+```
+coverage:
+100.0
+tests: total=7 passed=5 failed=2
+.....                                                                    [100%]
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_160_test_crafted.json
+5 passed in 0.04s
+
+
+Task_ID HumanEval/160:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_160 import do_algebra`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def do_algebra(operator, operand):
+    """
+    Given two lists operator, and operand. The first list has basic algebra operations, and 
+    the second list is a list of integers. Use the two given lists to build the algebric 
+    expression and return the evaluation of this expression.
+
+    The basic algebra operations:
+    Addition ( + ) 
+    Subtraction ( - ) 
+    Multiplication ( * ) 
+    Floor division ( // ) 
+    Exponentiation ( ** ) 
+
+    Example:
+    operator['+', '*', '-']
+    array = [2, 3, 4, 5]
+    result = 2 + 3 * 4 - 5
+    => result = 9
+
+    Note:
+        The length of operator list is equal to the length of operand list minus one.
+        Operand is a list of of non-negative integers.
+        Operator list has at least one operator, and operand list has at least two operands.
+
+    """
+    expression = str(operand[0])
+    for oprt, oprn in zip(operator, operand[1:]):
+        expression+= oprt + str(oprn)
+    return eval(expression)
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_160 import do_algebra
+
+def test_do_algebra_addition():
+    """
+    Test the addition operation.
+    """
+    operator = ['+']
+    operand = [2, 3]
+    assert do_algebra(operator, operand) == 5
+
+def test_do_algebra_subtraction():
+    """
+    Test the subtraction operation.
+    """
+    operator = ['-']
+    operand = [5, 3]
+    assert do_algebra(operator, operand) == 2
+
+def test_do_algebra_multiplication():
+    """
+    Test the multiplication operation.
+    """
+    operator = ['*']
+    operand = [2, 3]
+    assert do_algebra(operator, operand) == 6
+
+def test_do_algebra_floor_division():
+    """
+    Test the floor division operation.
+    """
+    operator = ['//']
+    operand = [10, 3]
+    assert do_algebra(operator, operand) == 3
+
+def test_do_algebra_exponentiation():
+    """
+    Test the exponentiation operation.
+    """
+    operator = ['**']
+    operand = [2, 3]
+    assert do do_algebra(operator, operand) == 8
+
+def test_do_algebra_multiple_operations():
+    """
+    Test multiple operations in a single expression.
+    """
+    operator = ['+', '-', '*', '//', '**']
+    operand = [2, 3, 4, 5, 6]
+    assert do_algebra(operator, operand) == 120
+
+def test_do_algebra_large_numbers():
+    """
+    Test with large numbers.
+    """
+    operator = ['+', '*']
+    operand = [123456789, 987654321, 123456]
+    assert do_algebra(operator, operand) == 1111111110
+
+def test_do_algebra_negative_numbers():
+    """
+    Test with negative numbers.
+    """
+    operator = ['-']
+    operand = [5, 3]
+    assert do_algebra(operator, operand) == 2
+
+def test_do_algebra_zero_operand():
+    """
+    Test with zero operand.
+    """
+    operator = ['*']
+    operand = [2, 0]
+    assert do_algebra(operator, operand) == 0
+```
+coverage:
+100.0
+tests: total=5 passed=5 failed=0
+......                                                                   [100%]
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_74_test_crafted.json
+6 passed in 0.05s
+
+
+Task_ID HumanEval/74:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_74 import total_match`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+def total_match(lst1, lst2):
+    '''
+    Write a function that accepts two lists of strings and returns the list that has 
+    total number of chars in the all strings of the list less than the other list.
+
+    if the two lists have the same number of chars, return the first list.
+
+    Examples
+    total_match([], []) ➞ []
+    total_match(['hi', 'admin'], ['hI', 'Hi']) ➞ ['hI', 'Hi']
+    total_match(['hi', 'admin'], ['hi', 'hi', 'admin', 'project']) ➞ ['hi', 'admin']
+    total_match(['hi', 'admin'], ['hI', 'hi', 'hi']) ➞ ['hI', 'hi', 'hi']
+    total_match(['4'], ['1', '2', '3', '4', '5']) ➞ ['4']
+    '''
+    l1 = 0
+    for st in lst1:
+        l1 += len(st)
+    
+    l2 = 0
+    for st in lst2:
+        l2 += len(st)
+    
+    if l1 <= l2:
+        return lst1
+    else:
+        return lst2
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_74 import total_match
+
+def test_empty_lists():
+    assert total_match([], []) == []
+
+def test_first_list_shorter():
+    assert total_match(['hi', 'admin'], ['hI', 'Hi']) == ['hI', 'Hi']
+
+def test_lists_same_length():
+    assert total_match(['hi', 'admin'], ['hi', 'hi', 'admin', 'project']) == ['hi', 'admin']
+
+def test_second_list_shorter():
+    assert total_match(['hi', 'admin'], ['hI', 'hi', 'hi']) == ['hI', 'hi', 'hi']
+
+def test_single_string_lists():
+    assert total_match(['4'], ['1', '2', '3', '4', '5']) == ['4']
+
+def test_large_lists():
+    lst1 = ['a'*i for i in range(1, 1000)]
+    lst2 = ['b'*i for i in range(1, 1000)]
+    assert total_match(lst1, lst2) == lst1
+```
+coverage:
+100.0
+tests: total=6 passed=6 failed=0
+anEval_16_test.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+string = 12345
+
+    def count_distinct_characters(string: str) -> int:
+        """ Given a string, find out how many distinct characters (regardless of case) does it consist of
+        >>> count_distinct_characters('xyzXYZ')
+        3
+        >>> count_distinct_characters('Jerry')
+        4
+        """
+>       return len(set(string.lower()))
+                       ^^^^^^^^^^^^
+E       AttributeError: 'int' object has no attribute 'lower'
+
+HumanEval_16.py:10: AttributeError
+______________________ test_count_distinct_characters_12 _______________________
+
+    def test_count_distinct_characters_12():
+        with pytest.raises(TypeError):
+>           count_distinct_characters(None)
+
+HumanEval_16_test.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+string = None
+
+    def count_distinct_characters(string: str) -> int:
+        """ Given a string, find out how many distinct characters (regardless of case) does it consist of
+        >>> count_distinct_characters('xyzXYZ')
+        3
+        >>> count_distinct_characters('Jerry')
+        4
+        """
+>       return len(set(string.lower()))
+                       ^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'lower'
+
+HumanEval_16.py:10: AttributeError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.15-final-0 _______________
+
+Coverage JSON written to file /content/CS598JBR-Team-10/MP2/Coverage/HumanEval_16_test_crafted.json
+=========================== short test summary info ============================
+FAILED HumanEval_16_test.py::test_count_distinct_characters_4 - AssertionErro...
+FAILED HumanEval_16_test.py::test_count_distinct_characters_11 - AttributeErr...
+FAILED HumanEval_16_test.py::test_count_distinct_characters_12 - AttributeErr...
+3 failed, 9 passed in 0.08s
+
+
+Task_ID HumanEval/16:
+prompt:
+You are an AI programming assistant. You are an AI programming assistant, utilizing the DeepSeek Coder model, developed by DeepSeek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer.
+
+### Instruction:
+
+Generate a robust pytest test suite for the Python code below to achieve maximum line and branch coverage.
+
+Strict Instructions:
+1. Start with `import pytest` and `from HumanEval_16 import count_distinct_characters`.
+2. Write distinct `test_*` functions targeting edge cases, boundary conditions, and any uncovered conditional branches or loop paths.
+3. Ensure every test is self-contained, uses valid inputs based on the docstring, and avoids invalid exceptions or massive inputs.
+4. Only write the executable Python test code inside a single ```python code block and nothing else.
+
+Target code:
+
+
+
+def count_distinct_characters(string: str) -> int:
+    """ Given a string, find out how many distinct characters (regardless of case) does it consist of
+    >>> count_distinct_characters('xyzXYZ')
+    3
+    >>> count_distinct_characters('Jerry')
+    4
+    """
+    return len(set(string.lower()))
+
+
+### Response:
+
+response:
+```python
+import pytest
+from HumanEval_16 import count_distinct_characters
+
+def test_count_distinct_characters():
+    # Test with valid inputs
+    assert count_distinct_characters('xyzXYZ') == 3
+    assert count_distinct_characters('Jerry') == 4
+    assert count_distinct_characters('') == 0
+    assert count_distinct_characters('aabbcc') == 1
+    assert count_distinct_characters('1234567890') == 10
+
+    # Test with edge cases
+    assert count_distinct_characters('aaaaaaaaaa') == 1
+    assert count_distinct_characters('A'*100000) == 1
+
+    # Test with boundary conditions
+    assert count_distinct_characters('a'*100000) == 1
+
+    # Test with uncovered conditional branches
+    assert count_distinct_characters('1234567890'*10000) == 10
+
+    # Test with any uncovered loop paths
+    assert count_distinct_characters('abcdefghijklmnopqrstuvwxyz'*10000) == 26
+
+    # Test with invalid inputs
+    with pytest.raises(TypeError):
+        count_distinct_characters(12345)
+    with pytest.raises(TypeError):
+        count_distinct_characters(None)
+```
+coverage:
+100.0
+tests: total=12 passed=9 failed=3
