@@ -123,37 +123,37 @@ def crafted_prompt(entry, java_entry):
     sig = java_starter(java_entry)
     return f"""You are an expert Python and Java programmer. Translate the Python code below into Java so that it behaves identically on every input.
  
-    Work through these steps:
-    1. Plan: in 2-4 short lines, state the input and output types, what the function computes, and any Python-specific behavior that needs care in Java.
-    2. Write the Java code. It must go inside `class Solution` and use EXACTLY the method signature given (same name, parameter types and return type). Include any helper methods the Python code defines or calls.
-    3. Check: re-read your Java line by line against the Python for off-by-one errors, loop bounds, and missing logic.
-    
-    Rules for correct Java:
-    - Python `//` rounds toward negative infinity and `%` takes the sign of the divisor; Java `/` and `%` truncate toward zero. Use Math.floorDiv / Math.floorMod when negatives are possible.
-    - Python ints never overflow; use long (or BigInteger) when values can get large.
-    - Python `round()` rounds half to even; Python slices `a[i:j]`, negative indexes, `sorted`, `set`, `dict`, `zip`, `enumerate` and list comprehensions need explicit Java equivalents (List, Set, Map, loops, streams).
-    - Use only java.util.*, java.lang.*, java.util.stream.* and java.math.* (the imports are already provided). Do not write import statements, a main method, test code, or a separate class.
-    - Compare Strings with .equals(), not ==. Return the same type the signature declares (e.g. List<Integer>, not int[]).
-    
-    The final Java code must be enclosed between [Java Start] and [Java End]. Write the Plan first, then the code between the tags, and put nothing but Java code between the tags.
-    
-    ### Example
-    Python:
-    {EXAMPLE_PY}
-    Java method signature to use:
-    {EXAMPLE_JAVA_SIG}
-    
-    Plan: takes a list of doubles and a threshold, returns true if two different elements are closer than the threshold. Python's abs() maps to Math.abs; indexes i != j are compared with nested loops.
-    [Java Start]
-    {EXAMPLE_JAVA}
-    [Java End]
-    
-    ### Your task
-    Python:
-    {python_source(entry)}
-    Java method signature to use (keep it exactly, then complete the body):
-    {sig}
-    """
+Work through these steps:
+1. Plan: in 2-4 short lines, state the input and output types, what the function computes, and any Python-specific behavior that needs care in Java.
+2. Write the Java code. It must go inside `class Solution` and use EXACTLY the method signature given (same name, parameter types and return type). Include any helper methods the Python code defines or calls.
+3. Check: re-read your Java line by line against the Python for off-by-one errors, loop bounds, and missing logic.
+
+Rules for correct Java:
+- Python `//` rounds toward negative infinity and `%` takes the sign of the divisor; Java `/` and `%` truncate toward zero. Use Math.floorDiv / Math.floorMod when negatives are possible.
+- Python ints never overflow; use long (or BigInteger) when values can get large.
+- Python `round()` rounds half to even; Python slices `a[i:j]`, negative indexes, `sorted`, `set`, `dict`, `zip`, `enumerate` and list comprehensions need explicit Java equivalents (List, Set, Map, loops, streams).
+- Use only java.util.*, java.lang.*, java.util.stream.* and java.math.* (the imports are already provided). Do not write import statements, a main method, test code, or a separate class.
+- Compare Strings with .equals(), not ==. Return the same type the signature declares (e.g. List<Integer>, not int[]).
+
+The final Java code must be enclosed between [Java Start] and [Java End]. Write the Plan first, then the code between the tags, and put nothing but Java code between the tags.
+
+### Example
+Python:
+{EXAMPLE_PY}
+Java method signature to use:
+{EXAMPLE_JAVA_SIG}
+
+Plan: takes a list of doubles and a threshold, returns true if two different elements are closer than the threshold. Python's abs() maps to Math.abs; indexes i != j are compared with nested loops.
+[Java Start]
+{EXAMPLE_JAVA}
+[Java End]
+
+### Your task
+Python:
+{python_source(entry)}
+Java method signature to use (keep it exactly, then complete the body):
+{sig}
+"""
 
 ## java extract and test generation
 
