@@ -236,7 +236,7 @@ def save_file(content, file_path):
     with open(file_path, 'w') as file:
         file.write(content)
 
-def prompt_model(dataset, model_name = "deepseek-ai/deepseek-coder-6.7b-instruct", vanilla = True):
+def prompt_model(dataset, java_dataset, model_name = "deepseek-ai/deepseek-coder-6.7b-instruct", vanilla = True):
     print(f"Working with {model_name} prompt type {vanilla}...")
 
     tokenizer, model = load_model(model_name)
