@@ -1,4 +1,5 @@
 import jsonlines
+import re
 import sys
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
