@@ -18,7 +18,22 @@ benchmark_dir = "benchmark/RBench"
 # Model / provider. Only free options are used.
 # ---------------------------------------------------------------------------
 [model]
-provider = "openrouter"               # "openrouter" (default) or "ollama"
+provider = "gemini"                   # "gemini" (default), "openrouter" or "ollama"
+# If the active provider's quota/budget is exhausted mid-run, switch to these (in order).
+provider_fallbacks = ["openrouter"]
+
+[providers.gemini]                    # Google AI Studio free tier, OpenAI-compatible endpoint
+base_url = "https://generativelanguage.googleapis.com/v1beta/openai/"
+api_key_env = "GEMINI_API_KEY"        # read from the environment only
+primary = "gemini-3.8-flash"          # "Stable" + "Free of charge" on the free tier (docs, Nov 2026)
+fallbacks = ["gemini-4-hydrogen", "gemini-3.6-flash"]   # also free-tier models
+# Free-tier quotas are per Google Cloud project and shown only in AI Studio
+# (https://aistudio.google.com/rate-limit); RPD resets at midnight Pacific.
+# Conservative defaults -- adjust to the values shown for your project.
+requests_per_minute = 8
+max_requests_per_run = 200
+retry_on_429_seconds = 60
+max_retries = 4
 
 [providers.openrouter]
 base_url = "https://openrouter.ai/api/v1"   # OpenAI-compatible Chat Completions
@@ -108,8 +123,8 @@ forbid_patterns = ['extern\s+"C"', '#\[link', 'libc::', 'std::ffi::CStr']   # no
 writable_roots = ["src"]              # agent may only write under the crate's src/ (minus protected)
 
 [trajectory]
-redact_env = ["OPENROUTER_API_KEY"]   # values scrubbed from every saved log
-redact_patterns = ['sk-or-[A-Za-z0-9-]+', 'Bearer\s+\S+']
+redact_env = ["GEMINI_API_KEY", "OPENROUTER_API_KEY"]   # values scrubbed from every saved log
+redact_patterns = ['AIza[0-9A-Za-z_-]{35}', 'sk-or-[A-Za-z0-9-]+', 'Bearer\s+\S+', 'key=[0-9A-Za-z_-]{20,}']
 save_model_messages = true
 save_tool_calls = true
 save_diffs = true
