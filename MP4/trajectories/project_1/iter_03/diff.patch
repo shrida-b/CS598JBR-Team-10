@@ -1,0 +1,33 @@
+--- a/src/mapper_expr.rs
++++ b/src/mapper_expr.rs
+@@ -478,11 +478,29 @@
+     pub output_history: Vec<MapperSignalValue>,
+ }
+ 
+-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++#[allow(non_camel_case_types)]
+ pub type state_t = StateT;
+ 
+ #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+ pub enum StateT {
++    YequalY,
++    YequalEq,
++    Expr,
++    ExprRight,
++    Term,
++    TermRight,
++    Value,
++    Negate,
++    VarRight,
++    VarVectindex,
++    VarHistindex,
++    CloseVectindex,
++    CloseHistindex,
++    OpenParen,
++    CloseParen,
++    Comma,
++    End,
++}
+ 
+ #[derive(Debug, Clone)]
+ enum StackObj {

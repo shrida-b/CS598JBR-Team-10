@@ -11,6 +11,19 @@ Rust crate `expr` (under `rust/`). Modules to implement:
 Benchmark tests (read-only):
 - rust/src/bin/test.rs
 
+Required public API (from the interface; every item must exist with exactly this
+signature, even if the tests do not use it):
+- [mapper_expr] pub enum MapperSignalValue
+- [mapper_expr] pub struct ExprNode
+- [mapper_expr] pub struct MapperExpr
+- [mapper_expr] pub enum state_t
+- [mapper_expr] pub fn as_f32(&self) -> Option<f32>
+- [mapper_expr] pub fn as_i32(&self) -> Option<i32>
+- [mapper_expr] pub fn new() -> ExprNode
+- [mapper_expr] pub fn expr_free(&self)
+- [mapper_expr] pub fn mapper_expr_new_from_string(s: &str, input_is_float: i32, output_is_float: i32, vector_size: i32)-> MapperExpr
+- [mapper_expr] pub fn mapper_expr_evaluate<'a>(mapper: &mut MapperExpr, input: &'a MapperSignalValue) -> MapperSignalValue
+
 Steps:
 1. Study the C sources and headers to understand data structures and behavior.
 2. Study the Rust interface file(s) and the tests to learn the exact required API

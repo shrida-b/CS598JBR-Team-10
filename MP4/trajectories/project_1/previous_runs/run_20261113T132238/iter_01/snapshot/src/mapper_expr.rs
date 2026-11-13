@@ -1,0 +1,1048 @@
+use std::f32::consts::PI;
+use std::collections::HashMap;
+use lazy_static::lazy_static;
+
+#[derive(Clone, Copy, Debug)]
+pub enum MapperSignalValue {
+    F(f32),
+    I32(i32),
+}
+
+impl MapperSignalValue {
+    pub fn as_f32(&self) -> Option<f32> {
+        match self {
+            MapperSignalValue::F(v) => Some(*v),
+            _ => None,
+        }
+    }
+    pub fn as_i32(&self) -> Option<i32> {
+        match self {
+            MapperSignalValue::I32(v) => Some(*v),
+            _ => None,
+        }
+    }
+}
+
+const STACK_SIZE: usize = 256;
+const TRACING: bool = false;
+
+macro_rules! trace {
+    ($($arg:tt)*) => {
+        if TRACING {
+            println!("-- {}", format!($($arg)*));
+        }
+    };
+}
+
+macro_rules! die_unless {
+    ($cond:expr, $($arg:tt)*) => {
+        if !$cond {
+            println!("-- {}", format!($($arg)*));
+            assert!($cond);
+        }
+    };
+}
+
+fn minf(x: f32, y: f32) -> f32 {
+    if y < x { y } else { x }
+}
+
+fn maxf(x: f32, y: f32) -> f32 {
+    if y > x { y } else { x }
+}
+
+fn pif() -> f32 {
+    PI
+}
+
+#[repr(i32)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum ExprFunc {
+    Unknown = -1,
+    Pow = 0,
+    Sin,
+    Cos,
+    Tan,
+    Abs,
+    Sqrt,
+    Log,
+    Log10,
+    Exp,
+    Floor,
+    Round,
+    Ceil,
+    Asin,
+    Acos,
+    Atan,
+    Atan2,
+    Sinh,
+    Cosh,
+    Tanh,
+    Logb,
+    Exp2,
+    Log2,
+    Hypot,
+    Cbrt,
+    Trunc,
+    Min,
+    Max,
+    Pi,
+    NFuncs,
+}
+
+#[derive(Debug, Clone, Copy)]
+struct FunctionEntry {
+    name: &'static str,
+    arity: u32,
+    func: fn(&[f32]) -> f32,
+}
+
+lazy_static! {
+    static ref FUNCTION_TABLE: HashMap<&'static str, FunctionEntry> = {
+        let mut m = HashMap::new();
+        m.insert("pow", FunctionEntry { name: "pow", arity: 2, func: |args| args[0].powf(args[1]) });
+        m.insert("sin", FunctionEntry { name: "sin", arity: 1, func: |args| args[0].sin() });
+        m.insert("cos", FunctionEntry { name: "cos", arity: 1, func: |args| args[0].cos() });
+        m.insert("tan", FunctionEntry { name: "tan", arity: 1, func: |args| args[0].tan() });
+        m.insert("abs", FunctionEntry { name: "abs", arity: 1, func: |args| args[0].abs() });
+        m.insert("sqrt", FunctionEntry { name: "sqrt", arity: 1, func: |args| args[0].sqrt() });
+        m.insert("log", FunctionEntry { name: "log", arity: 1, func: |args| args[0].ln() });
+        m.insert("log10", FunctionEntry { name: "log10", arity: 1, func: |args| args[0].log10() });
+        m.insert("exp", FunctionEntry { name: "exp", arity: 1, func: |args| args[0].exp() });
+        m.insert("floor", FunctionEntry { name: "floor", arity: 1, func: |args| args[0].floor() });
+        m.insert("round", FunctionEntry { name: "round", arity: 1, func: |args| args[0].round() });
+        m.insert("ceil", FunctionEntry { name: "ceil", arity: 1, func: |args| args[0].ceil() });
+        m.insert("asin", FunctionEntry { name: "asin", arity: 1, func: |args| args[0].asin() });
+        m.insert("acos", FunctionEntry { name: "acos", arity: 1, func: |args| args[0].acos() });
+        m.insert("atan", FunctionEntry { name: "atan", arity: 1, func: |args| args[0].atan() });
+        m.insert("atan2", FunctionEntry { name: "atan2", arity: 2, func: |args| args[0].atan2(args[1]) });
+        m.insert("sinh", FunctionEntry { name: "sinh", arity: 1, func: |args| args[0].sinh() });
+        m.insert("cosh", FunctionEntry { name: "cosh", arity: 1, func: |args| args[0].cosh() });
+        m.insert("tanh", FunctionEntry { name: "tanh", arity: 1, func: |args| args[0].tanh() });
+        m.insert("logb", FunctionEntry { name: "logb", arity: 1, func: |args| args[0].log2().floor() });
+        m.insert("exp2", FunctionEntry { name: "exp2", arity: 1, func: |args| 2.0_f32.powf(args[0]) });
+        m.insert("log2", FunctionEntry { name: "log2", arity: 1, func: |args| args[0].log2() });
+        m.insert("hypot", FunctionEntry { name: "hypot", arity: 2, func: |args| args[0].hypot(args[1]) });
+        m.insert("cbrt", FunctionEntry { name: "cbrt", arity: 1, func: |args| args[0].cbrt() });
+        m.insert("trunc", FunctionEntry { name: "trunc", arity: 1, func: |args| args[0].trunc() });
+        m.insert("min", FunctionEntry { name: "min", arity: 2, func: |args| minf(args[0], args[1]) });
+        m.insert("max", FunctionEntry { name: "max", arity: 2, func: |args| maxf(args[0], args[1]) });
+        m.insert("pi", FunctionEntry { name: "pi", arity: 0, func: |_| pif() });
+        m
+    };
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum TokenType {
+    Float,
+    Int,
+    Op,
+    OpenParen,
+    CloseParen,
+    Var,
+    OpenSquare,
+    CloseSquare,
+    OpenCurly,
+    CloseCurly,
+    Func,
+    Comma,
+    End,
+    ToFloat,
+    ToInt32,
+}
+
+#[derive(Debug, Clone, Copy)]
+struct Token {
+    token_type: TokenType,
+    value: Option<f32>,
+    int_value: Option<i32>,
+    var: Option<char>,
+    op: Option<char>,
+    func: Option<ExprFunc>,
+}
+
+impl Token {
+    fn new_float(f: f32) -> Self {
+        Token { token_type: TokenType::Float, value: Some(f), int_value: None, var: None, op: None, func: None }
+    }
+    fn new_int(i: i32) -> Self {
+        Token { token_type: TokenType::Int, value: None, int_value: Some(i), var: None, op: None, func: None }
+    }
+    fn new_op(op: char) -> Self {
+        Token { token_type: TokenType::Op, value: None, int_value: None, var: None, op: Some(op), func: None }
+    }
+    fn new_var(var: char) -> Self {
+        Token { token_type: TokenType::Var, value: None, int_value: None, var: Some(var), op: None, func: None }
+    }
+    fn new_func(func: ExprFunc) -> Self {
+        Token { token_type: TokenType::Func, value: None, int_value: None, var: None, op: None, func: Some(func) }
+    }
+    fn open_paren() -> Self {
+        Token { token_type: TokenType::OpenParen, value: None, int_value: None, var: None, op: None, func: None }
+    }
+    fn close_paren() -> Self {
+        Token { token_type: TokenType::CloseParen, value: None, int_value: None, var: None, op: None, func: None }
+    }
+    fn open_square() -> Self {
+        Token { token_type: TokenType::OpenSquare, value: None, int_value: None, var: None, op: None, func: None }
+    }
+    fn close_square() -> Self {
+        Token { token_type: TokenType::CloseSquare, value: None, int_value: None, var: None, op: None, func: None }
+    }
+    fn open_curly() -> Self {
+        Token { token_type: TokenType::OpenCurly, value: None, int_value: None, var: None, op: None, func: None }
+    }
+    fn close_curly() -> Self {
+        Token { token_type: TokenType::CloseCurly, value: None, int_value: None, var: None, op: None, func: None }
+    }
+    fn comma() -> Self {
+        Token { token_type: TokenType::Comma, value: None, int_value: None, var: None, op: None, func: None }
+    }
+    fn end() -> Self {
+        Token { token_type: TokenType::End, value: None, int_value: None, var: None, op: None, func: None }
+    }
+    fn to_float() -> Self {
+        Token { token_type: TokenType::ToFloat, value: None, int_value: None, var: None, op: None, func: None }
+    }
+    fn to_int32() -> Self {
+        Token { token_type: TokenType::ToInt32, value: None, int_value: None, var: None, op: None, func: None }
+    }
+}
+
+fn function_lookup(s: &str) -> Option<ExprFunc> {
+    FUNCTION_TABLE.get(s).map(|_| {
+        match s {
+            "pow" => ExprFunc::Pow,
+            "sin" => ExprFunc::Sin,
+            "cos" => ExprFunc::Cos,
+            "tan" => ExprFunc::Tan,
+            "abs" => ExprFunc::Abs,
+            "sqrt" => ExprFunc::Sqrt,
+            "log" => ExprFunc::Log,
+            "log10" => ExprFunc::Log10,
+            "exp" => ExprFunc::Exp,
+            "floor" => ExprFunc::Floor,
+            "round" => ExprFunc::Round,
+            "ceil" => ExprFunc::Ceil,
+            "asin" => ExprFunc::Asin,
+            "acos" => ExprFunc::Acos,
+            "atan" => ExprFunc::Atan,
+            "atan2" => ExprFunc::Atan2,
+            "sinh" => ExprFunc::Sinh,
+            "cosh" => ExprFunc::Cosh,
+            "tanh" => ExprFunc::Tanh,
+            "logb" => ExprFunc::Logb,
+            "exp2" => ExprFunc::Exp2,
+            "log2" => ExprFunc::Log2,
+            "hypot" => ExprFunc::Hypot,
+            "cbrt" => ExprFunc::Cbrt,
+            "trunc" => ExprFunc::Trunc,
+            "min" => ExprFunc::Min,
+            "max" => ExprFunc::Max,
+            "pi" => ExprFunc::Pi,
+            _ => ExprFunc::Unknown,
+        }
+    })
+}
+
+struct Lexer<'a> {
+    s: &'a str,
+    pos: usize,
+}
+
+impl<'a> Lexer<'a> {
+    fn new(s: &'a str) -> Self {
+        Lexer { s, pos: 0 }
+    }
+
+    fn peek(&self) -> Option<char> {
+        self.s[self.pos..].chars().next()
+    }
+
+    fn advance(&mut self) {
+        if let Some(c) = self.peek() {
+            self.pos += c.len_utf8();
+        }
+    }
+
+    fn next_token(&mut self) -> Token {
+        loop {
+            let c = match self.peek() {
+                Some(c) => c,
+                None => return Token::end(),
+            };
+
+            if c.is_ascii_digit() {
+                let start = self.pos;
+                while let Some(c) = self.peek() {
+                    if c.is_ascii_digit() {
+                        self.advance();
+                    } else {
+                        break;
+                    }
+                }
+                let int_str = &self.s[start..self.pos];
+                let int_val: i32 = int_str.parse().unwrap();
+
+                if self.peek() == Some('.') {
+                    self.advance(); // consume '.'
+                    let frac_start = self.pos;
+                    while let Some(c) = self.peek() {
+                        if c.is_ascii_digit() {
+                            self.advance();
+                        } else {
+                            break;
+                        }
+                    }
+                    let frac_str = &self.s[frac_start..self.pos];
+                    let float_val = format!("{}.{}", int_str, frac_str).parse().unwrap();
+                    return Token::new_float(float_val);
+                } else {
+                    return Token::new_int(int_val);
+                }
+            }
+
+            match c {
+                '.' => {
+                    self.advance();
+                    let start = self.pos;
+                    while let Some(c) = self.peek() {
+                        if c.is_ascii_digit() {
+                            self.advance();
+                        } else {
+                            break;
+                        }
+                    }
+                    let frac_str = &self.s[start..self.pos];
+                    let float_val = format!("0.{}", frac_str).parse().unwrap();
+                    return Token::new_float(float_val);
+                }
+                '+' | '-' | '/' | '*' | '=' => {
+                    self.advance();
+                    return Token::new_op(c);
+                }
+                '(' => { self.advance(); return Token::open_paren(); }
+                ')' => { self.advance(); return Token::close_paren(); }
+                'x' | 'y' => { self.advance(); return Token::new_var(c); }
+                '[' => { self.advance(); return Token::open_square(); }
+                ']' => { self.advance(); return Token::close_square(); }
+                '{' => { self.advance(); return Token::open_curly(); }
+                '}' => { self.advance(); return Token::close_curly(); }
+                ' ' | '\t' | '\r' | '\n' => { self.advance(); continue; }
+                ',' => { self.advance(); return Token::comma(); }
+                _ => {
+                    if c.is_ascii_alphabetic() {
+                        let start = self.pos;
+                        while let Some(c) = self.peek() {
+                            if c.is_ascii_alphanumeric() {
+                                self.advance();
+                            } else {
+                                break;
+                            }
+                        }
+                        let name = &self.s[start..self.pos];
+                        if let Some(func) = function_lookup(name) {
+                            return Token::new_func(func);
+                        } else {
+                            panic!("Unknown function: {}", name);
+                        }
+                    } else {
+                        panic!("Unknown character '{}' in lexer", c);
+                    }
+                }
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct ExprNode {
+    pub tok: Token,
+    pub is_float: bool,
+    pub history_index: i32,
+    pub vector_index: i32,
+    pub next: Option<Box<ExprNode>>,
+}
+
+impl ExprNode {
+    fn new(tok: Token, is_float: bool) -> Self {
+        ExprNode {
+            tok,
+            is_float,
+            history_index: 0,
+            vector_index: 0,
+            next: None,
+        }
+    }
+
+    fn last_mut(&mut self) -> &mut ExprNode {
+        let mut current = self;
+        while let Some(ref mut next) = current.next {
+            current = next.as_mut();
+        }
+        current
+    }
+
+    fn last(&self) -> &ExprNode {
+        let mut current = self;
+        while let Some(ref next) = current.next {
+            current = next.as_ref();
+        }
+        current
+    }
+}
+
+pub struct MapperExpr {
+    pub node: Box<ExprNode>,
+    pub vector_size: i32,
+    pub history_size: i32,
+    pub history_pos: i32,
+    pub input_history: Vec<MapperSignalValue>,
+    pub output_history: Vec<MapperSignalValue>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum State {
+    YEqualY,
+    YEqualEq,
+    Expr,
+    ExprRight,
+    Term,
+    TermRight,
+    Value,
+    Negate,
+    VarRight,
+    VarVectIndex,
+    VarHistIndex,
+    CloseVectIndex,
+    CloseHistIndex,
+    OpenParen,
+    CloseParen,
+    Comma,
+    End,
+}
+
+#[derive(Debug)]
+enum StackObj {
+    State(State),
+    Node(Box<ExprNode>),
+}
+
+fn collapse_expr_to_left(plhs: &mut Box<ExprNode>, rhs: Box<ExprNode>, constant_folding: bool) {
+    let mut refvar = false;
+    let mut is_float = false;
+
+    // Check for variable references in rhs
+    let mut current: Option<&ExprNode> = Some(rhs.as_ref());
+    while let Some(node) = current {
+        if node.tok.token_type == TokenType::Var {
+            refvar = true;
+        }
+        is_float = is_float || node.is_float;
+        current = node.next.as_deref();
+    }
+
+    // Check for variable references in lhs
+    current = Some(plhs.as_ref());
+    while let Some(node) = current {
+        if node.tok.token_type == TokenType::Var {
+            refvar = true;
+        }
+        is_float = is_float || node.is_float;
+        current = node.next.as_deref();
+    }
+
+    // Find the last node of lhs
+    let plhs_last = plhs.last_mut();
+
+    // Find the last node of rhs (without consuming rhs)
+    let mut rhs_last_ref: &ExprNode = rhs.as_ref();
+    while rhs_last_ref.next.is_some() {
+        rhs_last_ref = rhs_last_ref.next.as_ref().unwrap();
+    }
+    let rhs_last_is_float = rhs_last_ref.is_float;
+
+    // Insert coercion if types disagree
+    if plhs_last.is_float && !rhs_last_is_float {
+        let coerce = Box::new(ExprNode::new(Token::to_float(), true));
+        plhs_last.next = Some(coerce);
+    } else if !plhs_last.is_float && rhs_last_is_float {
+        let coerce = Box::new(ExprNode::new(Token::to_float(), true));
+        let mut new_lhs = coerce;
+        new_lhs.next = Some(std::mem::replace(plhs, Box::new(ExprNode::new(Token::new_int(0), false))));
+        *plhs = new_lhs;
+    }
+
+    // Now we need to find the last node of rhs again (after potential coercion)
+    // Actually, let's just move rhs and find its last node
+    let mut rhs = rhs;
+    while rhs.next.is_some() {
+        rhs = rhs.next.take().unwrap();
+    }
+    // Now rhs is the last node
+    rhs.next = Some(std::mem::replace(plhs, Box::new(ExprNode::new(Token::new_int(0), false))));
+    *plhs = rhs;
+
+    // Constant folding
+    if constant_folding && !refvar {
+        // Evaluate the expression
+        let mut expr = MapperExpr {
+            node: plhs.clone(),
+            vector_size: 1,
+            history_size: 1,
+            history_pos: 0,
+            input_history: vec![],
+            output_history: vec![],
+        };
+        let result = evaluate_expr(&mut expr, None);
+        
+        // Replace with constant
+        let new_node = plhs.as_mut();
+        new_node.next = None;
+        new_node.is_float = is_float;
+        if is_float {
+            new_node.tok = Token::new_float(result.as_f32().unwrap());
+        } else {
+            new_node.tok = Token::new_int(result.as_i32().unwrap());
+        }
+    }
+}
+
+fn evaluate_expr(expr: &mut MapperExpr, input_vector: Option<&[MapperSignalValue]>) -> MapperSignalValue {
+    let mut stack: Vec<MapperSignalValue> = Vec::with_capacity(STACK_SIZE);
+    let mut node: Option<&ExprNode> = Some(expr.node.as_ref());
+
+    if let Some(input) = input_vector {
+        expr.history_pos = (expr.history_pos + 1) % expr.history_size;
+        let start = (expr.history_pos * expr.vector_size) as usize;
+        let end = start + expr.vector_size as usize;
+        if end <= expr.input_history.len() {
+            expr.input_history[start..end].copy_from_slice(input);
+        }
+    }
+
+    while let Some(n) = node {
+        match n.tok.token_type {
+            TokenType::Int => {
+                stack.push(MapperSignalValue::I32(n.tok.int_value.unwrap()));
+            }
+            TokenType::Float => {
+                stack.push(MapperSignalValue::F(n.tok.value.unwrap()));
+            }
+            TokenType::Var => {
+                let input_vec = input_vector.expect("Input required but not provided for expression evaluation");
+                let idx = ((n.history_index + expr.history_pos + expr.history_size) % expr.history_size) as usize;
+                match n.tok.var.unwrap() {
+                    'x' => {
+                        let idx = idx * expr.vector_size as usize + n.vector_index as usize;
+                        stack.push(expr.input_history[idx]);
+                    }
+                    'y' => {
+                        stack.push(expr.output_history[idx]);
+                    }
+                    _ => panic!("Unexpected variable"),
+                }
+            }
+            TokenType::ToFloat => {
+                let top = stack.last_mut().unwrap();
+                *top = MapperSignalValue::F(top.as_i32().unwrap() as f32);
+            }
+            TokenType::ToInt32 => {
+                let top = stack.last_mut().unwrap();
+                *top = MapperSignalValue::I32(top.as_f32().unwrap() as i32);
+            }
+            TokenType::Op => {
+                let right = stack.pop().unwrap();
+                let left = stack.pop().unwrap();
+                let op = n.tok.op.unwrap();
+                if n.is_float {
+                    let l = left.as_f32().unwrap();
+                    let r = right.as_f32().unwrap();
+                    let result = match op {
+                        '+' => l + r,
+                        '-' => l - r,
+                        '*' => l * r,
+                        '/' => l / r,
+                        _ => panic!("Unknown operator"),
+                    };
+                    stack.push(MapperSignalValue::F(result));
+                } else {
+                    let l = left.as_i32().unwrap();
+                    let r = right.as_i32().unwrap();
+                    let result = match op {
+                        '+' => l + r,
+                        '-' => l - r,
+                        '*' => l * r,
+                        '/' => l / r,
+                        _ => panic!("Unknown operator"),
+                    };
+                    stack.push(MapperSignalValue::I32(result));
+                }
+            }
+            TokenType::Func => {
+                let func = n.tok.func.unwrap();
+                let entry = FUNCTION_TABLE.get(FUNCTION_TABLE.keys().find(|k| {
+                    function_lookup(k).map_or(false, |f| f == func)
+                }).unwrap()).unwrap();
+                
+                match entry.arity {
+                    0 => {
+                        let result = (entry.func)(&[]);
+                        stack.push(MapperSignalValue::F(result));
+                    }
+                    1 => {
+                        let arg = stack.pop().unwrap();
+                        let result = (entry.func)(&[arg.as_f32().unwrap()]);
+                        stack.push(MapperSignalValue::F(result));
+                    }
+                    2 => {
+                        let right = stack.pop().unwrap();
+                        let left = stack.pop().unwrap();
+                        let result = (entry.func)(&[left.as_f32().unwrap(), right.as_f32().unwrap()]);
+                        stack.push(MapperSignalValue::F(result));
+                    }
+                    _ => panic!("Unsupported arity"),
+                }
+            }
+            _ => panic!("Unexpected token in expression"),
+        }
+        node = n.next.as_deref();
+    }
+
+    let result = stack[0];
+    if input_vector.is_some() {
+        expr.output_history[expr.history_pos as usize] = result;
+    }
+    result
+}
+
+pub fn mapper_expr_new_from_string(s: &str, input_is_float: i32, output_is_float: i32, vector_size: i32) -> MapperExpr {
+    let mut lexer = Lexer::new(s);
+    let mut stack: Vec<StackObj> = Vec::with_capacity(STACK_SIZE);
+    let mut result: Option<Box<ExprNode>> = None;
+    let mut error_message: Option<String> = None;
+    let mut next_token = true;
+    let mut tok = Token::end();
+    let mut var_allowed = true;
+    let mut oldest_samps = 0.0f32;
+
+    stack.push(StackObj::State(State::Expr));
+    stack.push(StackObj::State(State::YEqualEq));
+    stack.push(StackObj::State(State::YEqualY));
+
+    'parser: while !stack.is_empty() {
+        if next_token {
+            tok = lexer.next_token();
+        }
+        next_token = false;
+
+        if TRACING {
+            eprintln!("Stack: {:?}, tok: {:?}", stack, tok);
+        }
+
+        let is_node = matches!(stack.last(), Some(StackObj::Node(_)));
+        if is_node {
+            if stack.len() == 1 {
+                result = match stack.pop().unwrap() {
+                    StackObj::Node(n) => Some(n),
+                    _ => unreachable!(),
+                };
+                break;
+            }
+
+            if let Some(StackObj::State(state)) = stack.get(stack.len() - 2) {
+                let prev_state = *state;
+                if stack.len() >= 3 {
+                    if matches!(stack.get(stack.len() - 3), Some(StackObj::Node(_))) {
+                        // Pop in correct order: rhs (top), state (middle), lhs (bottom)
+                        let rhs = match stack.pop().unwrap() {
+                            StackObj::Node(n) => n,
+                            _ => unreachable!(),
+                        };
+                        stack.pop(); // pop state
+                        let mut lhs = match stack.pop().unwrap() {
+                            StackObj::Node(n) => n,
+                            _ => unreachable!(),
+                        };
+
+                        match prev_state {
+                            State::ExprRight | State::TermRight | State::CloseParen => {
+                                collapse_expr_to_left(&mut lhs, rhs, true);
+                                stack.push(StackObj::Node(lhs));
+                            }
+                            State::CloseHistIndex => {
+                                die_unless!(lhs.tok.token_type == TokenType::Var, "expected VAR two-down on the stack");
+                                die_unless!(!rhs.next.is_some() && (rhs.tok.token_type == TokenType::Int || rhs.tok.token_type == TokenType::Float), "expected lonely INT or FLOAT expression on the stack");
+                                let hist_idx = if rhs.tok.token_type == TokenType::Float {
+                                    rhs.tok.value.unwrap() as i32
+                                } else {
+                                    rhs.tok.int_value.unwrap()
+                                };
+                                lhs.history_index = hist_idx;
+                                if (oldest_samps as i32) > hist_idx {
+                                    oldest_samps = hist_idx as f32;
+                                }
+                            }
+                            State::CloseVectIndex => {
+                                die_unless!(lhs.tok.token_type == TokenType::Var, "expected VAR two-down on the stack");
+                                die_unless!(!rhs.next.is_some() && (rhs.tok.token_type == TokenType::Int || rhs.tok.token_type == TokenType::Float), "expected lonely INT or FLOAT expression on the stack");
+                                let vect_idx = if rhs.tok.token_type == TokenType::Float {
+                                    rhs.tok.value.unwrap() as i32
+                                } else {
+                                    rhs.tok.int_value.unwrap()
+                                };
+                                lhs.vector_index = vect_idx;
+                                if vect_idx > 0 {
+                                    error_message = Some("Vector indexing not yet implemented.".to_string());
+                                    break 'parser;
+                                }
+                                if vect_idx < 0 || vect_idx >= vector_size {
+                                    error_message = Some("Vector index outside input size.".to_string());
+                                    break 'parser;
+                                }
+                            }
+                            _ => {
+                                // Swap expression down the stack
+                                stack.push(StackObj::State(prev_state));
+                                stack.push(StackObj::Node(lhs));
+                                stack.push(StackObj::Node(rhs));
+                            }
+                        }
+                    } else {
+                        // Swap expression down the stack
+                        let top = stack.pop().unwrap();
+                        let second = stack.pop().unwrap();
+                        stack.push(top);
+                        stack.push(second);
+                    }
+                } else {
+                    // Swap expression down the stack
+                    let top = stack.pop().unwrap();
+                    let second = stack.pop().unwrap();
+                    stack.push(top);
+                    stack.push(second);
+                }
+                continue;
+            }
+        }
+
+        let state = match stack.last().unwrap() {
+            StackObj::State(s) => *s,
+            StackObj::Node(_) => continue,
+        };
+
+        match state {
+            State::YEqualY => {
+                if tok.token_type == TokenType::Var && tok.var == Some('y') {
+                    stack.pop();
+                    next_token = true;
+                } else {
+                    error_message = Some("Error in y= prefix.".to_string());
+                    break;
+                }
+            }
+            State::YEqualEq => {
+                if tok.token_type == TokenType::Op && tok.op == Some('=') {
+                    stack.pop();
+                    next_token = true;
+                } else {
+                    error_message = Some("Error in y= prefix.".to_string());
+                    break;
+                }
+            }
+            State::Expr => {
+                stack.pop();
+                stack.push(StackObj::State(State::ExprRight));
+                stack.push(StackObj::State(State::Term));
+            }
+            State::ExprRight => {
+                if tok.token_type == TokenType::Op {
+                    let op = tok.op.unwrap();
+                    if op == '+' || op == '-' {
+                        stack.pop();
+                        // Append operator to the expression on stack
+                        if let Some(StackObj::Node(node)) = stack.last_mut() {
+                            let last = node.last_mut();
+                            let op_token = Token::new_op(op);
+                            last.next = Some(Box::new(ExprNode::new(op_token, false)));
+                        }
+                        stack.push(StackObj::State(State::Expr));
+                        next_token = true;
+                    } else {
+                        stack.pop();
+                    }
+                } else {
+                    stack.pop();
+                }
+            }
+            State::Term => {
+                stack.pop();
+                stack.push(StackObj::State(State::TermRight));
+                stack.push(StackObj::State(State::Value));
+            }
+            State::TermRight => {
+                if tok.token_type == TokenType::Op {
+                    let op = tok.op.unwrap();
+                    if op == '*' || op == '/' {
+                        stack.pop();
+                        if let Some(StackObj::Node(node)) = stack.last_mut() {
+                            let last = node.last_mut();
+                            let op_token = Token::new_op(op);
+                            last.next = Some(Box::new(ExprNode::new(op_token, false)));
+                        }
+                        stack.push(StackObj::State(State::Term));
+                        next_token = true;
+                    } else {
+                        stack.pop();
+                    }
+                } else {
+                    stack.pop();
+                }
+            }
+            State::Value => {
+                match tok.token_type {
+                    TokenType::Int => {
+                        stack.pop();
+                        let node = Box::new(ExprNode::new(tok, false));
+                        stack.push(StackObj::Node(node));
+                        next_token = true;
+                    }
+                    TokenType::Float => {
+                        stack.pop();
+                        let node = Box::new(ExprNode::new(tok, true));
+                        stack.push(StackObj::Node(node));
+                        next_token = true;
+                    }
+                    TokenType::Var => {
+                        if var_allowed {
+                            stack.pop();
+                            let is_float = input_is_float != 0;
+                            let node = Box::new(ExprNode::new(tok, is_float));
+                            stack.push(StackObj::Node(node));
+                            stack.push(StackObj::State(State::VarRight));
+                            next_token = true;
+                        } else {
+                            error_message = Some("Unexpected variable reference.".to_string());
+                            break;
+                        }
+                    }
+                    TokenType::OpenParen => {
+                        stack.pop();
+                        stack.push(StackObj::State(State::CloseParen));
+                        stack.push(StackObj::State(State::Expr));
+                        next_token = true;
+                    }
+                    TokenType::Func => {
+                        stack.pop();
+                        let func = tok.func.unwrap();
+                        if func == ExprFunc::Unknown {
+                            error_message = Some("Unknown function.".to_string());
+                            break;
+                        }
+                        let node = Box::new(ExprNode::new(tok, true));
+                        stack.push(StackObj::Node(node));
+                        let entry = FUNCTION_TABLE.get(FUNCTION_TABLE.keys().find(|k| {
+                            function_lookup(k).map_or(false, |f| f == func)
+                        }).unwrap()).unwrap();
+                        let arity = entry.arity;
+                        if arity > 0 {
+                            stack.push(StackObj::State(State::CloseParen));
+                            stack.push(StackObj::State(State::Expr));
+                            for _ in 1..arity {
+                                stack.push(StackObj::State(State::Comma));
+                                stack.push(StackObj::State(State::Expr));
+                            }
+                            stack.push(StackObj::State(State::OpenParen));
+                        }
+                        next_token = true;
+                    }
+                    TokenType::Op if tok.op == Some('-') => {
+                        stack.pop();
+                        stack.push(StackObj::State(State::Negate));
+                        stack.push(StackObj::State(State::Value));
+                        next_token = true;
+                    }
+                    _ => {
+                        error_message = Some("Expected value.".to_string());
+                        break;
+                    }
+                }
+            }
+            State::Negate => {
+                stack.pop();
+                if let Some(StackObj::Node(node)) = stack.last_mut() {
+                    let expr = std::mem::replace(node, Box::new(ExprNode::new(Token::new_int(0), false)));
+                    // Insert '0' before and '-' after
+                    let mut zero = Box::new(ExprNode::new(Token::new_int(0), false));
+                    let minus = Box::new(ExprNode::new(Token::new_op('-'), false));
+                    zero.next = Some(minus);
+                    collapse_expr_to_left(&mut zero, expr, true);
+                    *node = zero;
+                } else {
+                    error_message = Some("Expected to negate an expression.".to_string());
+                    break;
+                }
+            }
+            State::VarRight => {
+                if tok.token_type == TokenType::OpenSquare {
+                    stack.pop();
+                    stack.push(StackObj::State(State::VarVectIndex));
+                } else if tok.token_type == TokenType::OpenCurly {
+                    stack.pop();
+                    stack.push(StackObj::State(State::VarHistIndex));
+                } else {
+                    stack.pop();
+                }
+            }
+            State::VarVectIndex => {
+                stack.pop();
+                if tok.token_type == TokenType::OpenSquare {
+                    var_allowed = false;
+                    stack.push(StackObj::State(State::CloseVectIndex));
+                    stack.push(StackObj::State(State::Expr));
+                    next_token = true;
+                }
+            }
+            State::VarHistIndex => {
+                stack.pop();
+                if tok.token_type == TokenType::OpenCurly {
+                    var_allowed = false;
+                    stack.push(StackObj::State(State::CloseHistIndex));
+                    stack.push(StackObj::State(State::Expr));
+                    next_token = true;
+                }
+            }
+            State::CloseVectIndex => {
+                if tok.token_type == TokenType::CloseSquare {
+                    var_allowed = true;
+                    stack.pop();
+                    stack.push(StackObj::State(State::VarHistIndex));
+                    next_token = true;
+                } else {
+                    error_message = Some("Expected ']'.".to_string());
+                    break;
+                }
+            }
+            State::CloseHistIndex => {
+                if tok.token_type == TokenType::CloseCurly {
+                    var_allowed = true;
+                    stack.pop();
+                    stack.push(StackObj::State(State::VarVectIndex));
+                    next_token = true;
+                } else {
+                    error_message = Some("Expected '}'.".to_string());
+                    break;
+                }
+            }
+            State::CloseParen => {
+                if tok.token_type == TokenType::CloseParen {
+                    stack.pop();
+                    next_token = true;
+                } else {
+                    error_message = Some("Expected ')'.".to_string());
+                    break;
+                }
+            }
+            State::Comma => {
+                if tok.token_type == TokenType::Comma {
+                    stack.pop();
+                    // Find previous expression on the stack
+                    let mut i = stack.len();
+                    while i > 1 && !matches!(stack[i - 2], StackObj::Node(_)) {
+                        i -= 1;
+                    }
+                    if i > 1 {
+                        let rhs = match stack.pop().unwrap() {
+                            StackObj::Node(n) => n,
+                            _ => unreachable!(),
+                        };
+                        // We need to get the lhs node from the stack
+                        // This is tricky with Box - we'll swap it out
+                        if let StackObj::Node(lhs) = std::mem::replace(&mut stack[i - 2], StackObj::State(State::End)) {
+                            let mut lhs = lhs;
+                            collapse_expr_to_left(&mut lhs, rhs, false);
+                            stack[i - 2] = StackObj::Node(lhs);
+                        }
+                    }
+                    next_token = true;
+                } else {
+                    error_message = Some("Expected ','.".to_string());
+                    break;
+                }
+            }
+            State::OpenParen => {
+                if tok.token_type == TokenType::OpenParen {
+                    stack.pop();
+                    next_token = true;
+                } else {
+                    error_message = Some("Expected '('.".to_string());
+                    break;
+                }
+            }
+            State::End => {
+                if tok.token_type == TokenType::End {
+                    stack.pop();
+                } else {
+                    error_message = Some("Expected END.".to_string());
+                    break;
+                }
+            }
+        }
+    }
+
+    if let Some(msg) = error_message {
+        panic!("{}", msg);
+    }
+    let mut result = result.expect("Failed to parse expression");
+
+    if oldest_samps < -100.0 {
+        panic!("Expression contains history reference of {}", oldest_samps);
+    }
+
+    let mut node = result.as_mut();
+    // Find last node
+    while node.next.is_some() {
+        node = node.next.as_mut().unwrap();
+    }
+    let last_is_float = node.is_float;
+    if last_is_float && output_is_float == 0 {
+        let coerce = Box::new(ExprNode::new(Token::to_int32(), false));
+        node.next = Some(coerce);
+    } else if !last_is_float && output_is_float != 0 {
+        let coerce = Box::new(ExprNode::new(Token::to_float(), true));
+        node.next = Some(coerce);
+    }
+
+    // Check for vector indexing
+    if vector_size > 1 {
+        let mut check_node = result.as_ref();
+        loop {
+            if check_node.tok.token_type == TokenType::Var && check_node.vector_index > 0 {
+                panic!("vector indexing not yet implemented");
+            }
+            if let Some(ref next) = check_node.next {
+                check_node = next.as_ref();
+            } else {
+                break;
+            }
+        }
+    }
+
+    let history_size = (-oldest_samps).ceil() as i32 + 1;
+    let input_history = vec![MapperSignalValue::F(0.0); (vector_size * history_size) as usize];
+    let output_history = vec![MapperSignalValue::F(0.0); history_size as usize];
+
+    MapperExpr {
+        node: result,
+        vector_size,
+        history_size,
+        history_pos: -1,
+        input_history,
+        output_history,
+    }
+}
+
+pub fn mapper_expr_evaluate(mapper: &mut MapperExpr, input: &MapperSignalValue) -> MapperSignalValue {
+    let input_vec = std::slice::from_ref(input);
+    evaluate_expr(mapper, Some(input_vec))
+}

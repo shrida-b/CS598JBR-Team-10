@@ -1,0 +1,94 @@
+{
+  "project": "project_1",
+  "name": "expr",
+  "started": "2026-11-13T13:08:13-06:00",
+  "iteration": 2,
+  "best_iteration": 0,
+  "best_score": [
+    1,
+    0,
+    0,
+    0,
+    -4
+  ],
+  "no_progress": 2,
+  "status": "no_progress",
+  "history": [
+    {
+      "iteration": 0,
+      "score": [
+        1,
+        0,
+        0,
+        0,
+        -4
+      ],
+      "note": "skeleton baseline"
+    },
+    {
+      "iteration": 1,
+      "score": [
+        0,
+        0,
+        -2,
+        0,
+        -1000000
+      ],
+      "turns": 25,
+      "finished_by_agent": false,
+      "agent_summary": "",
+      "files_read": [
+        "rust/src/mapper_expr.rs"
+      ],
+      "files_written": [
+        "rust/src/mapper_expr.rs"
+      ],
+      "seconds": 463,
+      "improved": false,
+      "success": false,
+      "paused_for_quota": false,
+      "reverted_to": 0
+    },
+    {
+      "iteration": 2,
+      "score": [
+        1,
+        0,
+        0,
+        0,
+        -4
+      ],
+      "turns": 9,
+      "finished_by_agent": true,
+      "agent_summary": "Checked project setup and test requirements. Ready to implement expr module.",
+      "files_read": [
+        "c/mapper_expr.c",
+        "rust/src/bin/test.rs",
+        "rust/src/interfaces/mapper_expr.rs"
+      ],
+      "files_written": [],
+      "seconds": 16,
+      "improved": false,
+      "success": false,
+      "paused_for_quota": false
+    }
+  ],
+  "runs": [
+    {
+      "started": "2026-11-13T13:08:13-06:00",
+      "provider": "gemini"
+    }
+  ],
+  "requests": {
+    "gemini": 36
+  },
+  "models_used": {
+    "gemini/gemini-4-hydrogen": 12,
+    "gemini/gemini-3.8-flash": 6,
+    "gemini/gemini-3.6-flash": 19,
+    "gemini/gemini-3-flash-preview": 20,
+    "gemini/gemini-3.5-flash-lite": 39,
+    "gemini/gemini-3.1-flash-lite": 27
+  },
+  "pending_regression_note": ""
+}

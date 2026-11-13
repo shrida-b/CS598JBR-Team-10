@@ -1,0 +1,265 @@
+{
+  "pipeline": {
+    "name": "crust-agent",
+    "version": "0.1.0",
+    "toolchain": "nightly-2025-05-13",
+    "projects_file": "configs/projects.toml",
+    "tools_file": "configs/tools.json",
+    "trajectories_dir": "trajectories",
+    "translations_dir": "translations",
+    "subjects_dir": "subjects",
+    "benchmark_dir": "benchmark/RBench"
+  },
+  "model": {
+    "provider": "gemini",
+    "provider_fallbacks": [
+      "openrouter"
+    ],
+    "quota_ledger": ".cache/quota_usage.json",
+    "retry_on_5xx_seconds": [
+      10,
+      20
+    ]
+  },
+  "providers": {
+    "gemini": {
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
+      "api_key_env": "GEMINI_API_KEY",
+      "max_requests_per_run": 300,
+      "retry_on_429_seconds": 60,
+      "unsupported_params": [
+        "seed"
+      ],
+      "models": [
+        {
+          "id": "gemini-4-hydrogen",
+          "rpm": 4,
+          "tpm": 250000,
+          "rpd": 20
+        },
+        {
+          "id": "gemini-3.8-flash",
+          "rpm": 4,
+          "tpm": 250000,
+          "rpd": 20
+        },
+        {
+          "id": "gemini-3.6-flash",
+          "rpm": 4,
+          "tpm": 250000,
+          "rpd": 20
+        },
+        {
+          "id": "gemini-3-flash-preview",
+          "rpm": 4,
+          "tpm": 250000,
+          "rpd": 20
+        },
+        {
+          "id": "gemini-3.5-flash-lite",
+          "rpm": 12,
+          "tpm": 250000,
+          "rpd": 500
+        },
+        {
+          "id": "gemini-3.1-flash-lite",
+          "rpm": 12,
+          "tpm": 250000,
+          "rpd": 500
+        }
+      ]
+    },
+    "openrouter": {
+      "base_url": "https://openrouter.ai/api/v1",
+      "api_key_env": "OPENROUTER_API_KEY",
+      "rpm": 18,
+      "rpd": 50,
+      "max_requests_per_run": 45,
+      "retry_on_429_seconds": 65,
+      "unsupported_params": [],
+      "models": [
+        {
+          "id": "nvidia/nemotron-3-ultra-550b-a55b:free"
+        },
+        {
+          "id": "cohere/north-mini-code:free"
+        },
+        {
+          "id": "google/gemma-4-31b-it:free"
+        }
+      ]
+    },
+    "ollama": {
+      "base_url": "http://localhost:11434/v1",
+      "api_key_env": "",
+      "max_requests_per_run": 400,
+      "unsupported_params": [
+        "parallel_tool_calls"
+      ],
+      "models": [
+        {
+          "id": "qwen2.5-coder:7b"
+        }
+      ]
+    }
+  },
+  "inference": {
+    "temperature": 0.2,
+    "top_p": 0.95,
+    "max_tokens": 32768,
+    "seed": 598,
+    "tool_choice": "auto",
+    "parallel_tool_calls": false,
+    "request_timeout_seconds": 300
+  },
+  "agent": {
+    "system_prompt": "configs/prompts/system.md",
+    "translate_prompt": "configs/prompts/translate.md",
+    "repair_prompt": "configs/prompts/repair.md",
+    "max_tool_turns_per_iteration": 25,
+    "tool_output_char_limit": 12000,
+    "keep_best_snapshot": true,
+    "inline_context": true,
+    "inline_context_max_chars": 120000,
+    "context_token_budget": 90000,
+    "keep_recent_messages": 8
+  },
+  "stopping": {
+    "max_iterations": 6,
+    "stop_on_success": true,
+    "clippy_target_total": 0,
+    "no_progress_patience": 2
+  },
+  "evaluation": {
+    "build": [
+      "cargo",
+      "+nightly-2025-05-13",
+      "build"
+    ],
+    "check": [
+      "cargo",
+      "+nightly-2025-05-13",
+      "check",
+      "--all-targets"
+    ],
+    "test": [
+      "cargo",
+      "+nightly-2025-05-13",
+      "test",
+      "--no-fail-fast"
+    ],
+    "clippy": [
+      "cargo",
+      "+nightly-2025-05-13",
+      "clippy",
+      "--all-targets",
+      "--all-features",
+      "--message-format=json",
+      "--",
+      "-W",
+      "clippy::correctness",
+      "-W",
+      "clippy::style",
+      "-W",
+      "clippy::complexity",
+      "-W",
+      "clippy::perf"
+    ],
+    "clippy_categories": [
+      "correctness",
+      "style",
+      "complexity",
+      "perf"
+    ],
+    "command_timeout_seconds": 300,
+    "test_timeout_seconds": 120
+  },
+  "unsafe_metrics": {
+    "command": "",
+    "primary_metrics": [
+      "unsafe_lines",
+      "unsafe_calls",
+      "unsafe_casts",
+      "pointer_arithmetic"
+    ]
+  },
+  "integrity": {
+    "protected_globs": [
+      "src/bin/*",
+      "src/interfaces/*",
+      "tests/*",
+      "Cargo.toml",
+      "Cargo.lock"
+    ],
+    "check_public_signatures": true,
+    "forbid_patterns": [
+      "extern\\s+\"C\"",
+      "#\\[link",
+      "libc::",
+      "std::ffi::CStr"
+    ],
+    "writable_roots": [
+      "src"
+    ]
+  },
+  "trajectory": {
+    "redact_env": [
+      "GEMINI_API_KEY",
+      "OPENROUTER_API_KEY"
+    ],
+    "redact_patterns": [
+      "AIza[0-9A-Za-z_-]{35}",
+      "sk-or-[A-Za-z0-9-]+",
+      "Bearer\\s+\\S+",
+      "key=[0-9A-Za-z_-]{20,}"
+    ],
+    "save_model_messages": true,
+    "save_tool_calls": true,
+    "save_diffs": true
+  },
+  "projects": {
+    "project_1": {
+      "name": "expr",
+      "group": 10,
+      "c_dir": "subjects/project_1",
+      "c_sources": [
+        "mapper_expr.c",
+        "mapper_expr.h",
+        "test.c"
+      ],
+      "rust_spec_dir": "benchmark/RBench/expr",
+      "crate_name": "expr",
+      "modules": [
+        "mapper_expr"
+      ],
+      "test_files": [
+        "src/bin/test.rs"
+      ],
+      "output_dir": "translations/project_1",
+      "trajectory_dir": "trajectories/project_1"
+    },
+    "project_2": {
+      "name": "rbtree-lab",
+      "group": 10,
+      "c_dir": "subjects/project_2",
+      "c_sources": [
+        "src/rbtree.c",
+        "src/rbtree.h",
+        "test/test-rbtree.c"
+      ],
+      "rust_spec_dir": "benchmark/RBench/rbtree_lab",
+      "crate_name": "rbtree",
+      "modules": [
+        "rbtree"
+      ],
+      "test_files": [
+        "src/bin/test.rs"
+      ],
+      "output_dir": "translations/project_2",
+      "trajectory_dir": "trajectories/project_2"
+    }
+  },
+  "project_id": "project_1",
+  "max_iterations": 6,
+  "provider_override": null
+}

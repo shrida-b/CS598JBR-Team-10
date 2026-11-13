@@ -126,7 +126,8 @@ errors, failing tests with assertion messages, Clippy warnings per category, uns
 locations, integrity violations) into `prompts/repair.md`.
 
 **Score** (used for the best snapshot and for measuring progress), compared
-lexicographically: builds → tests passed → −(integrity violations) →
+lexicographically, among real translations (the untouched skeleton is only a
+reference): builds → tests passed → −(integrity violations) →
 −(primary unsafe total) → −(Clippy total in `src/`). Integrity violations block
 success and appear first in the repair feedback. They lower the score without
 discarding an otherwise working translation. A tampered test file is restored
@@ -235,6 +236,8 @@ the agent.
 |---|---|---|---|
 | 2026-11-13 | Controller fix in `src/evaluate.py`: the public-signature check now ignores `mut` in parameter patterns (`mut self` ≡ `self`) | The first project_2 run produced a correct translation (6/6 tests, 0 Clippy, 0 unsafe), but the check flagged `pub fn delete_rbtree(mut self)` as an interface change. The controller then reverted to the skeleton. The run was stopped and rerun with `--fresh`; the first run is archived in `trajectories/project_2/previous_runs/` | No. Only the pipeline's checker changed |
 | 2026-11-13 | Controller fixes after the first project_1 run: (a) the signature check ignores lifetime annotations that elision infers (`fn f<'a>(x: &'a T)` ≡ `fn f(x: &T)`); (b) integrity violations became their own score term instead of counting as "does not build"; (c) per-minute limits set below Google's (4 / 12 RPM), because failed requests also count | Run 1 flagged an elided lifetime as an interface change and reverted a 1/2-tests translation to the empty skeleton. Run 1 is archived in `trajectories/project_1/previous_runs/` and the project was rerun with `--fresh` | No. Only the controller changed |
+| 2026-11-13 | Pipeline improvements after project_1 runs 2–3: (a) the prompts carry an auto-extracted **required public API checklist** from the interface file; (b) the agent's `cargo check/build` tool also reports interface violations; (c) the controller never reverts to the untouched skeleton (iteration 0), only to an earlier real translation; (d) repair prompts inline the C sources as well as the current Rust; (e) `--provider` overrides still fall back to the default provider | Every model dropped interface items the tests do not use (`ExprNode::new`, `expr_free`, `state_t`). Run 3 (OpenRouter) was reverted to the skeleton after iteration 1 and was stopped by hand during iteration 2 to save quota. Runs 2–3 are archived in `trajectories/project_1/previous_runs/` | No. Only prompts and controller changed; nothing is project-specific |
+| 2026-11-13 | The untouched skeleton (iteration 0) no longer competes for "best": the first real translation always becomes the best snapshot, and later regressions revert to the best translation | In run 4 the skeleton (builds, 0 tests, 0 violations) outscored real translations that built but failed tests. The run would have ended on the skeleton, and a non-building iteration could not be reverted | No. Controller only |
 
 ## API / usage limits affecting the experiment
 

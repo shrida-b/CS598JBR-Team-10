@@ -1,0 +1,323 @@
+{
+  "integrity": {
+    "ok": false,
+    "violations": [
+      "public signature changed or missing: `pubfnnew()->ExprNode`",
+      "public signature changed or missing: `pubfnexpr_free(&self)`",
+      "public enum `state_t` missing"
+    ],
+    "restored": []
+  },
+  "build": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      {
+        "level": "warning",
+        "code": "unused_macros",
+        "file": "src/mapper_expr.rs",
+        "line": 29,
+        "message": "unused macro definition: `trace`",
+        "rendered": "warning: unused macro definition: `trace`\n  --> src/mapper_expr.rs:29:14\n   |\n29 | macro_rules! trace {\n   |              ^^^^^\n   |\n   = note: `#[warn(unused_macros)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/mapper_expr.rs",
+        "line": 533,
+        "message": "unused variable: `input_vec`",
+        "rendered": "warning: unused variable: `input_vec`\n   --> src/mapper_expr.rs:533:21\n    |\n533 |                 let input_vec = input_vector.expect(\"Input required but not provided for expression evaluation\");\n    |                     ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_input_vec`\n    |\n    = note: `#[warn(unused_variables)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "private_interfaces",
+        "file": "src/mapper_expr.rs",
+        "line": 360,
+        "message": "type `Token` is more private than the item `ExprNode::tok`",
+        "rendered": "warning: type `Token` is more private than the item `ExprNode::tok`\n   --> src/mapper_expr.rs:360:5\n    |\n360 |     pub tok: Token,\n    |     ^^^^^^^^^^^^^^ field `ExprNode::tok` is reachable at visibility `pub`\n    |\nnote: but type `Token` is only usable at visibility `pub(self)`\n   --> src/mapper_expr.rs:155:1\n    |\n155 | struct Token {\n    | ^^^^^^^^^^^^\n    = note: `#[warn(private_interfaces)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "dead_code",
+        "file": "src/mapper_expr.rs",
+        "line": 90,
+        "message": "variant `NFuncs` is never constructed",
+        "rendered": "warning: variant `NFuncs` is never constructed\n  --> src/mapper_expr.rs:90:5\n   |\n60 | enum ExprFunc {\n   |      -------- variant in this enum\n...\n90 |     NFuncs,\n   |     ^^^^^^\n   |\n   = note: `ExprFunc` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis\n   = note: `#[warn(dead_code)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "dead_code",
+        "file": "src/mapper_expr.rs",
+        "line": 95,
+        "message": "field `name` is never read",
+        "rendered": "warning: field `name` is never read\n  --> src/mapper_expr.rs:95:5\n   |\n94 | struct FunctionEntry {\n   |        ------------- field in this struct\n95 |     name: &'static str,\n   |     ^^^^\n   |\n   = note: `FunctionEntry` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "dead_code",
+        "file": "src/mapper_expr.rs",
+        "line": 386,
+        "message": "method `last` is never used",
+        "rendered": "warning: method `last` is never used\n   --> src/mapper_expr.rs:386:8\n    |\n367 | impl ExprNode {\n    | ------------- method in this implementation\n...\n386 |     fn last(&self) -> &ExprNode {\n    |        ^^^^\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_imports",
+        "file": "src/bin/test.rs",
+        "line": 1,
+        "message": "unused import: `expr::mapper_expr`",
+        "rendered": "warning: unused import: `expr::mapper_expr`\n --> src/bin/test.rs:1:5\n  |\n1 | use expr::mapper_expr;\n  |     ^^^^^^^^^^^^^^^^^\n  |\n  = note: `#[warn(unused_imports)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/bin/test.rs"
+      }
+    ],
+    "timed_out": false
+  },
+  "tests": {
+    "compiled": true,
+    "passed": 0,
+    "total": 2,
+    "status": {
+      "test1": "FAILED",
+      "test2": "FAILED"
+    },
+    "failures": [
+      {
+        "test": "test1",
+        "message": "thread 'test1' panicked at src/bin/test.rs:11:5:\nTest 1 failed: expected 3250.8108, got F(52.0)"
+      },
+      {
+        "test": "test2",
+        "message": "Parsing: y=26.0*2.0/2.0 + x*30.0/(20.0*1.0)\n\nthread 'test2' panicked at src/mapper_expr.rs:548:58:\ncalled `Option::unwrap()` on a `None` value\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace"
+      }
+    ],
+    "compile_errors": [],
+    "timed_out": false
+  },
+  "clippy": {
+    "compiled": true,
+    "categories": {
+      "correctness": {
+        "src": 0,
+        "tests": 0
+      },
+      "style": {
+        "src": 16,
+        "tests": 3
+      },
+      "complexity": {
+        "src": 4,
+        "tests": 1
+      },
+      "perf": {
+        "src": 0,
+        "tests": 0
+      }
+    },
+    "src_total": 20,
+    "tests_total": 4,
+    "grader_command": {
+      "clippy_warnings": 24,
+      "clippy_warnings_src": 20,
+      "rustc_warnings": 14
+    },
+    "warnings": [
+      {
+        "category": "style",
+        "lint": "clippy::uninlined_format_args",
+        "file": "src/mapper_expr.rs",
+        "line": 298,
+        "message": "variables can be used directly in the `format!` string",
+        "rendered": "warning: variables can be used directly in the `format!` string\n   --> src/mapper_expr.rs:298:37\n    |\n298 |                     let float_val = format!(\"{}.{}\", int_str, frac_str).parse().unwrap();\n    |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args\n    = note: `-W clippy::uninlined-format-args` implied by `-W clippy::style`\n    = help: to override `-W clippy::style` add `#[allow(clippy::uninlined_format_args)]`\nhelp: change this to\n    |\n298 -                     let float_val = format!(\"{}.{}\", int_str, frac_str).parse().unwrap();\n298 +                     let float_val = format!(\"{int_str}.{frac_str}\").parse().unwrap();\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::uninlined_format_args",
+        "file": "src/mapper_expr.rs",
+        "line": 298,
+        "message": "variables can be used directly in the `format!` string",
+        "rendered": "warning: variables can be used directly in the `format!` string\n   --> src/mapper_expr.rs:298:37\n    |\n298 |                     let float_val = format!(\"{}.{}\", int_str, frac_str).parse().unwrap();\n    |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args\n    = note: `-W clippy::uninlined-format-args` implied by `-W clippy::style`\n    = help: to override `-W clippy::style` add `#[allow(clippy::uninlined_format_args)]`\nhelp: change this to\n    |\n298 -                     let float_val = format!(\"{}.{}\", int_str, frac_str).parse().unwrap();\n298 +                     let float_val = format!(\"{int_str}.{frac_str}\").parse().unwrap();\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::uninlined_format_args",
+        "file": "src/mapper_expr.rs",
+        "line": 317,
+        "message": "variables can be used directly in the `format!` string",
+        "rendered": "warning: variables can be used directly in the `format!` string\n   --> src/mapper_expr.rs:317:37\n    |\n317 |                     let float_val = format!(\"0.{}\", frac_str).parse().unwrap();\n    |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args\nhelp: change this to\n    |\n317 -                     let float_val = format!(\"0.{}\", frac_str).parse().unwrap();\n317 +                     let float_val = format!(\"0.{frac_str}\").parse().unwrap();\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::uninlined_format_args",
+        "file": "src/mapper_expr.rs",
+        "line": 317,
+        "message": "variables can be used directly in the `format!` string",
+        "rendered": "warning: variables can be used directly in the `format!` string\n   --> src/mapper_expr.rs:317:37\n    |\n317 |                     let float_val = format!(\"0.{}\", frac_str).parse().unwrap();\n    |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args\nhelp: change this to\n    |\n317 -                     let float_val = format!(\"0.{}\", frac_str).parse().unwrap();\n317 +                     let float_val = format!(\"0.{frac_str}\").parse().unwrap();\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::uninlined_format_args",
+        "file": "src/mapper_expr.rs",
+        "line": 347,
+        "message": "variables can be used directly in the `format!` string",
+        "rendered": "warning: variables can be used directly in the `format!` string\n   --> src/mapper_expr.rs:347:29\n    |\n347 | ...                   panic!(\"Unknown function: {}\", name);\n    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args\nhelp: change this to\n    |\n347 -                             panic!(\"Unknown function: {}\", name);\n347 +                             panic!(\"Unknown function: {name}\");\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::uninlined_format_args",
+        "file": "src/mapper_expr.rs",
+        "line": 347,
+        "message": "variables can be used directly in the `format!` string",
+        "rendered": "warning: variables can be used directly in the `format!` string\n   --> src/mapper_expr.rs:347:29\n    |\n347 | ...                   panic!(\"Unknown function: {}\", name);\n    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args\nhelp: change this to\n    |\n347 -                             panic!(\"Unknown function: {}\", name);\n347 +                             panic!(\"Unknown function: {name}\");\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::uninlined_format_args",
+        "file": "src/mapper_expr.rs",
+        "line": 350,
+        "message": "variables can be used directly in the `format!` string",
+        "rendered": "warning: variables can be used directly in the `format!` string\n   --> src/mapper_expr.rs:350:25\n    |\n350 |                         panic!(\"Unknown character '{}' in lexer\", c);\n    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args\nhelp: change this to\n    |\n350 -                         panic!(\"Unknown character '{}' in lexer\", c);\n350 +                         panic!(\"Unknown character '{c}' in lexer\");\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::uninlined_format_args",
+        "file": "src/mapper_expr.rs",
+        "line": 350,
+        "message": "variables can be used directly in the `format!` string",
+        "rendered": "warning: variables can be used directly in the `format!` string\n   --> src/mapper_expr.rs:350:25\n    |\n350 |                         panic!(\"Unknown character '{}' in lexer\", c);\n    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args\nhelp: change this to\n    |\n350 -                         panic!(\"Unknown character '{}' in lexer\", c);\n350 +                         panic!(\"Unknown character '{c}' in lexer\");\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::unnecessary_map_or",
+        "file": "src/mapper_expr.rs",
+        "line": 585,
+        "message": "this `map_or` can be simplified",
+        "rendered": "warning: this `map_or` can be simplified\n   --> src/mapper_expr.rs:585:21\n    |\n585 |                     function_lookup(k).map_or(false, |f| f == func)\n    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_map_or\n    = note: `-W clippy::unnecessary-map-or` implied by `-W clippy::style`\n    = help: to override `-W clippy::style` add `#[allow(clippy::unnecessary_map_or)]`\nhelp: use a standard comparison instead\n    |\n585 -                     function_lookup(k).map_or(false, |f| f == func)\n585 +                     function_lookup(k) == Some(func)\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::unnecessary_map_or",
+        "file": "src/mapper_expr.rs",
+        "line": 585,
+        "message": "this `map_or` can be simplified",
+        "rendered": "warning: this `map_or` can be simplified\n   --> src/mapper_expr.rs:585:21\n    |\n585 |                     function_lookup(k).map_or(false, |f| f == func)\n    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_map_or\n    = note: `-W clippy::unnecessary-map-or` implied by `-W clippy::style`\n    = help: to override `-W clippy::style` add `#[allow(clippy::unnecessary_map_or)]`\nhelp: use a standard comparison instead\n    |\n585 -                     function_lookup(k).map_or(false, |f| f == func)\n585 +                     function_lookup(k) == Some(func)\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::uninlined_format_args",
+        "file": "src/mapper_expr.rs",
+        "line": 640,
+        "message": "variables can be used directly in the `format!` string",
+        "rendered": "warning: variables can be used directly in the `format!` string\n   --> src/mapper_expr.rs:640:13\n    |\n640 |             eprintln!(\"Stack: {:?}, tok: {:?}\", stack, tok);\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args\nhelp: change this to\n    |\n640 -             eprintln!(\"Stack: {:?}, tok: {:?}\", stack, tok);\n640 +             eprintln!(\"Stack: {stack:?}, tok: {tok:?}\");\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::uninlined_format_args",
+        "file": "src/mapper_expr.rs",
+        "line": 640,
+        "message": "variables can be used directly in the `format!` string",
+        "rendered": "warning: variables can be used directly in the `format!` string\n   --> src/mapper_expr.rs:640:13\n    |\n640 |             eprintln!(\"Stack: {:?}, tok: {:?}\", stack, tok);\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args\nhelp: change this to\n    |\n640 -             eprintln!(\"Stack: {:?}, tok: {:?}\", stack, tok);\n640 +             eprintln!(\"Stack: {stack:?}, tok: {tok:?}\");\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::unnecessary_map_or",
+        "file": "src/mapper_expr.rs",
+        "line": 845,
+        "message": "this `map_or` can be simplified",
+        "rendered": "warning: this `map_or` can be simplified\n   --> src/mapper_expr.rs:845:29\n    |\n845 | ...                   function_lookup(k).map_or(false, |f| f == func)\n    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_map_or\nhelp: use a standard comparison instead\n    |\n845 -                             function_lookup(k).map_or(false, |f| f == func)\n845 +                             function_lookup(k) == Some(func)\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::unnecessary_map_or",
+        "file": "src/mapper_expr.rs",
+        "line": 845,
+        "message": "this `map_or` can be simplified",
+        "rendered": "warning: this `map_or` can be simplified\n   --> src/mapper_expr.rs:845:29\n    |\n845 | ...                   function_lookup(k).map_or(false, |f| f == func)\n    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_map_or\nhelp: use a standard comparison instead\n    |\n845 -                             function_lookup(k).map_or(false, |f| f == func)\n845 +                             function_lookup(k) == Some(func)\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::uninlined_format_args",
+        "file": "src/mapper_expr.rs",
+        "line": 999,
+        "message": "variables can be used directly in the `format!` string",
+        "rendered": "warning: variables can be used directly in the `format!` string\n   --> src/mapper_expr.rs:999:9\n    |\n999 |         panic!(\"Expression contains history reference of {}\", oldest_samps);\n    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args\nhelp: change this to\n    |\n999 -         panic!(\"Expression contains history reference of {}\", oldest_samps);\n999 +         panic!(\"Expression contains history reference of {oldest_samps}\");\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::uninlined_format_args",
+        "file": "src/mapper_expr.rs",
+        "line": 999,
+        "message": "variables can be used directly in the `format!` string",
+        "rendered": "warning: variables can be used directly in the `format!` string\n   --> src/mapper_expr.rs:999:9\n    |\n999 |         panic!(\"Expression contains history reference of {}\", oldest_samps);\n    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args\nhelp: change this to\n    |\n999 -         panic!(\"Expression contains history reference of {}\", oldest_samps);\n999 +         panic!(\"Expression contains history reference of {oldest_samps}\");\n    |\n\n"
+      },
+      {
+        "category": "complexity",
+        "lint": "clippy::nonminimal_bool",
+        "file": "src/mapper_expr.rs",
+        "line": 675,
+        "message": "this boolean expression can be simplified",
+        "rendered": "warning: this boolean expression can be simplified\n   --> src/mapper_expr.rs:675:45\n    |\n675 | ...   die_unless!(!rhs.next.is_some() && (rhs.tok.token_type == TokenType::Int || rhs.tok.token_type == TokenType::Float), \"expected lone...\n    |                   ^^^^^^^^^^^^^^^^^^^ help: try: `rhs.next.is_none()`\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#nonminimal_bool\n    = note: `-W clippy::nonminimal-bool` implied by `-W clippy::complexity`\n    = help: to override `-W clippy::complexity` add `#[allow(clippy::nonminimal_bool)]`\n\n"
+      },
+      {
+        "category": "complexity",
+        "lint": "clippy::nonminimal_bool",
+        "file": "src/mapper_expr.rs",
+        "line": 688,
+        "message": "this boolean expression can be simplified",
+        "rendered": "warning: this boolean expression can be simplified\n   --> src/mapper_expr.rs:688:45\n    |\n688 | ...   die_unless!(!rhs.next.is_some() && (rhs.tok.token_type == TokenType::Int || rhs.tok.token_type == TokenType::Float), \"expected lone...\n    |                   ^^^^^^^^^^^^^^^^^^^ help: try: `rhs.next.is_none()`\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#nonminimal_bool\n\n"
+      },
+      {
+        "category": "complexity",
+        "lint": "clippy::nonminimal_bool",
+        "file": "src/mapper_expr.rs",
+        "line": 675,
+        "message": "this boolean expression can be simplified",
+        "rendered": "warning: this boolean expression can be simplified\n   --> src/mapper_expr.rs:675:45\n    |\n675 | ...   die_unless!(!rhs.next.is_some() && (rhs.tok.token_type == TokenType::Int || rhs.tok.token_type == TokenType::Float), \"expected lone...\n    |                   ^^^^^^^^^^^^^^^^^^^ help: try: `rhs.next.is_none()`\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#nonminimal_bool\n    = note: `-W clippy::nonminimal-bool` implied by `-W clippy::complexity`\n    = help: to override `-W clippy::complexity` add `#[allow(clippy::nonminimal_bool)]`\n\n"
+      },
+      {
+        "category": "complexity",
+        "lint": "clippy::nonminimal_bool",
+        "file": "src/mapper_expr.rs",
+        "line": 688,
+        "message": "this boolean expression can be simplified",
+        "rendered": "warning: this boolean expression can be simplified\n   --> src/mapper_expr.rs:688:45\n    |\n688 | ...   die_unless!(!rhs.next.is_some() && (rhs.tok.token_type == TokenType::Int || rhs.tok.token_type == TokenType::Float), \"expected lone...\n    |                   ^^^^^^^^^^^^^^^^^^^ help: try: `rhs.next.is_none()`\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#nonminimal_bool\n\n"
+      }
+    ]
+  },
+  "unsafe": {
+    "tool": "builtin-approximate",
+    "files": [
+      "src/lib.rs",
+      "src/mapper_expr.rs"
+    ],
+    "metrics": {
+      "unsafe_lines": 0,
+      "unsafe_calls": 0,
+      "unsafe_casts": 0,
+      "pointer_arithmetic": 0,
+      "unsafe_blocks": 0,
+      "unsafe_fns": 0,
+      "unsafe_impls": 0,
+      "raw_pointer_types": 0,
+      "ffi": 0,
+      "manual_alloc": 0,
+      "transmute": 0,
+      "forbid_unsafe_code": 0,
+      "primary_total": 0
+    },
+    "locations": []
+  },
+  "score": [
+    1,
+    0,
+    -3,
+    0,
+    -20
+  ],
+  "success": false
+}
