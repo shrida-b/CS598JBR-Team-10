@@ -39,19 +39,22 @@ MP4/
 |---|---|---|
 | Agentic framework | **`crust-agent`**, our own Python controller (no third-party agent framework). It runs an OpenAI-compatible function-calling agent loop inside an outer evaluate → repair loop | v0.1.0, Python 3.13.1 standard library only |
 | Primary provider | **Google Gemini API, free tier** (Google AI Studio key) via its OpenAI-compatible endpoint | `https://generativelanguage.googleapis.com/v1beta/openai/` |
-| Primary model | `gemini-3.8-flash` | "Stable", free of charge on the free tier |
-| Gemini fallbacks (in order) | `gemini-4-hydrogen`, `gemini-3.6-flash` | free-tier models; used on 429/5xx/unavailable |
+| Gemini models: quota-aware cascade, tried in this order | 1. `gemini-4-hydrogen` 2. `gemini-3.8-flash` 3. `gemini-3.6-flash` 4. `gemini-3-flash-preview` (5 RPM / 20 RPD each) → 5. `gemini-3.5-flash-lite` 6. `gemini-3.1-flash-lite` (15 RPM / 500 RPD each) | all free tier. Stronger Flash models are used while their daily quota lasts, then the high-volume Flash-Lite models. A model is skipped for the day after its RPD runs out or it returns 429; 5xx "high demand" responses are retried after 10 s and 20 s, then skipped |
 | Secondary provider | **OpenRouter**, free `:free` endpoints (OpenAI-compatible) | `https://openrouter.ai/api/v1` |
-| OpenRouter models (in order) | `nvidia/nemotron-3-ultra-550b-a55b:free`, `cohere/north-mini-code:free`, `google/gemma-4-31b-it:free` | used only if the Gemini quota runs out mid-run |
+| OpenRouter models (in order) | `nvidia/nemotron-3-ultra-550b-a55b:free`, `cohere/north-mini-code:free`, `google/gemma-4-31b-it:free` | used only if every Gemini model is out of quota |
 | Optional local runtime | **Ollama** (OpenAI-compatible endpoint `localhost:11434/v1`), `qwen2.5-coder:7b` | Ollama 0.40.4; not used by default (8 GB RAM limits it to ~7B models) |
 | Rust toolchain | `nightly-2025-05-13`: rustc 1.89.0-nightly (8405332bd 2025-05-12), cargo 1.89.0-nightly (056f5f4f3 2025-05-09) | same toolchain as grading |
 | Linter | Clippy 0.1.88 (8405332bdf 2025-05-12), categories correctness / style / complexity / perf | |
 | Safety analysis | Instructional team's unsafe-metrics tool (set `[unsafe_metrics].command` once released). Until then, a built-in approximate scanner in `src/` | |
 | Benchmark | CRUST-Bench (`github.com/anirudhkhatry/CRUST-bench`, `datasets/CRUST_bench.zip`) | C from `CBench/`, Rust spec from `RBench/` |
 
-A **single agent** runs with **one active model** at a time. Fallback models take
-over only when the current one is rate-limited or unavailable. Each saved request
-in the trajectories records which model served it.
+A **single agent** runs with **one active model** at a time. The cascade can move a
+run to the next model when a quota runs out, so one run may span several models.
+Each saved request in the trajectories records which model served it.
+
+All six Gemini models passed `python3 src/check_setup.py --provider gemini --all-models`
+on 2026-11-13 (a real function-calling request), except `gemini-3.8-flash`, which
+returned transient 503 "high demand" errors that day.
 
 ## Inference settings (`configs/pipeline.toml [inference]`)
 
@@ -127,7 +130,8 @@ After each iteration, the run stops at the first of these that is true:
 2. **Iteration cap:** 6 outer iterations (`max_iterations`).
 3. **No progress:** the score has not improved for 2 consecutive iterations (`no_progress_patience`).
 4. **Request budget:** the provider's `max_requests_per_run` is used up (Gemini
-   200; OpenRouter 45, which keeps it under its free daily cap). The run
+   300 across all its models; OpenRouter 45, which keeps it under its free daily
+   cap), or every configured model is out of daily quota. The run
    checkpoints, and re-running the same command resumes it.
 
 The final translation is the best-scoring snapshot, not necessarily the last one.
@@ -151,6 +155,7 @@ ollama pull qwen2.5-coder:7b
 
 # 5. Verify everything: toolchain, configs, specs compile, keys + tool calling work
 cd MP4 && python3 src/check_setup.py
+python3 src/check_setup.py --provider gemini --all-models   # probe every model (1 request each)
 ```
 
 ## Running the pipeline
@@ -179,13 +184,27 @@ cargo +nightly-2025-05-13 clippy --all-targets --all-features -- \
 
 ## API / usage limits affecting the experiment
 
-- **Gemini free tier:** quotas apply per Google Cloud project, not per key, and
-  requests-per-day resets at midnight Pacific. Google's docs do not publish free-tier
-  numbers for these models; they are shown only in AI Studio
-  (`aistudio.google.com/rate-limit`). The pipeline therefore uses conservative
-  defaults (8 req/min, 200 requests per run) and backs off 60 s on HTTP 429.
-  Free-tier prompts may be used by Google to improve its products. The inputs here
-  are only public benchmark code.
+- **Gemini free tier:** quotas apply per Google Cloud project (not per key), per
+  model, and requests-per-day resets at midnight Pacific. TPM counts input tokens.
+  Values below were read from our project's AI Studio rate-limit page on 2026-11-13:
+
+  | Model | RPM | TPM | RPD | Used? |
+  |---|---|---|---|---|
+  | `gemini-4-hydrogen` | 5 | 250K | 20 | yes |
+  | `gemini-3.8-flash` | 5 | 250K | 20 | yes (often 503 "high demand") |
+  | `gemini-3.6-flash` | 5 | 250K | 20 | yes |
+  | `gemini-3-flash-preview` | 5 | 250K | 20 | yes |
+  | `gemini-3.5-flash-lite` | 15 | 250K | 500 | yes |
+  | `gemini-3.1-flash-lite` | 15 | 250K | 500 | yes |
+  | Gemma 4 26B / 31B | 30 | **16K** | 14.4K | no: 16K input tokens/min is too small for C source plus conversation context |
+  | Gemini 2.5 Flash / Flash-Lite | 5 / 10 | 250K | 20 | no: deprecated |
+  | Gemini 3.1 Pro, Gemini 4 Carbon / Argon | 0 | 0 | 0 | no: not available on the free tier |
+
+  At most 80 requests/day therefore go to the stronger Flash models, and up to 1,000
+  more to Flash-Lite. The controller keeps a local per-model request ledger
+  (`.cache/quota_usage.json`, git-ignored) so that it skips exhausted models instead
+  of wasting requests on 429s. Free-tier prompts may be used by Google to improve its
+  products; the inputs here are only public benchmark code.
 - **OpenRouter free variants** (docs, Nov 2026): **20 requests/min**, and
   **50 requests/day** for accounts with fewer than 10 purchased credits (we bought
   none). The pipeline throttles to 18 req/min and caps a run at 45 requests.
