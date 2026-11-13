@@ -1,0 +1,80 @@
+{
+  "integrity": {
+    "ok": false,
+    "violations": [
+      "public signature changed or missing: `pubfnnew()->ExprNode`",
+      "public signature changed or missing: `pubfnexpr_free(&self)`"
+    ],
+    "restored": []
+  },
+  "build": {
+    "ok": false,
+    "errors": [
+      {
+        "level": "error",
+        "code": "E0382",
+        "file": "src/mapper_expr.rs",
+        "line": 572,
+        "message": "borrow of moved value: `plhs`",
+        "rendered": "error[E0382]: borrow of moved value: `plhs`\n   --> src/mapper_expr.rs:572:25\n    |\n504 | fn collapse_expr_to_left(plhs: &mut Box<ExprNode>, rhs: Box<ExprNode>, constant_folding: i32, vector_size: i32, _input_is_float: i32, _ou...\n    |                          ---- move occurs because `plhs` has type `&mut Box<ExprNode>`, which does not implement the `Copy` trait\n...\n553 |     let mut last_ptr = plhs;\n    |                        ---- value moved here\n...\n572 |         let next_take = plhs.next.take();\n    |                         ^^^^^^^^^ value borrowed here after move\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      }
+    ],
+    "warnings": [
+      {
+        "level": "warning",
+        "code": "unused_macros",
+        "file": "src/mapper_expr.rs",
+        "line": 29,
+        "message": "unused macro definition: `trace`",
+        "rendered": "warning: unused macro definition: `trace`\n  --> src/mapper_expr.rs:29:14\n   |\n29 | macro_rules! trace {\n   |              ^^^^^\n   |\n   = note: `#[warn(unused_macros)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      }
+    ],
+    "timed_out": false
+  },
+  "tests": {
+    "compiled": false,
+    "passed": 0,
+    "total": 2,
+    "status": {
+      "test1": "NOT RUN",
+      "test2": "NOT RUN"
+    },
+    "failures": [],
+    "compile_errors": [],
+    "timed_out": false
+  },
+  "clippy": null,
+  "unsafe": {
+    "tool": "builtin-approximate",
+    "files": [
+      "src/lib.rs",
+      "src/mapper_expr.rs"
+    ],
+    "metrics": {
+      "unsafe_lines": 0,
+      "unsafe_calls": 0,
+      "unsafe_casts": 0,
+      "pointer_arithmetic": 0,
+      "unsafe_blocks": 0,
+      "unsafe_fns": 0,
+      "unsafe_impls": 0,
+      "raw_pointer_types": 0,
+      "ffi": 0,
+      "manual_alloc": 0,
+      "transmute": 0,
+      "forbid_unsafe_code": 0,
+      "primary_total": 0
+    },
+    "locations": []
+  },
+  "score": [
+    0,
+    0,
+    -2,
+    0,
+    -1000000
+  ],
+  "success": false
+}

@@ -3,14 +3,13 @@
 | | Project | C source | CRUST-Bench Rust spec |
 |---|---|---|---|
 | project_1 | **expr** | `subjects/project_1/` | `benchmark/RBench/expr/` (2 tests) |
-| project_2 | **rbtree-lab** | `subjects/project_2/` | `benchmark/RBench/rbtree_lab/` (7 tests) |
+| project_2 | **rbtree-lab** | `subjects/project_2/` | `benchmark/RBench/rbtree_lab/` (6 tests; a 7th is commented out) |
 
 All models, endpoints and tools used here are **free**: free-tier API keys only, no
 paid credits.
 
-> **Status:** Task 1 (setup, configs, structure, environment check) is complete.
-> The translation controller `src/run_pipeline.py` comes in Task 2. Its interface
-> below is already fixed by `configs/`.
+> **Status:** Task 1 (setup) and Task 2 (pipeline + trajectories) are complete;
+> see `trajectories/project_<N>/TRAJECTORY.md` for each run.
 
 ## Directory layout
 
@@ -19,6 +18,14 @@ MP4/
 ├── README.md
 ├── requirements.txt     # stdlib only (nothing to pip install)
 ├── src/
+│   ├── run_pipeline.py  # controller: setup → agent iterations → evaluation → stop (entry point)
+│   ├── reproduce.sh     # one-command reproduction for a project (check + pipeline + grader eval)
+│   ├── llm.py           # OpenAI-compatible client, quota-aware model cascade, rate limiting
+│   ├── agent_tools.py   # sandboxed tool implementations (file, cargo, unsafe_metrics, finish)
+│   ├── evaluate.py      # integrity guard, build, tests, clippy per category, score, feedback text
+│   ├── unsafe_metrics.py# built-in approximate unsafe-metrics scanner (stand-in for the course tool)
+│   ├── trajectory.py    # redacting JSONL/JSON/Markdown trajectory writer
+│   ├── common.py        # config/env loading, secret redaction, subprocess helpers
 │   └── check_setup.py   # verifies toolchain, configs, spec builds, API keys + tool calling
 ├── configs/
 │   ├── pipeline.toml    # providers/models, inference settings, agent loop, stopping condition,
@@ -119,7 +126,11 @@ errors, failing tests with assertion messages, Clippy warnings per category, uns
 locations, integrity violations) into `prompts/repair.md`.
 
 **Score** (used for the best snapshot and for measuring progress), compared
-lexicographically: builds → tests passed → −(primary unsafe total) → −(Clippy total).
+lexicographically: builds → tests passed → −(integrity violations) →
+−(primary unsafe total) → −(Clippy total in `src/`). Integrity violations block
+success and appear first in the repair feedback. They lower the score without
+discarding an otherwise working translation. A tampered test file is restored
+before testing, so it can never be what makes tests pass.
 
 ## Stopping condition
 
@@ -128,7 +139,7 @@ After each iteration, the run stops at the first of these that is true:
 1. **Success:** integrity checks pass, `cargo build` succeeds, all tests pass,
    all four primary unsafe metrics are 0, and Clippy total ≤ 0.
 2. **Iteration cap:** 6 outer iterations (`max_iterations`).
-3. **No progress:** the score has not improved for 2 consecutive iterations (`no_progress_patience`).
+3. **No progress:** the score has not improved for 3 consecutive iterations (`no_progress_patience`).
 4. **Request budget:** the provider's `max_requests_per_run` is used up (Gemini
    300 across all its models; OpenRouter 45, which keeps it under its free daily
    cap), or every configured model is out of daily quota. The run
@@ -160,17 +171,49 @@ python3 src/check_setup.py --provider gemini --all-models   # probe every model 
 
 ## Running the pipeline
 
+One command reproduces everything for a project: environment check, the agentic
+loop, then a grader-style build/test/clippy/unsafe evaluation.
+
 ```bash
-cd MP4
-python3 src/run_pipeline.py --project project_1                       # expr
-python3 src/run_pipeline.py --project project_2                       # rbtree-lab
-python3 src/run_pipeline.py --project project_1 --provider openrouter  # override provider
+bash MP4/src/reproduce.sh project_1 --fresh     # expr
+bash MP4/src/reproduce.sh project_2 --fresh     # rbtree-lab
 ```
 
-Output goes to `translations/project_N/` (the Rust crate) and
-`trajectories/project_N/` (model messages, tool calls, per-iteration feedback and
-diffs, and `summary.json`). API keys are redacted from every log before it is
-written.
+Or call the controller directly (from `MP4/`):
+
+```bash
+python3 src/run_pipeline.py --project project_1            # start, or resume a paused run
+python3 src/run_pipeline.py --project project_1 --fresh    # discard previous run and restart
+python3 src/run_pipeline.py --project project_1 --provider openrouter --max-iterations 4
+python3 src/run_pipeline.py --project project_1 --evaluate-only
+python3 src/run_pipeline.py --project project_1 --refresh-summary   # rewrite summary files, no model calls
+```
+
+The same code runs both projects. Project-specific input comes only from
+`configs/projects.toml` (paths, module names, test files), and the C sources,
+interface and tests are inlined into the first prompt automatically.
+
+If the free quota runs out mid-run, the controller evaluates the crate, saves
+`state.json` with status `paused_quota` and exits. Re-running the same command
+resumes at the next iteration.
+
+### Trajectory format (`trajectories/project_N/`)
+
+| File | Contents |
+|---|---|
+| `TRAJECTORY.md` | human-readable summary: per-iteration score, agent turns, revert decisions, final evaluation |
+| `events.jsonl` | every event in order: prompts, each model response (serving model, token usage, text, tool calls), each tool call with arguments and (truncated) result, API errors/retries, quota waits, iteration ends |
+| `iter_NN/prompt.md` | exact user prompt of iteration N (translate or repair + feedback) |
+| `iter_NN/session_messages.json` | full message list of the agent session (system, user, assistant, tool) |
+| `iter_NN/feedback.{json,md}` | controller evaluation after iteration N: integrity, build diagnostics, test results and failure messages, Clippy per category, unsafe metrics |
+| `iter_NN/diff.patch`, `iter_NN/snapshot/` | what the agent changed in iteration N, and the resulting sources |
+| `iter_00/` | baseline evaluation of the untouched interface skeleton |
+| `final_evaluation.{json,md}`, `summary.json`, `state.json` | final status, best iteration, metrics, request counts per model |
+| `previous_runs/run_<start>/` | earlier runs of the same project, kept for transparency (`--fresh` archives instead of deleting) |
+
+Output goes to `translations/project_N/` (the final Rust crate: the best-scoring
+snapshot) and `trajectories/project_N/`. API keys are redacted from every log
+before it is written.
 
 Evaluating a final translation by hand:
 
@@ -181,6 +224,17 @@ cargo +nightly-2025-05-13 test
 cargo +nightly-2025-05-13 clippy --all-targets --all-features -- \
     -W clippy::correctness -W clippy::style -W clippy::complexity -W clippy::perf
 ```
+
+## Manual interventions log
+
+The handout requires documenting every manual intervention. No translated Rust
+code was ever edited by hand: all program logic in `translations/` was written by
+the agent.
+
+| Date | What changed | Why | Program logic affected? |
+|---|---|---|---|
+| 2026-11-13 | Controller fix in `src/evaluate.py`: the public-signature check now ignores `mut` in parameter patterns (`mut self` ≡ `self`) | The first project_2 run produced a correct translation (6/6 tests, 0 Clippy, 0 unsafe), but the check flagged `pub fn delete_rbtree(mut self)` as an interface change. The controller then reverted to the skeleton. The run was stopped and rerun with `--fresh`; the first run is archived in `trajectories/project_2/previous_runs/` | No. Only the pipeline's checker changed |
+| 2026-11-13 | Controller fixes after the first project_1 run: (a) the signature check ignores lifetime annotations that elision infers (`fn f<'a>(x: &'a T)` ≡ `fn f(x: &T)`); (b) integrity violations became their own score term instead of counting as "does not build"; (c) per-minute limits set below Google's (4 / 12 RPM), because failed requests also count | Run 1 flagged an elided lifetime as an interface change and reverted a 1/2-tests translation to the empty skeleton. Run 1 is archived in `trajectories/project_1/previous_runs/` and the project was rerun with `--fresh` | No. Only the controller changed |
 
 ## API / usage limits affecting the experiment
 

@@ -1,0 +1,187 @@
+{
+  "integrity": {
+    "ok": false,
+    "violations": [
+      "public signature changed or missing: `pubfnmapper_expr_evaluate<'a>(&mutMapperExpr,&'aMapperSignalValue)->MapperSignalValue`",
+      "public enum `state_t` missing"
+    ],
+    "restored": []
+  },
+  "build": {
+    "ok": false,
+    "errors": [
+      {
+        "level": "error",
+        "code": "E0412",
+        "file": "src/mapper_expr.rs",
+        "line": 219,
+        "message": "cannot find type `stack_obj_t` in this scope",
+        "rendered": "error[E0412]: cannot find type `stack_obj_t` in this scope\n   --> src/mapper_expr.rs:219:23\n    |\n219 | fn printstack(stack: &stack_obj_t, stack_size: i32){\n    |                       ^^^^^^^^^^^ not found in this scope\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      }
+    ],
+    "warnings": [
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/mapper_expr.rs",
+        "line": 210,
+        "message": "unused variable: `t`",
+        "rendered": "warning: unused variable: `t`\n   --> src/mapper_expr.rs:210:15\n    |\n210 | fn printtoken(t: &Token){\n    |               ^ help: if this is intentional, prefix it with an underscore: `_t`\n    |\n    = note: `#[warn(unused_variables)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/mapper_expr.rs",
+        "line": 213,
+        "message": "unused variable: `s`",
+        "rendered": "warning: unused variable: `s`\n   --> src/mapper_expr.rs:213:18\n    |\n213 | fn printexprnode(s: &str, list: &ExprNode){\n    |                  ^ help: if this is intentional, prefix it with an underscore: `_s`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/mapper_expr.rs",
+        "line": 213,
+        "message": "unused variable: `list`",
+        "rendered": "warning: unused variable: `list`\n   --> src/mapper_expr.rs:213:27\n    |\n213 | fn printexprnode(s: &str, list: &ExprNode){\n    |                           ^^^^ help: if this is intentional, prefix it with an underscore: `_list`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/mapper_expr.rs",
+        "line": 216,
+        "message": "unused variable: `s`",
+        "rendered": "warning: unused variable: `s`\n   --> src/mapper_expr.rs:216:14\n    |\n216 | fn printexpr(s: &str, list: &MapperExpr){\n    |              ^ help: if this is intentional, prefix it with an underscore: `_s`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/mapper_expr.rs",
+        "line": 216,
+        "message": "unused variable: `list`",
+        "rendered": "warning: unused variable: `list`\n   --> src/mapper_expr.rs:216:23\n    |\n216 | fn printexpr(s: &str, list: &MapperExpr){\n    |                       ^^^^ help: if this is intentional, prefix it with an underscore: `_list`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/mapper_expr.rs",
+        "line": 222,
+        "message": "unused variable: `plhs`",
+        "rendered": "warning: unused variable: `plhs`\n   --> src/mapper_expr.rs:222:26\n    |\n222 | fn collapse_expr_to_left(plhs: &mut ExprNode, constant_folding: i32){\n    |                          ^^^^ help: if this is intentional, prefix it with an underscore: `_plhs`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/mapper_expr.rs",
+        "line": 222,
+        "message": "unused variable: `constant_folding`",
+        "rendered": "warning: unused variable: `constant_folding`\n   --> src/mapper_expr.rs:222:47\n    |\n222 | fn collapse_expr_to_left(plhs: &mut ExprNode, constant_folding: i32){\n    |                                               ^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_constant_folding`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/mapper_expr.rs",
+        "line": 225,
+        "message": "unused variable: `s`",
+        "rendered": "warning: unused variable: `s`\n   --> src/mapper_expr.rs:225:36\n    |\n225 | pub fn mapper_expr_new_from_string(s: &str, \n    |                                    ^ help: if this is intentional, prefix it with an underscore: `_s`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/mapper_expr.rs",
+        "line": 226,
+        "message": "unused variable: `input_is_float`",
+        "rendered": "warning: unused variable: `input_is_float`\n   --> src/mapper_expr.rs:226:33\n    |\n226 | ...                   input_is_float: i32,\n    |                       ^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_input_is_float`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/mapper_expr.rs",
+        "line": 227,
+        "message": "unused variable: `output_is_float`",
+        "rendered": "warning: unused variable: `output_is_float`\n   --> src/mapper_expr.rs:227:33\n    |\n227 | ...                   output_is_float: i32,\n    |                       ^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_output_is_float`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/mapper_expr.rs",
+        "line": 228,
+        "message": "unused variable: `vector_size`",
+        "rendered": "warning: unused variable: `vector_size`\n   --> src/mapper_expr.rs:228:33\n    |\n228 | ...                   vector_size: i32)-> MapperExpr{\n    |                       ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_vector_size`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/mapper_expr.rs",
+        "line": 231,
+        "message": "unused variable: `mapper`",
+        "rendered": "warning: unused variable: `mapper`\n   --> src/mapper_expr.rs:231:29\n    |\n231 | pub fn mapper_expr_evaluate(mapper: &mut MapperExpr, \n    |                             ^^^^^^ help: if this is intentional, prefix it with an underscore: `_mapper`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/mapper_expr.rs",
+        "line": 232,
+        "message": "unused variable: `input`",
+        "rendered": "warning: unused variable: `input`\n   --> src/mapper_expr.rs:232:26\n    |\n232 |                          input: &MapperSignalValue) -> MapperSignalValue{\n    |                          ^^^^^ help: if this is intentional, prefix it with an underscore: `_input`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      }
+    ],
+    "timed_out": false
+  },
+  "tests": {
+    "compiled": false,
+    "passed": 0,
+    "total": 2,
+    "status": {
+      "test1": "NOT RUN",
+      "test2": "NOT RUN"
+    },
+    "failures": [],
+    "compile_errors": [],
+    "timed_out": false
+  },
+  "clippy": null,
+  "unsafe": {
+    "tool": "builtin-approximate",
+    "files": [
+      "src/lib.rs",
+      "src/mapper_expr.rs"
+    ],
+    "metrics": {
+      "unsafe_lines": 0,
+      "unsafe_calls": 0,
+      "unsafe_casts": 0,
+      "pointer_arithmetic": 0,
+      "unsafe_blocks": 0,
+      "unsafe_fns": 0,
+      "unsafe_impls": 0,
+      "raw_pointer_types": 0,
+      "ffi": 0,
+      "manual_alloc": 0,
+      "transmute": 0,
+      "forbid_unsafe_code": 1,
+      "primary_total": 0
+    },
+    "locations": []
+  },
+  "score": [
+    0,
+    0,
+    0,
+    -1000000
+  ],
+  "success": false
+}

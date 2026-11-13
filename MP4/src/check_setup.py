@@ -100,8 +100,8 @@ def load_configs() -> tuple[dict, dict, list]:
 
 
 def check_paths(cfg: dict, projects: dict) -> None:
-    missing = [p for key in ("system_prompt", "translate_prompt", "repair_prompt")
-               if not (MP4 / (p := cfg["agent"][key])).exists()]
+    missing = [cfg["agent"][key] for key in ("system_prompt", "translate_prompt", "repair_prompt")
+               if not (MP4 / cfg["agent"][key]).exists()]
     for pid, proj in projects.items():
         for src in proj["c_sources"]:
             if not (MP4 / proj["c_dir"] / src).exists():
@@ -127,7 +127,8 @@ def check_specs_compile(cfg: dict, projects: dict) -> None:
             for m in proj["modules"]:
                 shutil.copy(crate / "src/interfaces" / f"{m}.rs", crate / "src" / f"{m}.rs")
             res = run(["cargo", f"+{toolchain}", "check", "--all-targets"], cwd=crate)
-            n_tests = sum((crate / t).read_text().count("#[test]") for t in proj["test_files"])
+            n_tests = sum(len(re.findall(r"^\s*#\[test\]", (crate / t).read_text(), re.M))
+                          for t in proj["test_files"])          # ignores commented-out tests
             detail = f"{proj['name']}: {n_tests} benchmark tests"
             if res.returncode != 0:
                 errs = [l for l in res.stderr.splitlines() if l.startswith("error")]

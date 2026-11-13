@@ -1,0 +1,300 @@
+{
+  "integrity": {
+    "ok": true,
+    "violations": [],
+    "restored": []
+  },
+  "build": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/rbtree.rs",
+        "line": 34,
+        "message": "unused variable: `x`",
+        "rendered": "warning: unused variable: `x`\n  --> src/rbtree.rs:34:36\n   |\n34 |     pub fn right_rotate(&mut self, x: NodeRef) {\n   |                                    ^ help: if this is intentional, prefix it with an underscore: `_x`\n   |\n   = note: `#[warn(unused_variables)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/rbtree.rs",
+        "line": 39,
+        "message": "unused variable: `x`",
+        "rendered": "warning: unused variable: `x`\n  --> src/rbtree.rs:39:35\n   |\n39 |     pub fn left_rotate(&mut self, x: NodeRef) {\n   |                                   ^ help: if this is intentional, prefix it with an underscore: `_x`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/rbtree.rs",
+        "line": 44,
+        "message": "unused variable: `node`",
+        "rendered": "warning: unused variable: `node`\n  --> src/rbtree.rs:44:22\n   |\n44 |     pub fn free_node(node: Option<NodeRef>) {\n   |                      ^^^^ help: if this is intentional, prefix it with an underscore: `_node`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/rbtree.rs",
+        "line": 54,
+        "message": "unused variable: `z`",
+        "rendered": "warning: unused variable: `z`\n  --> src/rbtree.rs:54:43\n   |\n54 |     pub fn rbtree_insert_fixup(&mut self, z: NodeRef) {\n   |                                           ^ help: if this is intentional, prefix it with an underscore: `_z`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/rbtree.rs",
+        "line": 59,
+        "message": "unused variable: `key`",
+        "rendered": "warning: unused variable: `key`\n  --> src/rbtree.rs:59:37\n   |\n59 |     pub fn rbtree_insert(&mut self, key: Key) -> Option<NodeRef> {\n   |                                     ^^^ help: if this is intentional, prefix it with an underscore: `_key`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/rbtree.rs",
+        "line": 64,
+        "message": "unused variable: `key`",
+        "rendered": "warning: unused variable: `key`\n  --> src/rbtree.rs:64:31\n   |\n64 |     pub fn rbtree_find(&self, key: Key) -> Option<NodeRef> {\n   |                               ^^^ help: if this is intentional, prefix it with an underscore: `_key`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/rbtree.rs",
+        "line": 79,
+        "message": "unused variable: `u`",
+        "rendered": "warning: unused variable: `u`\n  --> src/rbtree.rs:79:34\n   |\n79 |     pub fn transplant(&mut self, u: NodeRef, v: Option<NodeRef>) {\n   |                                  ^ help: if this is intentional, prefix it with an underscore: `_u`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/rbtree.rs",
+        "line": 79,
+        "message": "unused variable: `v`",
+        "rendered": "warning: unused variable: `v`\n  --> src/rbtree.rs:79:46\n   |\n79 |     pub fn transplant(&mut self, u: NodeRef, v: Option<NodeRef>) {\n   |                                              ^ help: if this is intentional, prefix it with an underscore: `_v`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/rbtree.rs",
+        "line": 84,
+        "message": "unused variable: `x`",
+        "rendered": "warning: unused variable: `x`\n  --> src/rbtree.rs:84:36\n   |\n84 |     pub fn delete_fixup(&mut self, x: Option<NodeRef>) {\n   |                                    ^ help: if this is intentional, prefix it with an underscore: `_x`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/rbtree.rs",
+        "line": 89,
+        "message": "unused variable: `p`",
+        "rendered": "warning: unused variable: `p`\n  --> src/rbtree.rs:89:29\n   |\n89 |     pub fn erase(&mut self, p: NodeRef) {\n   |                             ^ help: if this is intentional, prefix it with an underscore: `_p`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/rbtree.rs",
+        "line": 94,
+        "message": "unused variable: `curr`",
+        "rendered": "warning: unused variable: `curr`\n  --> src/rbtree.rs:94:36\n   |\n94 |     pub fn subtree_to_array(&self, curr: Option<NodeRef>, arr: &mut Vec<Key>, n: usize, count: &mut usize) {\n   |                                    ^^^^ help: if this is intentional, prefix it with an underscore: `_curr`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/rbtree.rs",
+        "line": 94,
+        "message": "unused variable: `arr`",
+        "rendered": "warning: unused variable: `arr`\n  --> src/rbtree.rs:94:59\n   |\n94 |     pub fn subtree_to_array(&self, curr: Option<NodeRef>, arr: &mut Vec<Key>, n: usize, count: &mut usize) {\n   |                                                           ^^^ help: if this is intentional, prefix it with an underscore: `_arr`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/rbtree.rs",
+        "line": 94,
+        "message": "unused variable: `n`",
+        "rendered": "warning: unused variable: `n`\n  --> src/rbtree.rs:94:79\n   |\n94 |     pub fn subtree_to_array(&self, curr: Option<NodeRef>, arr: &mut Vec<Key>, n: usize, count: &mut usize) {\n   |                                                                               ^ help: if this is intentional, prefix it with an underscore: `_n`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/rbtree.rs",
+        "line": 94,
+        "message": "unused variable: `count`",
+        "rendered": "warning: unused variable: `count`\n  --> src/rbtree.rs:94:89\n   |\n94 |     pub fn subtree_to_array(&self, curr: Option<NodeRef>, arr: &mut Vec<Key>, n: usize, count: &mut usize) {\n   |                                                                                         ^^^^^ help: if this is intentional, prefix it with an underscore: `_count`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_variables",
+        "file": "src/rbtree.rs",
+        "line": 99,
+        "message": "unused variable: `n`",
+        "rendered": "warning: unused variable: `n`\n  --> src/rbtree.rs:99:28\n   |\n99 |     pub fn to_array(&self, n: usize) -> Vec<Key> {\n   |                            ^ help: if this is intentional, prefix it with an underscore: `_n`\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_imports",
+        "file": "src/bin/test.rs",
+        "line": 1,
+        "message": "unused import: `Key`",
+        "rendered": "warning: unused import: `Key`\n --> src/bin/test.rs:1:22\n  |\n1 | use rbtree::rbtree::{Key, RBTree};\n  |                      ^^^\n  |\n  = note: `#[warn(unused_imports)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/bin/test.rs"
+      },
+      {
+        "level": "warning",
+        "code": "dead_code",
+        "file": "src/bin/test.rs",
+        "line": 55,
+        "message": "function `insert_arr` is never used",
+        "rendered": "warning: function `insert_arr` is never used\n  --> src/bin/test.rs:55:4\n   |\n55 | fn insert_arr(t: &mut RBTree, arr: &[i32]) {\n   |    ^^^^^^^^^^\n   |\n   = note: `#[warn(dead_code)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/bin/test.rs"
+      }
+    ],
+    "timed_out": false
+  },
+  "tests": {
+    "compiled": true,
+    "passed": 0,
+    "total": 6,
+    "status": {
+      "test_find_single": "FAILED",
+      "test_insert_single": "FAILED",
+      "test_to_array": "FAILED",
+      "test_erase_root": "FAILED",
+      "test_multi_instance": "FAILED",
+      "test_init": "FAILED"
+    },
+    "failures": [
+      {
+        "test": "test_find_single",
+        "message": "thread 'test_find_single' panicked at src/rbtree.rs:30:9:\nnot implemented"
+      },
+      {
+        "test": "test_insert_single",
+        "message": "thread 'test_insert_single' panicked at src/rbtree.rs:30:9:\nnot implemented"
+      },
+      {
+        "test": "test_to_array",
+        "message": "thread 'test_to_array' panicked at src/rbtree.rs:30:9:\nnot implemented"
+      },
+      {
+        "test": "test_erase_root",
+        "message": "thread 'test_erase_root' panicked at src/rbtree.rs:30:9:\nnot implemented\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace"
+      },
+      {
+        "test": "test_multi_instance",
+        "message": "thread 'test_multi_instance' panicked at src/rbtree.rs:30:9:\nnot implemented"
+      },
+      {
+        "test": "test_init",
+        "message": "thread 'test_init' panicked at src/rbtree.rs:30:9:\nnot implemented"
+      }
+    ],
+    "compile_errors": [],
+    "timed_out": false
+  },
+  "clippy": {
+    "compiled": true,
+    "categories": {
+      "correctness": {
+        "src": 0,
+        "tests": 0
+      },
+      "style": {
+        "src": 4,
+        "tests": 0
+      },
+      "complexity": {
+        "src": 0,
+        "tests": 0
+      },
+      "perf": {
+        "src": 0,
+        "tests": 0
+      }
+    },
+    "src_total": 4,
+    "tests_total": 0,
+    "grader_command": {
+      "clippy_warnings": 4,
+      "clippy_warnings_src": 4,
+      "rustc_warnings": 32
+    },
+    "warnings": [
+      {
+        "category": "style",
+        "lint": "clippy::new_without_default",
+        "file": "src/rbtree.rs",
+        "line": 29,
+        "message": "you should consider adding a `Default` implementation for `RBTree`",
+        "rendered": "warning: you should consider adding a `Default` implementation for `RBTree`\n  --> src/rbtree.rs:29:5\n   |\n29 | /     pub fn new() -> Self {\n30 | |         unimplemented!()\n31 | |     }\n   | |_____^\n   |\n   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#new_without_default\n   = note: `-W clippy::new-without-default` implied by `-W clippy::style`\n   = help: to override `-W clippy::style` add `#[allow(clippy::new_without_default)]`\nhelp: try adding this\n   |\n28 + impl Default for RBTree {\n29 +     fn default() -> Self {\n30 +         Self::new()\n31 +     }\n32 + }\n   |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::new_without_default",
+        "file": "src/rbtree.rs",
+        "line": 29,
+        "message": "you should consider adding a `Default` implementation for `RBTree`",
+        "rendered": "warning: you should consider adding a `Default` implementation for `RBTree`\n  --> src/rbtree.rs:29:5\n   |\n29 | /     pub fn new() -> Self {\n30 | |         unimplemented!()\n31 | |     }\n   | |_____^\n   |\n   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#new_without_default\n   = note: `-W clippy::new-without-default` implied by `-W clippy::style`\n   = help: to override `-W clippy::style` add `#[allow(clippy::new_without_default)]`\nhelp: try adding this\n   |\n28 + impl Default for RBTree {\n29 +     fn default() -> Self {\n30 +         Self::new()\n31 +     }\n32 + }\n   |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::ptr_arg",
+        "file": "src/rbtree.rs",
+        "line": 94,
+        "message": "writing `&mut Vec` instead of `&mut [_]` involves a new object where a slice will do",
+        "rendered": "warning: writing `&mut Vec` instead of `&mut [_]` involves a new object where a slice will do\n  --> src/rbtree.rs:94:64\n   |\n94 |     pub fn subtree_to_array(&self, curr: Option<NodeRef>, arr: &mut Vec<Key>, n: usize, count: &mut usize) {\n   |                                                                ^^^^^^^^^^^^^ help: change this to: `&mut [Key]`\n   |\n   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg\n   = note: `-W clippy::ptr-arg` implied by `-W clippy::style`\n   = help: to override `-W clippy::style` add `#[allow(clippy::ptr_arg)]`\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::ptr_arg",
+        "file": "src/rbtree.rs",
+        "line": 94,
+        "message": "writing `&mut Vec` instead of `&mut [_]` involves a new object where a slice will do",
+        "rendered": "warning: writing `&mut Vec` instead of `&mut [_]` involves a new object where a slice will do\n  --> src/rbtree.rs:94:64\n   |\n94 |     pub fn subtree_to_array(&self, curr: Option<NodeRef>, arr: &mut Vec<Key>, n: usize, count: &mut usize) {\n   |                                                                ^^^^^^^^^^^^^ help: change this to: `&mut [Key]`\n   |\n   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg\n   = note: `-W clippy::ptr-arg` implied by `-W clippy::style`\n   = help: to override `-W clippy::style` add `#[allow(clippy::ptr_arg)]`\n\n"
+      }
+    ]
+  },
+  "unsafe": {
+    "tool": "builtin-approximate",
+    "files": [
+      "src/lib.rs",
+      "src/rbtree.rs"
+    ],
+    "metrics": {
+      "unsafe_lines": 0,
+      "unsafe_calls": 0,
+      "unsafe_casts": 0,
+      "pointer_arithmetic": 0,
+      "unsafe_blocks": 0,
+      "unsafe_fns": 0,
+      "unsafe_impls": 0,
+      "raw_pointer_types": 0,
+      "ffi": 0,
+      "manual_alloc": 0,
+      "transmute": 0,
+      "forbid_unsafe_code": 0,
+      "primary_total": 0
+    },
+    "locations": []
+  },
+  "score": [
+    1,
+    0,
+    0,
+    -4
+  ],
+  "success": false
+}
