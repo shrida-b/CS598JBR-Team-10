@@ -151,7 +151,12 @@ class ToolExecutor:
             else:
                 text = f"cargo {command}: FAILED with {len(b['errors'])} error(s)\n" + \
                        "\n".join(e["rendered"] for e in b["errors"][:20])
-            return text, {"ok_build": b["ok"], "errors": len(b["errors"]), "warnings": len(b["warnings"])}
+            iv = self.ev.interface_violations()
+            text += ("\nInterface check: OK (all required public items present with the specified signatures)"
+                     if not iv else "\nInterface check: VIOLATIONS - restore these exactly as in the interface:\n"
+                     + "\n".join(f"  {v}" for v in iv))
+            return text, {"ok_build": b["ok"], "errors": len(b["errors"]), "warnings": len(b["warnings"]),
+                          "interface_violations": len(iv)}
         if command == "test":
             t = self.ev.tests()
             if not t["compiled"]:

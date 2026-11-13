@@ -9,6 +9,10 @@ Rust crate `{crate_name}` (under `rust/`). Modules to implement:
 Benchmark tests (read-only):
 {test_files}
 
+Required public API (from the interface; every item must exist with exactly this
+signature, even if the tests do not use it):
+{required_api}
+
 Steps:
 1. Study the C sources and headers to understand data structures and behavior.
 2. Study the Rust interface file(s) and the tests to learn the exact required API

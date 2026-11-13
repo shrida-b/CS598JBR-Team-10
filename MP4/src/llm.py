@@ -36,7 +36,10 @@ class ModelPool:
         self.inf = cfg["inference"]
         self.traj = trajectory
         active = provider or cfg["model"]["provider"]
-        order = [active] + [p for p in cfg["model"]["provider_fallbacks"] if p != active]
+        order = [active]
+        for p in [*cfg["model"]["provider_fallbacks"], cfg["model"]["provider"]]:
+            if p not in order:          # an overridden provider still falls back to the default one
+                order.append(p)
         self.candidates = []           # (provider, model_cfg)
         for p in order:
             pc = cfg["providers"][p]

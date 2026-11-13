@@ -91,6 +91,8 @@ def diff_text(before: dict[str, str], after: dict[str, str]) -> str:
 
 
 def score_text(s: list) -> str:
+    if len(s) == 1:                     # sentinel: no translation iteration completed yet
+        return "no translation yet"
     if len(s) == 4:                     # runs recorded before integrity became its own score term
         s = [s[0], s[1], 0, s[2], s[3]]
     return (f"builds={s[0]} tests_passed={s[1]} integrity_violations={-s[2]} unsafe={-s[3]} "
@@ -115,11 +117,16 @@ def inline_files(paths: list[tuple[str, Path]], max_chars: int) -> str:
     return "\n\n".join(chunks)
 
 
-def translate_prompt(cfg, proj, k, max_iter) -> str:
+def c_context_files(proj) -> list[tuple[str, Path]]:
+    c_dir = MP4 / proj["c_dir"]
+    return [(f"c/{s}", c_dir / s) for s in proj["c_sources"]]
+
+
+def translate_prompt(cfg, proj, k, max_iter, required_api) -> str:
     c_dir, spec = MP4 / proj["c_dir"], MP4 / proj["rust_spec_dir"]
     ctx = ""
     if cfg["agent"]["inline_context"]:
-        files = [(f"c/{s}", c_dir / s) for s in proj["c_sources"]]
+        files = c_context_files(proj)
         files += [(f"rust/src/{m}.rs (interface to implement)", spec / "src/interfaces" / f"{m}.rs")
                   for m in proj["modules"]]
         files += [(f"rust/{t} (read-only tests)", spec / t) for t in proj["test_files"]]
@@ -133,18 +140,19 @@ def translate_prompt(cfg, proj, k, max_iter) -> str:
         "modules": "\n".join(f"- `{m}` -> rust/src/{m}.rs" for m in proj["modules"]),
         "test_files": "\n".join(f"- rust/{t}" for t in proj["test_files"]),
         "inlined_context": ctx,
+        "required_api": required_api,
     })
 
 
-def repair_prompt(cfg, proj, k, max_iter, report, regression_note, crate) -> str:
+def repair_prompt(cfg, proj, k, max_iter, report, regression_note, crate, required_api) -> str:
     vals = feedback_sections(report, cfg["agent"]["tool_output_char_limit"])
     current = ""
     if cfg["agent"]["inline_context"]:
-        files = [(f"rust/{rel}", crate / rel) for rel in own_sources(crate)]
-        current = "## Current Rust sources (supplied automatically)\n\n" + inline_files(
+        files = [(f"rust/{rel}", crate / rel) for rel in own_sources(crate)] + c_context_files(proj)
+        current = "## Current Rust sources and original C sources (supplied automatically)\n\n" + inline_files(
             files, cfg["agent"]["inline_context_max_chars"])
     vals.update({"iteration": k, "max_iterations": max_iter, "project_name": proj["name"],
-                 "regression_note": regression_note, "current_rust": current})
+                 "regression_note": regression_note, "current_rust": current, "required_api": required_api})
     return fill_template(read_cfg_file(cfg["agent"]["repair_prompt"]), vals)
 
 
@@ -280,8 +288,10 @@ def main() -> int:
         snapshot(crate, traj_dir / "iter_00/snapshot")
         traj.write_json("iter_00/feedback.json", base)
         traj.write_text("iter_00/feedback.md", report_markdown(base))
+        # The untouched skeleton (iteration 0) is only a reference point: it is never "best", so the
+        # first real translation always becomes the best snapshot and later regressions revert to it.
         state = {"project": args.project, "name": proj["name"], "started": now_iso(), "iteration": 0,
-                 "best_iteration": 0, "best_score": base["score"], "no_progress": 0, "status": "running",
+                 "best_iteration": 0, "best_score": [-1], "no_progress": 0, "status": "running",
                  "history": [{"iteration": 0, "score": base["score"], "note": "skeleton baseline"}],
                  "runs": [], "requests": {}, "models_used": {}}
         traj.event("run_start", project=args.project, name=proj["name"], baseline=score_text(base["score"]))
@@ -308,10 +318,11 @@ def main() -> int:
         k = state["iteration"] + 1
         traj.iteration = k
         before = own_sources(crate)
+        required_api = evaluator.required_api()
         if k == 1:
-            prompt = translate_prompt(cfg, proj, k, max_iter)
+            prompt = translate_prompt(cfg, proj, k, max_iter, required_api)
         else:
-            prompt = repair_prompt(cfg, proj, k, max_iter, last_report, regression_note, crate)
+            prompt = repair_prompt(cfg, proj, k, max_iter, last_report, regression_note, crate, required_api)
         traj.write_text(f"iter_{k:02d}/prompt.md", prompt)
         traj.event("iteration_start", prompt_kind="translate" if k == 1 else "repair")
         print(f"[{args.project}] iteration {k}/{max_iter} ...", flush=True)
@@ -339,7 +350,10 @@ def main() -> int:
             state["best_score"], state["best_iteration"], state["no_progress"] = report["score"], k, 0
         else:
             state["no_progress"] += 1
-            if report["score"] < state["best_score"] and cfg["agent"]["keep_best_snapshot"]:
+            # Revert only to a real earlier translation, never to the untouched interface skeleton
+            # (iteration 0): a full but imperfect translation is a better starting point for repair.
+            if (report["score"] < state["best_score"] and cfg["agent"]["keep_best_snapshot"]
+                    and state["best_iteration"] > 0):
                 restore(traj_dir / f"iter_{state['best_iteration']:02d}/snapshot", crate)
                 regression_note = (f"**Note:** iteration {k} scored worse ({score_text(report['score'])}) than "
                                    f"iteration {state['best_iteration']} ({score_text(state['best_score'])}). "

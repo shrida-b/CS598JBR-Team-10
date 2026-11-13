@@ -29,6 +29,9 @@ The controller evaluated the crate independently after your previous iteration.
 {unsafe_feedback}
 ```
 
+## Required public API (must all be present with these exact signatures)
+{required_api}
+
 ## Your task
 Fix the problems above in priority order:
 1. integrity violations and compile errors,

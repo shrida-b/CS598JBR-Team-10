@@ -159,6 +159,26 @@ class Evaluator:
         violations += self._test_literal_leaks()
         return {"ok": not violations, "violations": violations, "restored": restored}
 
+    def required_api(self) -> str:
+        """Checklist of public items from the interface spec (auto-extracted, project-agnostic)."""
+        lines = []
+        for mod in self.project["modules"]:
+            iface = blank_comments_and_strings((self.spec / "src/interfaces" / f"{mod}.rs").read_text())
+            for kind, name in re.findall(r"\bpub\s+(struct|enum|type|trait)\s+(\w+)", iface):
+                lines.append(f"- [{mod}] pub {kind} {name}")
+            for m in re.finditer(r"\bpub\s+fn\s+\w+[^{;]*", iface):
+                lines.append(f"- [{mod}] " + " ".join(m.group(0).split()))
+        return "\n".join(lines)
+
+    def interface_violations(self) -> list[str]:
+        """Cheap subset of integrity() for the agent's own cargo check/build calls."""
+        src_text = self._own_sources_text()
+        out = self._signature_violations(src_text)
+        lib = (self.crate / "src/lib.rs").read_text() if (self.crate / "src/lib.rs").exists() else ""
+        out += [f"src/lib.rs no longer declares `pub mod {m};`" for m in self.project["modules"]
+                if not re.search(rf"\bpub\s+mod\s+{m}\s*;", lib)]
+        return out
+
     def _own_files(self) -> list[Path]:
         return [f for f in sorted((self.crate / "src").rglob("*.rs"))
                 if not f.relative_to(self.crate).as_posix().startswith(("src/bin/", "src/interfaces/"))]

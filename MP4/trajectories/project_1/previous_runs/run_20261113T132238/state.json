@@ -1,0 +1,72 @@
+{
+  "project": "project_1",
+  "name": "expr",
+  "started": "2026-11-13T13:22:38-06:00",
+  "iteration": 1,
+  "best_iteration": 0,
+  "best_score": [
+    1,
+    0,
+    0,
+    0,
+    -4
+  ],
+  "no_progress": 1,
+  "status": "running",
+  "history": [
+    {
+      "iteration": 0,
+      "score": [
+        1,
+        0,
+        0,
+        0,
+        -4
+      ],
+      "note": "skeleton baseline"
+    },
+    {
+      "iteration": 1,
+      "score": [
+        1,
+        0,
+        -3,
+        0,
+        -20
+      ],
+      "turns": 25,
+      "finished_by_agent": false,
+      "agent_summary": "",
+      "files_read": [
+        "rust/src/mapper_expr.rs"
+      ],
+      "files_written": [
+        "rust/src/mapper_expr.rs"
+      ],
+      "seconds": 597,
+      "improved": false,
+      "success": false,
+      "paused_for_quota": false,
+      "reverted_to": 0
+    }
+  ],
+  "runs": [
+    {
+      "started": "2026-11-13T13:22:38-06:00",
+      "provider": "openrouter"
+    }
+  ],
+  "requests": {
+    "openrouter": 25
+  },
+  "models_used": {
+    "gemini/gemini-4-hydrogen": 12,
+    "gemini/gemini-3.8-flash": 6,
+    "gemini/gemini-3.6-flash": 19,
+    "gemini/gemini-3-flash-preview": 20,
+    "gemini/gemini-3.5-flash-lite": 39,
+    "gemini/gemini-3.1-flash-lite": 27,
+    "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free": 25
+  },
+  "pending_regression_note": "**Note:** iteration 1 scored worse (builds=1 tests_passed=0 integrity_violations=3 unsafe=0 clippy_src=20) than iteration 0 (builds=1 tests_passed=0 integrity_violations=0 unsafe=0 clippy_src=4). The controller reverted the code to iteration 0; the feedback below is for that restored version."
+}

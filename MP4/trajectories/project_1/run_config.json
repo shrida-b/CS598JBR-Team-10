@@ -128,7 +128,7 @@
     "max_iterations": 6,
     "stop_on_success": true,
     "clippy_target_total": 0,
-    "no_progress_patience": 2
+    "no_progress_patience": 3
   },
   "evaluation": {
     "build": [
@@ -261,5 +261,5 @@
   },
   "project_id": "project_1",
   "max_iterations": 6,
-  "provider_override": null
+  "provider_override": "openrouter"
 }
