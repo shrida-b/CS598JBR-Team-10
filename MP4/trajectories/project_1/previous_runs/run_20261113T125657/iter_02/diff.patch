@@ -1,0 +1,131 @@
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -1 +1,2 @@
+-pub mod mapper_expr;+#![forbid(unsafe_code)]
++pub mod mapper_expr;
+--- a/src/mapper_expr.rs
++++ b/src/mapper_expr.rs
+@@ -1,7 +1,6 @@
+ use std::f32::consts::PI;
+ use std::collections::HashMap;
+ use std::sync::Arc;
+-use lazy_static::lazy_static;
+ #[derive(Clone, Copy, Debug)]
+ pub enum MapperSignalValue {
+     F(f32),
+@@ -9,13 +8,20 @@
+ }
+ impl MapperSignalValue {
+     pub fn as_f32(&self) -> Option<f32> {
+-       unimplemented!() 
++        match self {
++            MapperSignalValue::F(f) => Some(*f),
++            MapperSignalValue::I32(i) => Some(*i as f32),
++        }
+     }
+     pub fn as_i32(&self) -> Option<i32> {
+-        unimplemented!()
++        match self {
++            MapperSignalValue::F(f) => Some(*f as i32),
++            MapperSignalValue::I32(i) => Some(*i),
++        }
+     }
+ }
+ const STACK_SIZE: usize = 256;
++/*
+ macro_rules! trace {
+     ($($arg:tt)*) => {
+         if TRACING {
+@@ -31,14 +37,15 @@
+         }
+     };
+ }
++*/
+ fn minf(x: f32, y: f32) -> f32 {
+-    unimplemented!();
++    x.min(y)
+ }
+ fn maxf(x: f32, y: f32) -> f32 {
+-    unimplemented!();
++    x.max(y)
+ }
+ fn pif() -> f32 {
+-    unimplemented!();
++    PI
+ }
+ #[repr(i32)]
+ #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+@@ -127,11 +134,11 @@
+     var: Option<char>,
+     op: Option<char>,
+ }
+-fn function_lookup(s: &str) -> Option<&'static FunctionEntry> {
+-    unimplemented!();
+-}
+-fn expr_lex(s: Vec<&str>) -> Vec<Token>{
+-    unimplemented!();
++fn function_lookup(_s: &str) -> Option<&'static FunctionEntry> {
++    None
++}
++fn expr_lex(_s: Vec<&str>) -> Vec<Token>{
++    Vec::new()
+ }
+ pub struct ExprNode{
+     pub tok: Token,
+@@ -148,7 +155,9 @@
+     pub input_history: Vec<MapperSignalValue>,
+     pub output_history: Vec<MapperSignalValue>,
+ }
+-pub enum state_t{
++#[allow(non_camel_case_types)]
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum StateT {
+     YEQUAL_Y,
+     YEQUAL_EQ,
+     EXPR,
+@@ -167,13 +176,32 @@
+     COMMA,
+     END,
+ }
+-enum stack_obj_t {
+-    State(state_t),
++#[allow(non_camel_case_types)]
++enum StackObjT {
++    State(StateT),
+     Node(ExprNode),
+ }
++impl Default for ExprNode {
++    fn default() -> Self {
++        Self::new()
++    }
++}
++
+ impl ExprNode{
+     pub fn new() -> ExprNode{
+-        unimplemented!();
++        ExprNode {
++            tok: Token {
++                token_type: TokenType::End,
++                value: None,
++                int_value: None,
++                var: None,
++                op: None,
++            },
++            is_float: 0,
++            history_index: 0,
++            vector_index: 0,
++            next: None,
++        }
+     }
+     pub fn expr_free(&self){
+         unimplemented!();
+@@ -200,7 +228,7 @@
+                                 vector_size: i32)-> MapperExpr{
+     unimplemented!();
+ }
+-pub fn mapper_expr_evaluate<'a>(mapper: &mut MapperExpr, 
+-                         input: &'a MapperSignalValue) -> MapperSignalValue{
++pub fn mapper_expr_evaluate(mapper: &mut MapperExpr, 
++                         input: &MapperSignalValue) -> MapperSignalValue{
+     unimplemented!();
+ }

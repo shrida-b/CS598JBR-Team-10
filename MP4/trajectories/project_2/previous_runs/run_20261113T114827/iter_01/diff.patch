@@ -1,0 +1,694 @@
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -1 +1,3 @@
+-pub mod rbtree;+#![forbid(unsafe_code)]
++
++pub mod rbtree;
+--- a/src/rbtree.rs
++++ b/src/rbtree.rs
+@@ -1,4 +1,5 @@
+ use std::cell::RefCell;
++use std::cmp::Ordering;
+ use std::rc::Rc;
+ 
+ #[derive(Debug, PartialEq, Clone)]
+@@ -19,84 +20,659 @@
+     pub parent: Option<NodeRef>, // None == NIL / root parent
+ }
+ 
+-#[derive(Debug, Clone)]
++#[derive(Debug, Clone, Default)]
+ pub struct RBTree {
+     /// Root of the tree. `None` means the tree is empty (NIL).
+     pub root: Option<NodeRef>,
+ }
+ 
++impl Drop for RBTree {
++    fn drop(&mut self) {
++        Self::free_node(self.root.take());
++    }
++}
++
++fn is_same_node(a: &Option<NodeRef>, b: &Option<NodeRef>) -> bool {
++    match (a, b) {
++        (Some(na), Some(nb)) => Rc::ptr_eq(na, nb),
++        (None, None) => true,
++        _ => false,
++    }
++}
++
++fn is_black(node: &Option<NodeRef>) -> bool {
++    match node {
++        None => true,
++        Some(n) => n.borrow().color == Color::Black,
++    }
++}
++
+ impl RBTree {
+     pub fn new() -> Self {
+-        unimplemented!()
++        Self { root: None }
+     }
+ 
+     /// Performs a right rotation around non-NIL node `x`.
+     pub fn right_rotate(&mut self, x: NodeRef) {
+-        unimplemented!()
++        let x_left = x.borrow().left.clone();
++        let Some(y) = x_left else {
++            return;
++        };
++        let y_right = y.borrow().right.clone();
++        x.borrow_mut().left = y_right.clone();
++        if let Some(yr) = y_right {
++            yr.borrow_mut().parent = Some(x.clone());
++        }
++
++        let x_parent = x.borrow().parent.clone();
++        y.borrow_mut().parent = x_parent.clone();
++        match x_parent {
++            None => self.root = Some(y.clone()),
++            Some(xp) => {
++                let is_left = is_same_node(&Some(x.clone()), &xp.borrow().left);
++                if is_left {
++                    xp.borrow_mut().left = Some(y.clone());
++                } else {
++                    xp.borrow_mut().right = Some(y.clone());
++                }
++            }
++        }
++
++        y.borrow_mut().right = Some(x.clone());
++        x.borrow_mut().parent = Some(y);
+     }
+ 
+     /// Performs a left rotation around non-NIL node `x`.
+     pub fn left_rotate(&mut self, x: NodeRef) {
+-        unimplemented!()
++        let x_right = x.borrow().right.clone();
++        let Some(y) = x_right else {
++            return;
++        };
++        let y_left = y.borrow().left.clone();
++        x.borrow_mut().right = y_left.clone();
++        if let Some(yl) = y_left {
++            yl.borrow_mut().parent = Some(x.clone());
++        }
++
++        let x_parent = x.borrow().parent.clone();
++        y.borrow_mut().parent = x_parent.clone();
++        match x_parent {
++            None => self.root = Some(y.clone()),
++            Some(xp) => {
++                let is_left = is_same_node(&Some(x.clone()), &xp.borrow().left);
++                if is_left {
++                    xp.borrow_mut().left = Some(y.clone());
++                } else {
++                    xp.borrow_mut().right = Some(y.clone());
++                }
++            }
++        }
++
++        y.borrow_mut().left = Some(x.clone());
++        x.borrow_mut().parent = Some(y);
+     }
+ 
+     /// Recursively drops a subtree. `None` is treated as NIL.
+     pub fn free_node(node: Option<NodeRef>) {
+-        unimplemented!()
++        if let Some(n) = node {
++            let (left, right) = {
++                let mut b = n.borrow_mut();
++                b.parent = None;
++                (b.left.take(), b.right.take())
++            };
++            Self::free_node(left);
++            Self::free_node(right);
++        }
+     }
+ 
+     /// Deletes the Red-Black Tree safely.
+-    pub fn delete_rbtree(self) {
+-        unimplemented!()
++    pub fn delete_rbtree(mut self) {
++        Self::free_node(self.root.take());
+     }
+ 
+     /// Fixes the Red-Black Tree after insertion (z must be non-NIL).
+-    pub fn rbtree_insert_fixup(&mut self, z: NodeRef) {
+-        unimplemented!()
++    pub fn rbtree_insert_fixup(&mut self, mut z: NodeRef) {
++        loop {
++            let z_parent = z.borrow().parent.clone();
++            let Some(zp) = z_parent else {
++                break;
++            };
++            if zp.borrow().color != Color::Red {
++                break;
++            }
++            let zp_parent = zp.borrow().parent.clone();
++            let Some(zpp) = zp_parent else {
++                break;
++            };
++
++            let parent_is_left = is_same_node(&Some(zp.clone()), &zpp.borrow().left);
++            if parent_is_left {
++                let y = zpp.borrow().right.clone();
++                if !is_black(&y) {
++                    zp.borrow_mut().color = Color::Black;
++                    if let Some(yn) = y {
++                        yn.borrow_mut().color = Color::Black;
++                    }
++                    zpp.borrow_mut().color = Color::Red;
++                    z = zpp;
++                } else {
++                    if is_same_node(&Some(z.clone()), &zp.borrow().right) {
++                        z = zp;
++                        self.left_rotate(z.clone());
++                    }
++                    let new_zp_opt = z.borrow().parent.clone();
++                    if let Some(new_zp) = new_zp_opt {
++                        new_zp.borrow_mut().color = Color::Black;
++                        let new_zpp_opt = new_zp.borrow().parent.clone();
++                        if let Some(new_zpp) = new_zpp_opt {
++                            new_zpp.borrow_mut().color = Color::Red;
++                            self.right_rotate(new_zpp);
++                        }
++                    }
++                }
++            } else {
++                let y = zpp.borrow().left.clone();
++                if !is_black(&y) {
++                    zp.borrow_mut().color = Color::Black;
++                    if let Some(yn) = y {
++                        yn.borrow_mut().color = Color::Black;
++                    }
++                    zpp.borrow_mut().color = Color::Red;
++                    z = zpp;
++                } else {
++                    if is_same_node(&Some(z.clone()), &zp.borrow().left) {
++                        z = zp;
++                        self.right_rotate(z.clone());
++                    }
++                    let new_zp_opt = z.borrow().parent.clone();
++                    if let Some(new_zp) = new_zp_opt {
++                        new_zp.borrow_mut().color = Color::Black;
++                        let new_zpp_opt = new_zp.borrow().parent.clone();
++                        if let Some(new_zpp) = new_zpp_opt {
++                            new_zpp.borrow_mut().color = Color::Red;
++                            self.left_rotate(new_zpp);
++                        }
++                    }
++                }
++            }
++        }
++
++        if let Some(ref root) = self.root {
++            root.borrow_mut().color = Color::Black;
++        }
+     }
+ 
+     /// Inserts a new key and returns the inserted node.
+     pub fn rbtree_insert(&mut self, key: Key) -> Option<NodeRef> {
+-        unimplemented!()
++        let mut y: Option<NodeRef> = None;
++        let mut x = self.root.clone();
++
++        while let Some(curr) = x {
++            y = Some(curr.clone());
++            x = if key < curr.borrow().key {
++                curr.borrow().left.clone()
++            } else {
++                curr.borrow().right.clone()
++            };
++        }
++
++        let z = Rc::new(RefCell::new(Node {
++            key,
++            color: Color::Red,
++            left: None,
++            right: None,
++            parent: y.clone(),
++        }));
++
++        match y {
++            None => self.root = Some(z.clone()),
++            Some(ref y_node) => {
++                if key < y_node.borrow().key {
++                    y_node.borrow_mut().left = Some(z.clone());
++                } else {
++                    y_node.borrow_mut().right = Some(z.clone());
++                }
++            }
++        }
++
++        self.rbtree_insert_fixup(z.clone());
++        Some(z)
+     }
+ 
+     /// Finds a node by key. Returns `None` if not found.
+     pub fn rbtree_find(&self, key: Key) -> Option<NodeRef> {
+-        unimplemented!()
++        let mut curr = self.root.clone();
++        while let Some(node) = curr {
++            let node_key = node.borrow().key;
++            match key.cmp(&node_key) {
++                Ordering::Equal => return Some(node),
++                Ordering::Greater => curr = node.borrow().right.clone(),
++                Ordering::Less => curr = node.borrow().left.clone(),
++            }
++        }
++        None
+     }
+ 
+     /// Returns the minimum node, or `None` if the tree is empty.
+     pub fn rbtree_min(&self) -> Option<NodeRef> {
+-        unimplemented!()
++        let mut curr = self.root.clone()?;
++        loop {
++            let left = curr.borrow().left.clone();
++            match left {
++                Some(l) => curr = l,
++                None => return Some(curr),
++            }
++        }
+     }
+ 
+     /// Returns the maximum node, or `None` if the tree is empty.
+     pub fn rbtree_max(&self) -> Option<NodeRef> {
+-        unimplemented!()
++        let mut curr = self.root.clone()?;
++        loop {
++            let right = curr.borrow().right.clone();
++            match right {
++                Some(r) => curr = r,
++                None => return Some(curr),
++            }
++        }
+     }
+ 
+     /// Replaces subtree rooted at `u` with subtree rooted at `v` (`None` == NIL).
+     pub fn transplant(&mut self, u: NodeRef, v: Option<NodeRef>) {
+-        unimplemented!()
++        let u_parent = u.borrow().parent.clone();
++        match u_parent {
++            None => self.root = v.clone(),
++            Some(ref up) => {
++                let is_left = is_same_node(&Some(u.clone()), &up.borrow().left);
++                if is_left {
++                    up.borrow_mut().left = v.clone();
++                } else {
++                    up.borrow_mut().right = v.clone();
++                }
++            }
++        }
++        if let Some(v_node) = v {
++            v_node.borrow_mut().parent = u_parent;
++        }
+     }
+ 
+     /// Fixes up after deletion starting from node `x` (`None` == NIL).
+     pub fn delete_fixup(&mut self, x: Option<NodeRef>) {
+-        unimplemented!()
++        let x_parent = x.as_ref().and_then(|n| n.borrow().parent.clone());
++        self.delete_fixup_with_parent(x, x_parent);
++    }
++
++    fn delete_fixup_with_parent(
++        &mut self,
++        mut x: Option<NodeRef>,
++        mut x_parent: Option<NodeRef>,
++    ) {
++        while !is_same_node(&x, &self.root) && is_black(&x) {
++            let Some(xp) = x_parent.clone() else {
++                break;
++            };
++            let is_left = is_same_node(&x, &xp.borrow().left);
++            if is_left {
++                let mut w = xp.borrow().right.clone();
++                if !is_black(&w) {
++                    if let Some(ref wn) = w {
++                        wn.borrow_mut().color = Color::Black;
++                    }
++                    xp.borrow_mut().color = Color::Red;
++                    self.left_rotate(xp.clone());
++                    w = xp.borrow().right.clone();
++                }
++
++                let Some(mut wn) = w else {
++                    x = Some(xp.clone());
++                    x_parent = xp.borrow().parent.clone();
++                    continue;
++                };
++
++                let (w_left, w_right) = {
++                    let wb = wn.borrow();
++                    (wb.left.clone(), wb.right.clone())
++                };
++
++                if is_black(&w_left) && is_black(&w_right) {
++                    wn.borrow_mut().color = Color::Red;
++                    x = Some(xp.clone());
++                    x_parent = xp.borrow().parent.clone();
++                } else {
++                    if is_black(&w_right) {
++                        if let Some(wl) = w_left {
++                            wl.borrow_mut().color = Color::Black;
++                        }
++                        wn.borrow_mut().color = Color::Red;
++                        self.right_rotate(wn.clone());
++                        if let Some(new_w) = xp.borrow().right.clone() {
++                            wn = new_w;
++                        }
++                    }
++
++                    wn.borrow_mut().color = xp.borrow().color.clone();
++                    xp.borrow_mut().color = Color::Black;
++                    let new_w_right = wn.borrow().right.clone();
++                    if let Some(wr) = new_w_right {
++                        wr.borrow_mut().color = Color::Black;
++                    }
++                    self.left_rotate(xp);
++                    x = self.root.clone();
++                    x_parent = None;
++                }
++            } else {
++                let mut w = xp.borrow().left.clone();
++                if !is_black(&w) {
++                    if let Some(ref wn) = w {
++                        wn.borrow_mut().color = Color::Black;
++                    }
++                    xp.borrow_mut().color = Color::Red;
++                    self.right_rotate(xp.clone());
++                    w = xp.borrow().left.clone();
++                }
++
++                let Some(mut wn) = w else {
++                    x = Some(xp.clone());
++                    x_parent = xp.borrow().parent.clone();
++                    continue;
++                };
++
++                let (w_left, w_right) = {
++                    let wb = wn.borrow();
++                    (wb.left.clone(), wb.right.clone())
++                };
++
++                if is_black(&w_right) && is_black(&w_left) {
++                    wn.borrow_mut().color = Color::Red;
++                    x = Some(xp.clone());
++                    x_parent = xp.borrow().parent.clone();
++                } else {
++                    if is_black(&w_left) {
++                        if let Some(wr) = w_right {
++                            wr.borrow_mut().color = Color::Black;
++                        }
++                        wn.borrow_mut().color = Color::Red;
++                        self.left_rotate(wn.clone());
++                        if let Some(new_w) = xp.borrow().left.clone() {
++                            wn = new_w;
++                        }
++                    }
++
++                    wn.borrow_mut().color = xp.borrow().color.clone();
++                    xp.borrow_mut().color = Color::Black;
++                    let new_w_left = wn.borrow().left.clone();
++                    if let Some(wl) = new_w_left {
++                        wl.borrow_mut().color = Color::Black;
++                    }
++                    self.right_rotate(xp);
++                    x = self.root.clone();
++                    x_parent = None;
++                }
++            }
++        }
++
++        if let Some(node) = x {
++            node.borrow_mut().color = Color::Black;
++        }
+     }
+ 
+     /// Erases node `p` (must be a valid non-NIL node in the tree).
+     pub fn erase(&mut self, p: NodeRef) {
+-        unimplemented!()
++        let (p_left, p_right, p_parent, p_color) = {
++            let pb = p.borrow();
++            (
++                pb.left.clone(),
++                pb.right.clone(),
++                pb.parent.clone(),
++                pb.color.clone(),
++            )
++        };
++
++        let y_original_color;
++        let x;
++        let x_parent;
++
++        if p_left.is_none() {
++            y_original_color = p_color;
++            x = p_right;
++            x_parent = p_parent;
++            self.transplant(p.clone(), x.clone());
++        } else if let Some(mut y) = p_right {
++            loop {
++                let left = y.borrow().left.clone();
++                match left {
++                    Some(l) => y = l,
++                    None => break,
++                }
++            }
++            y_original_color = y.borrow().color.clone();
++            x = y.borrow().right.clone();
++            let y_parent = y.borrow().parent.clone();
++
++            if is_same_node(&y_parent, &Some(p.clone())) {
++                if let Some(ref x_node) = x {
++                    x_node.borrow_mut().parent = Some(y.clone());
++                }
++                x_parent = Some(y.clone());
++            } else {
++                x_parent = y_parent;
++                self.transplant(y.clone(), x.clone());
++                let cur_p_right = p.borrow().right.clone();
++                y.borrow_mut().right = cur_p_right.clone();
++                if let Some(pr) = cur_p_right {
++                    pr.borrow_mut().parent = Some(y.clone());
++                }
++            }
++
++            self.transplant(p.clone(), Some(y.clone()));
++            let cur_p_left = p.borrow().left.clone();
++            y.borrow_mut().left = cur_p_left.clone();
++            if let Some(pl) = cur_p_left {
++                pl.borrow_mut().parent = Some(y.clone());
++            }
++            y.borrow_mut().color = p_color;
++        } else {
++            y_original_color = p_color;
++            x = p_left;
++            x_parent = p_parent;
++            self.transplant(p.clone(), x.clone());
++        }
++
++        {
++            let mut pb = p.borrow_mut();
++            pb.left = None;
++            pb.right = None;
++            pb.parent = None;
++        }
++
++        if y_original_color == Color::Black {
++            self.delete_fixup_with_parent(x, x_parent);
++        }
++    }
++
++    fn collect_in_order(
++        curr: Option<NodeRef>,
++        arr: &mut Vec<Key>,
++        n: usize,
++        count: &mut usize,
++    ) {
++        let Some(node) = curr else {
++            return;
++        };
++        let (left, key, right) = {
++            let b = node.borrow();
++            (b.left.clone(), b.key, b.right.clone())
++        };
++        Self::collect_in_order(left, arr, n, count);
++        if *count < n {
++            arr.push(key);
++            *count += 1;
++        } else {
++            return;
++        }
++        Self::collect_in_order(right, arr, n, count);
+     }
+ 
+     /// In-order traversal of `curr` into `arr` until `n` elements (`None` == NIL).
+-    pub fn subtree_to_array(&self, curr: Option<NodeRef>, arr: &mut Vec<Key>, n: usize, count: &mut usize) {
+-        unimplemented!()
++    pub fn subtree_to_array(
++        &self,
++        curr: Option<NodeRef>,
++        arr: &mut Vec<Key>,
++        n: usize,
++        count: &mut usize,
++    ) {
++        Self::collect_in_order(curr, arr, n, count);
+     }
+ 
+     /// Returns up to `n` keys from the tree in-order.
+     pub fn to_array(&self, n: usize) -> Vec<Key> {
+-        unimplemented!()
+-    }
+-}+        let mut arr = Vec::with_capacity(n);
++        let mut count = 0;
++        self.subtree_to_array(self.root.clone(), &mut arr, n, &mut count);
++        arr
++    }
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    fn verify_search_and_parents(node: &Option<NodeRef>, expected_parent: &Option<NodeRef>) -> (bool, Option<(Key, Key)>) {
++        let Some(n) = node else {
++            return (true, None);
++        };
++        let nb = n.borrow();
++        if !is_same_node(&nb.parent, expected_parent) {
++            return (false, None);
++        }
++        let key = nb.key;
++        let left = nb.left.clone();
++        let right = nb.right.clone();
++        drop(nb);
++
++        let (lok, lrange) = verify_search_and_parents(&left, node);
++        if !lok {
++            return (false, None);
++        }
++        let (rok, rrange) = verify_search_and_parents(&right, node);
++        if !rok {
++            return (false, None);
++        }
++        if let Some((_, lmax)) = lrange {
++            if lmax > key {
++                return (false, None);
++            }
++        }
++        if let Some((rmin, _)) = rrange {
++            if rmin < key {
++                return (false, None);
++            }
++        }
++        let min = lrange.map_or(key, |(m, _)| m);
++        let max = rrange.map_or(key, |(_, m)| m);
++        (true, Some((min, max)))
++    }
++
++    fn verify_colors(node: &Option<NodeRef>, parent_color: Color) -> Option<usize> {
++        let Some(n) = node else {
++            return Some(0);
++        };
++        let nb = n.borrow();
++        if parent_color == Color::Red && nb.color == Color::Red {
++            return None;
++        }
++        let add = usize::from(nb.color == Color::Black);
++        let color = nb.color.clone();
++        let left = nb.left.clone();
++        let right = nb.right.clone();
++        drop(nb);
++
++        let lb = verify_colors(&left, color.clone())?;
++        let rb = verify_colors(&right, color)?;
++        if lb != rb {
++            return None;
++        }
++        Some(lb + add)
++    }
++
++    fn assert_valid_rbtree(t: &RBTree) {
++        if let Some(ref root) = t.root {
++            assert_eq!(root.borrow().color, Color::Black);
++        }
++        assert!(verify_search_and_parents(&t.root, &None).0);
++        assert!(verify_colors(&t.root, Color::Black).is_some());
++    }
++
++    #[test]
++    fn test_minmax_and_erase() {
++        let mut arr = vec![10, 5, 8, 34, 67, 23, 156, 24, 2, 12];
++        let n = arr.len();
++        let mut t = RBTree::new();
++        assert!(t.rbtree_min().is_none());
++        assert!(t.rbtree_max().is_none());
++
++        for &k in &arr {
++            t.rbtree_insert(k);
++            assert_valid_rbtree(&t);
++        }
++
++        arr.sort();
++        let p = t.rbtree_min().unwrap();
++        assert_eq!(p.borrow().key, arr[0]);
++        let q = t.rbtree_max().unwrap();
++        assert_eq!(q.borrow().key, arr[n - 1]);
++
++        t.erase(p);
++        assert_valid_rbtree(&t);
++        assert_eq!(t.rbtree_min().unwrap().borrow().key, arr[1]);
++
++        t.erase(q);
++        assert_valid_rbtree(&t);
++        assert_eq!(t.rbtree_max().unwrap().borrow().key, arr[n - 2]);
++    }
++
++    #[test]
++    fn test_distinct_and_duplicate_erase_all() {
++        let entries = [10, 5, 5, 34, 6, 23, 12, 12, 6, 12, 1, 99, 45, 3, 7, 8, 2];
++        let mut t = RBTree::new();
++        for &k in &entries {
++            t.rbtree_insert(k);
++            assert_valid_rbtree(&t);
++        }
++
++        let mut expected = entries.to_vec();
++        expected.sort();
++        assert_eq!(t.to_array(entries.len()), expected);
++        assert_eq!(t.to_array(5), expected[..5]);
++        assert_eq!(t.to_array(0), Vec::<Key>::new());
++
++        for &k in &entries {
++            let node = t.rbtree_find(k).expect("key should exist");
++            t.erase(node);
++            assert_valid_rbtree(&t);
++        }
++        assert!(t.root.is_none());
++        t.delete_rbtree();
++    }
++
++    #[test]
++    fn test_erase_reverse_and_sorted_order() {
++        for reverse in [false, true] {
++            let mut t = RBTree::new();
++            let mut keys: Vec<Key> = (1..=40).collect();
++            if reverse {
++                keys.reverse();
++            }
++            for &k in &keys {
++                t.rbtree_insert(k);
++                assert_valid_rbtree(&t);
++            }
++            for k in 1..=40 {
++                let node = t.rbtree_find(k).unwrap();
++                t.erase(node);
++                assert_valid_rbtree(&t);
++            }
++            assert!(t.root.is_none());
++        }
++    }
++}

@@ -29,48 +29,51 @@ retry_on_5xx_seconds = [10, 20]       # waits before retrying the same model on 
 
 # Google AI Studio free tier via its OpenAI-compatible endpoint.
 # Limits below were read from the AI Studio rate-limit page for our project on
-# 2026-11-13 (free tier; quotas are per Google Cloud project, RPD resets at
+# 2026-11-13 (rpm is set one-to-three below Google's 5 / 15 because failed and
+# concurrent requests also count against the per-minute quota) (free tier; quotas are per Google Cloud project, RPD resets at
 # midnight Pacific; TPM counts input tokens).
 [providers.gemini]
 base_url = "https://generativelanguage.googleapis.com/v1beta/openai/"
 api_key_env = "GEMINI_API_KEY"        # read from the environment only
 max_requests_per_run = 300            # whole-run budget across all Gemini models
+retry_on_429_seconds = 60             # per-minute 429: wait once, then move to the next model
+unsupported_params = ["seed"]         # Gemini's OpenAI endpoint rejects `seed` (HTTP 400)
 
 # Stronger Flash models first (5 RPM / 20 RPD each) ...
 [[providers.gemini.models]]
 id = "gemini-4-hydrogen"
-rpm = 5
+rpm = 4
 tpm = 250000
 rpd = 20
 
 [[providers.gemini.models]]
 id = "gemini-3.8-flash"
-rpm = 5
+rpm = 4
 tpm = 250000
 rpd = 20
 
 [[providers.gemini.models]]
 id = "gemini-3.6-flash"
-rpm = 5
+rpm = 4
 tpm = 250000
 rpd = 20
 
 [[providers.gemini.models]]
 id = "gemini-3-flash-preview"
-rpm = 5
+rpm = 4
 tpm = 250000
 rpd = 20
 
 # ... then the high-volume Flash-Lite models (15 RPM / 500 RPD each).
 [[providers.gemini.models]]
 id = "gemini-3.5-flash-lite"
-rpm = 15
+rpm = 12
 tpm = 250000
 rpd = 500
 
 [[providers.gemini.models]]
 id = "gemini-3.1-flash-lite"
-rpm = 15
+rpm = 12
 tpm = 250000
 rpd = 500
 
@@ -86,6 +89,8 @@ api_key_env = "OPENROUTER_API_KEY"    # read from the environment only
 rpm = 18                              # shared, just under the 20 rpm cap
 rpd = 50                              # shared daily cap
 max_requests_per_run = 45
+retry_on_429_seconds = 65
+unsupported_params = []
 
 [[providers.openrouter.models]]
 id = "nvidia/nemotron-3-ultra-550b-a55b:free"
@@ -101,6 +106,7 @@ id = "google/gemma-4-31b-it:free"
 base_url = "http://localhost:11434/v1"
 api_key_env = ""                      # Ollama needs no key
 max_requests_per_run = 400
+unsupported_params = ["parallel_tool_calls"]
 
 [[providers.ollama.models]]
 id = "qwen2.5-coder:7b"
@@ -108,8 +114,9 @@ id = "qwen2.5-coder:7b"
 [inference]
 temperature = 0.2
 top_p = 0.95
-max_tokens = 8192                     # per model response
-seed = 598                            # sent where the provider supports it
+max_tokens = 32768                    # per response; Gemini counts thinking tokens here, and a whole
+                                      # translated module can be ~15K tokens
+seed = 598                            # sent where supported (not Gemini, see unsupported_params)
 tool_choice = "auto"
 parallel_tool_calls = false
 request_timeout_seconds = 300
@@ -124,6 +131,13 @@ repair_prompt = "configs/prompts/repair.md"         # iterations 2..N
 max_tool_turns_per_iteration = 25     # model calls inside one agent session
 tool_output_char_limit = 12000        # long cargo output is truncated (head+tail kept)
 keep_best_snapshot = true             # revert to best-scoring Rust if an iteration regresses
+# Automatically supplied project context (allowed by the handout): iteration 1 inlines the
+# C sources, interface and tests; repair iterations inline the current Rust sources.
+# Saves several read_file requests under the tight free-tier quotas.
+inline_context = true
+inline_context_max_chars = 120000
+context_token_budget = 90000          # above this, old tool outputs/file bodies are elided
+keep_recent_messages = 8              # ...except in the most recent messages
 
 # ---------------------------------------------------------------------------
 # Stopping condition (checked by the controller after every iteration).
@@ -133,7 +147,7 @@ keep_best_snapshot = true             # revert to best-scoring Rust if an iterat
 max_iterations = 6                    # outer generate -> evaluate -> repair cycles
 stop_on_success = true                # build OK + all tests pass + 0 primary unsafe + clippy total <= target
 clippy_target_total = 0
-no_progress_patience = 2              # stop after 2 consecutive iterations without score improvement
+no_progress_patience = 3              # stop after 3 consecutive iterations without score improvement
 # Also stops when providers.<p>.max_requests_per_run is exhausted (resumable).
 
 # ---------------------------------------------------------------------------
@@ -151,6 +165,7 @@ clippy = ["cargo", "+nightly-2025-05-13", "clippy", "--all-targets", "--all-feat
           "-W", "clippy::complexity", "-W", "clippy::perf"]
 clippy_categories = ["correctness", "style", "complexity", "perf"]
 command_timeout_seconds = 300
+test_timeout_seconds = 120            # catches infinite loops in translated code
 
 [unsafe_metrics]
 # Command for the instructional team's unsafe-metrics tool, once released.
@@ -161,10 +176,13 @@ primary_metrics = ["unsafe_lines", "unsafe_calls", "unsafe_casts", "pointer_arit
 
 [integrity]
 # Guards so the agent cannot "pass" by editing the spec.
-protected_globs = ["src/bin/**", "tests/**", "Cargo.lock"]   # must stay byte-identical to the benchmark
+# Must stay byte-identical to the benchmark (restored + reported if changed).
+protected_globs = ["src/bin/*", "src/interfaces/*", "tests/*", "Cargo.toml", "Cargo.lock"]
 check_public_signatures = true        # pub items from src/interfaces/*.rs must keep their signatures
 forbid_patterns = ['extern\s+"C"', '#\[link', 'libc::', 'std::ffi::CStr']   # no FFI into the C code
-writable_roots = ["src"]              # agent may only write under the crate's src/ (minus protected)
+writable_roots = ["src"]              # agent may only write .rs files under src/ (minus protected)
+# Also checked: lib.rs still declares each `pub mod <module>;`, and long string literals
+# from the tests are not copied into the implementation (special-casing test inputs).
 
 [trajectory]
 redact_env = ["GEMINI_API_KEY", "OPENROUTER_API_KEY"]   # values scrubbed from every saved log

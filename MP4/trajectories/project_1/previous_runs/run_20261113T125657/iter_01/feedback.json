@@ -1,0 +1,208 @@
+{
+  "integrity": {
+    "ok": false,
+    "violations": [
+      "public signature changed or missing: `pubfnmapper_expr_evaluate<'a>(&mutMapperExpr,&'aMapperSignalValue)->MapperSignalValue`"
+    ],
+    "restored": []
+  },
+  "build": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      {
+        "level": "warning",
+        "code": "unused_macros",
+        "file": "src/mapper_expr.rs",
+        "line": 28,
+        "message": "unused macro definition: `trace`",
+        "rendered": "warning: unused macro definition: `trace`\n  --> src/mapper_expr.rs:28:14\n   |\n28 | macro_rules! trace {\n   |              ^^^^^\n   |\n   = note: `#[warn(unused_macros)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_macros",
+        "file": "src/mapper_expr.rs",
+        "line": 36,
+        "message": "unused macro definition: `die_unless`",
+        "rendered": "warning: unused macro definition: `die_unless`\n  --> src/mapper_expr.rs:36:14\n   |\n36 | macro_rules! die_unless {\n   |              ^^^^^^^^^^\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "non_camel_case_types",
+        "file": "src/mapper_expr.rs",
+        "line": 376,
+        "message": "type `stack_obj_t` should have an upper camel case name",
+        "rendered": "warning: type `stack_obj_t` should have an upper camel case name\n   --> src/mapper_expr.rs:376:6\n    |\n376 | enum stack_obj_t {\n    |      ^^^^^^^^^^^ help: convert the identifier to upper camel case: `StackObjT`\n    |\n    = note: `#[warn(non_camel_case_types)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "dead_code",
+        "file": "src/mapper_expr.rs",
+        "line": 26,
+        "message": "constant `TRACING` is never used",
+        "rendered": "warning: constant `TRACING` is never used\n  --> src/mapper_expr.rs:26:7\n   |\n26 | const TRACING: bool = false;\n   |       ^^^^^^^\n   |\n   = note: `#[warn(dead_code)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "dead_code",
+        "file": "src/mapper_expr.rs",
+        "line": 57,
+        "message": "enum `ExprFunc` is never used",
+        "rendered": "warning: enum `ExprFunc` is never used\n  --> src/mapper_expr.rs:57:6\n   |\n57 | enum ExprFunc {\n   |      ^^^^^^^^\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "dead_code",
+        "file": "src/mapper_expr.rs",
+        "line": 66,
+        "message": "field `name` is never read",
+        "rendered": "warning: field `name` is never read\n  --> src/mapper_expr.rs:66:5\n   |\n65 | struct FunctionEntry {\n   |        ------------- field in this struct\n66 |     name: &'static str,\n   |     ^^^^\n   |\n   = note: `FunctionEntry` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "dead_code",
+        "file": "src/mapper_expr.rs",
+        "line": 846,
+        "message": "function `printtoken` is never used",
+        "rendered": "warning: function `printtoken` is never used\n   --> src/mapper_expr.rs:846:4\n    |\n846 | fn printtoken(_t: &Token) {}\n    |    ^^^^^^^^^^\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "dead_code",
+        "file": "src/mapper_expr.rs",
+        "line": 847,
+        "message": "function `printexprnode` is never used",
+        "rendered": "warning: function `printexprnode` is never used\n   --> src/mapper_expr.rs:847:4\n    |\n847 | fn printexprnode(_s: &str, _list: &ExprNode) {}\n    |    ^^^^^^^^^^^^^\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "dead_code",
+        "file": "src/mapper_expr.rs",
+        "line": 848,
+        "message": "function `printexpr` is never used",
+        "rendered": "warning: function `printexpr` is never used\n   --> src/mapper_expr.rs:848:4\n    |\n848 | fn printexpr(_s: &str, _list: &MapperExpr) {}\n    |    ^^^^^^^^^\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "dead_code",
+        "file": "src/mapper_expr.rs",
+        "line": 849,
+        "message": "function `printstack` is never used",
+        "rendered": "warning: function `printstack` is never used\n   --> src/mapper_expr.rs:849:4\n    |\n849 | fn printstack(_stack: &stack_obj_t, _stack_size: i32) {}\n    |    ^^^^^^^^^^\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_imports",
+        "file": "src/bin/test.rs",
+        "line": 1,
+        "message": "unused import: `expr::mapper_expr`",
+        "rendered": "warning: unused import: `expr::mapper_expr`\n --> src/bin/test.rs:1:5\n  |\n1 | use expr::mapper_expr;\n  |     ^^^^^^^^^^^^^^^^^\n  |\n  = note: `#[warn(unused_imports)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/bin/test.rs"
+      }
+    ],
+    "timed_out": false
+  },
+  "tests": {
+    "compiled": true,
+    "passed": 1,
+    "total": 2,
+    "status": {
+      "test2": "ok",
+      "test1": "FAILED"
+    },
+    "failures": [
+      {
+        "test": "test1",
+        "message": "thread 'test1' panicked at src/bin/test.rs:11:5:\nTest 1 failed: expected 3250.8108, got F(295.22467)\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace"
+      }
+    ],
+    "compile_errors": [],
+    "timed_out": false
+  },
+  "clippy": {
+    "compiled": true,
+    "categories": {
+      "correctness": {
+        "src": 0,
+        "tests": 0
+      },
+      "style": {
+        "src": 2,
+        "tests": 3
+      },
+      "complexity": {
+        "src": 0,
+        "tests": 1
+      },
+      "perf": {
+        "src": 0,
+        "tests": 0
+      }
+    },
+    "src_total": 2,
+    "tests_total": 4,
+    "grader_command": {
+      "clippy_warnings": 6,
+      "clippy_warnings_src": 2,
+      "rustc_warnings": 22
+    },
+    "warnings": [
+      {
+        "category": "style",
+        "lint": "clippy::new_without_default",
+        "file": "src/mapper_expr.rs",
+        "line": 341,
+        "message": "you should consider adding a `Default` implementation for `ExprNode`",
+        "rendered": "warning: you should consider adding a `Default` implementation for `ExprNode`\n   --> src/mapper_expr.rs:341:5\n    |\n341 | /     pub fn new() -> ExprNode {\n342 | |         ExprNode {\n343 | |             tok: Token {\n344 | |                 token_type: TokenType::End,\n...   |\n355 | |     }\n    | |_____^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#new_without_default\n    = note: `-W clippy::new-without-default` implied by `-W clippy::style`\n    = help: to override `-W clippy::style` add `#[allow(clippy::new_without_default)]`\nhelp: try adding this\n    |\n340 + impl Default for ExprNode {\n341 +     fn default() -> Self {\n342 +         Self::new()\n343 +     }\n344 + }\n    |\n\n"
+      },
+      {
+        "category": "style",
+        "lint": "clippy::new_without_default",
+        "file": "src/mapper_expr.rs",
+        "line": 341,
+        "message": "you should consider adding a `Default` implementation for `ExprNode`",
+        "rendered": "warning: you should consider adding a `Default` implementation for `ExprNode`\n   --> src/mapper_expr.rs:341:5\n    |\n341 | /     pub fn new() -> ExprNode {\n342 | |         ExprNode {\n343 | |             tok: Token {\n344 | |                 token_type: TokenType::End,\n...   |\n355 | |     }\n    | |_____^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#new_without_default\n    = note: `-W clippy::new-without-default` implied by `-W clippy::style`\n    = help: to override `-W clippy::style` add `#[allow(clippy::new_without_default)]`\nhelp: try adding this\n    |\n340 + impl Default for ExprNode {\n341 +     fn default() -> Self {\n342 +         Self::new()\n343 +     }\n344 + }\n    |\n\n"
+      }
+    ]
+  },
+  "unsafe": {
+    "tool": "builtin-approximate",
+    "files": [
+      "src/lib.rs",
+      "src/mapper_expr.rs"
+    ],
+    "metrics": {
+      "unsafe_lines": 0,
+      "unsafe_calls": 0,
+      "unsafe_casts": 0,
+      "pointer_arithmetic": 0,
+      "unsafe_blocks": 0,
+      "unsafe_fns": 0,
+      "unsafe_impls": 0,
+      "raw_pointer_types": 0,
+      "ffi": 0,
+      "manual_alloc": 0,
+      "transmute": 0,
+      "forbid_unsafe_code": 1,
+      "primary_total": 0
+    },
+    "locations": []
+  },
+  "score": [
+    0,
+    1,
+    0,
+    -2
+  ],
+  "success": false
+}

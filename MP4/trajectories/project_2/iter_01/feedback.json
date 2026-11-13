@@ -1,0 +1,107 @@
+{
+  "integrity": {
+    "ok": true,
+    "violations": [],
+    "restored": []
+  },
+  "build": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      {
+        "level": "warning",
+        "code": "unused_imports",
+        "file": "src/bin/test.rs",
+        "line": 1,
+        "message": "unused import: `Key`",
+        "rendered": "warning: unused import: `Key`\n --> src/bin/test.rs:1:22\n  |\n1 | use rbtree::rbtree::{Key, RBTree};\n  |                      ^^^\n  |\n  = note: `#[warn(unused_imports)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/bin/test.rs"
+      },
+      {
+        "level": "warning",
+        "code": "dead_code",
+        "file": "src/bin/test.rs",
+        "line": 55,
+        "message": "function `insert_arr` is never used",
+        "rendered": "warning: function `insert_arr` is never used\n  --> src/bin/test.rs:55:4\n   |\n55 | fn insert_arr(t: &mut RBTree, arr: &[i32]) {\n   |    ^^^^^^^^^^\n   |\n   = note: `#[warn(dead_code)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2/src/bin/test.rs"
+      }
+    ],
+    "timed_out": false
+  },
+  "tests": {
+    "compiled": true,
+    "passed": 6,
+    "total": 6,
+    "status": {
+      "test_init": "ok",
+      "test_find_single": "ok",
+      "test_erase_root": "ok",
+      "test_insert_single": "ok",
+      "test_to_array": "ok",
+      "test_multi_instance": "ok"
+    },
+    "failures": [],
+    "compile_errors": [],
+    "timed_out": false
+  },
+  "clippy": {
+    "compiled": true,
+    "categories": {
+      "correctness": {
+        "src": 0,
+        "tests": 0
+      },
+      "style": {
+        "src": 0,
+        "tests": 0
+      },
+      "complexity": {
+        "src": 0,
+        "tests": 0
+      },
+      "perf": {
+        "src": 0,
+        "tests": 0
+      }
+    },
+    "src_total": 0,
+    "tests_total": 0,
+    "grader_command": {
+      "clippy_warnings": 0,
+      "clippy_warnings_src": 0,
+      "rustc_warnings": 2
+    },
+    "warnings": []
+  },
+  "unsafe": {
+    "tool": "builtin-approximate",
+    "files": [
+      "src/lib.rs",
+      "src/rbtree.rs"
+    ],
+    "metrics": {
+      "unsafe_lines": 0,
+      "unsafe_calls": 0,
+      "unsafe_casts": 0,
+      "pointer_arithmetic": 0,
+      "unsafe_blocks": 0,
+      "unsafe_fns": 0,
+      "unsafe_impls": 0,
+      "raw_pointer_types": 0,
+      "ffi": 0,
+      "manual_alloc": 0,
+      "transmute": 0,
+      "forbid_unsafe_code": 1,
+      "primary_total": 0
+    },
+    "locations": []
+  },
+  "score": [
+    1,
+    6,
+    0,
+    0
+  ],
+  "success": true
+}
