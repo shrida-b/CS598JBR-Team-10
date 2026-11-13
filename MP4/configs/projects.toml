@@ -1,0 +1,32 @@
+# Per-project context supplied automatically to the (project-agnostic) pipeline.
+# Only paths and metadata live here -- no hand-written translations or hints
+# about how individual C functions should be implemented.
+#
+# CRUST-Bench layout: benchmark/RBench/<crate>/src/interfaces/<module>.rs is the
+# required Rust interface (bodies are `unimplemented!()`); lib.rs declares
+# `pub mod <module>;`, so setup copies each interface to src/<module>.rs as the
+# starting point. src/bin/test.rs holds the benchmark tests (read-only).
+
+[project_1]
+name = "expr"
+group = 10
+c_dir = "subjects/project_1"
+c_sources = ["mapper_expr.c", "mapper_expr.h", "test.c"]
+rust_spec_dir = "benchmark/RBench/expr"
+crate_name = "expr"
+modules = ["mapper_expr"]
+test_files = ["src/bin/test.rs"]
+output_dir = "translations/project_1"
+trajectory_dir = "trajectories/project_1"
+
+[project_2]
+name = "rbtree-lab"
+group = 10
+c_dir = "subjects/project_2"
+c_sources = ["src/rbtree.c", "src/rbtree.h", "test/test-rbtree.c"]
+rust_spec_dir = "benchmark/RBench/rbtree_lab"
+crate_name = "rbtree"
+modules = ["rbtree"]
+test_files = ["src/bin/test.rs"]
+output_dir = "translations/project_2"
+trajectory_dir = "trajectories/project_2"

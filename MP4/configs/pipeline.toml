@@ -1,0 +1,115 @@
+# MP4 agentic C -> Rust translation pipeline: global configuration.
+# Read by MP4/src (Python 3.11+ `tomllib`). Paths are relative to MP4/.
+# Secrets are NEVER stored here: API keys are read from environment variables
+# (see configs/.env.example).
+
+[pipeline]
+name = "crust-agent"
+version = "0.1.0"
+toolchain = "nightly-2025-05-13"     # same toolchain the graders use
+projects_file = "configs/projects.toml"
+tools_file = "configs/tools.json"
+trajectories_dir = "trajectories"
+translations_dir = "translations"
+subjects_dir = "subjects"
+benchmark_dir = "benchmark/RBench"
+
+# ---------------------------------------------------------------------------
+# Model / provider. Only free options are used.
+# ---------------------------------------------------------------------------
+[model]
+provider = "openrouter"               # "openrouter" (default) or "ollama"
+
+[providers.openrouter]
+base_url = "https://openrouter.ai/api/v1"   # OpenAI-compatible Chat Completions
+api_key_env = "OPENROUTER_API_KEY"          # read from the environment only
+primary = "nvidia/nemotron-3-ultra-550b-a55b:free"
+# Tried in order if the primary returns 429/5xx or is unavailable.
+fallbacks = [
+  "cohere/north-mini-code:free",
+  "google/gemma-4-31b-it:free",
+]
+# OpenRouter free-variant limits (docs, Nov 2026): 20 req/min; 50 req/day
+# for accounts with < 10 purchased credits (1000/day with >= 10).
+requests_per_minute = 18              # stay just under the 20 rpm cap
+max_requests_per_run = 45             # stay under the 50/day cap; run resumes from checkpoint
+retry_on_429_seconds = 65
+max_retries = 4
+
+[providers.ollama]                    # optional local fallback (8 GB Mac -> small models only)
+base_url = "http://localhost:11434/v1"
+api_key_env = ""                      # Ollama needs no key
+primary = "qwen2.5-coder:7b"
+fallbacks = []
+requests_per_minute = 0               # 0 = unlimited
+max_requests_per_run = 400
+retry_on_429_seconds = 0
+max_retries = 2
+
+[inference]
+temperature = 0.2
+top_p = 0.95
+max_tokens = 8192                     # per model response
+seed = 598                            # sent where the provider supports it
+tool_choice = "auto"
+parallel_tool_calls = false
+request_timeout_seconds = 300
+
+# ---------------------------------------------------------------------------
+# Agent loop
+# ---------------------------------------------------------------------------
+[agent]
+system_prompt = "configs/prompts/system.md"
+translate_prompt = "configs/prompts/translate.md"   # iteration 1
+repair_prompt = "configs/prompts/repair.md"         # iterations 2..N
+max_tool_turns_per_iteration = 25     # model calls inside one agent session
+tool_output_char_limit = 12000        # long cargo output is truncated (head+tail kept)
+keep_best_snapshot = true             # revert to best-scoring Rust if an iteration regresses
+
+# ---------------------------------------------------------------------------
+# Stopping condition (checked by the controller after every iteration).
+# The run stops at the FIRST of these that becomes true.
+# ---------------------------------------------------------------------------
+[stopping]
+max_iterations = 6                    # outer generate -> evaluate -> repair cycles
+stop_on_success = true                # build OK + all tests pass + 0 primary unsafe + clippy total <= target
+clippy_target_total = 0
+no_progress_patience = 2              # stop after 2 consecutive iterations without score improvement
+# Also stops when providers.<p>.max_requests_per_run is exhausted (resumable).
+
+# ---------------------------------------------------------------------------
+# Evaluation commands the controller runs after each iteration (and that the
+# agent can call itself through the `cargo` tool).
+# ---------------------------------------------------------------------------
+[evaluation]
+build = ["cargo", "+nightly-2025-05-13", "build"]
+check = ["cargo", "+nightly-2025-05-13", "check", "--all-targets"]
+test = ["cargo", "+nightly-2025-05-13", "test", "--no-fail-fast"]
+# Graders' command: clippy --all-targets --all-features -- -W clippy::correctness
+#   -W clippy::style -W clippy::complexity -W clippy::perf
+clippy = ["cargo", "+nightly-2025-05-13", "clippy", "--all-targets", "--all-features",
+          "--message-format=json", "--", "-W", "clippy::correctness", "-W", "clippy::style",
+          "-W", "clippy::complexity", "-W", "clippy::perf"]
+clippy_categories = ["correctness", "style", "complexity", "perf"]
+command_timeout_seconds = 300
+
+[unsafe_metrics]
+# Command for the instructional team's unsafe-metrics tool, once released.
+# "{crate}" is replaced with the crate path. Empty -> built-in approximate
+# scanner in src/ (counts unsafe lines/calls/casts/pointer arithmetic).
+command = ""
+primary_metrics = ["unsafe_lines", "unsafe_calls", "unsafe_casts", "pointer_arithmetic"]
+
+[integrity]
+# Guards so the agent cannot "pass" by editing the spec.
+protected_globs = ["src/bin/**", "tests/**", "Cargo.lock"]   # must stay byte-identical to the benchmark
+check_public_signatures = true        # pub items from src/interfaces/*.rs must keep their signatures
+forbid_patterns = ['extern\s+"C"', '#\[link', 'libc::', 'std::ffi::CStr']   # no FFI into the C code
+writable_roots = ["src"]              # agent may only write under the crate's src/ (minus protected)
+
+[trajectory]
+redact_env = ["OPENROUTER_API_KEY"]   # values scrubbed from every saved log
+redact_patterns = ['sk-or-[A-Za-z0-9-]+', 'Bearer\s+\S+']
+save_model_messages = true
+save_tool_calls = true
+save_diffs = true
