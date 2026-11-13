@@ -1,0 +1,107 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "list_files",
+      "description": "List files under a directory. Paths start with 'c/' (original C project, read-only) or 'rust/' (the Rust crate being written).",
+      "parameters": {
+        "type": "object",
+        "properties": {"path": {"type": "string", "description": "Directory, e.g. 'c/' or 'rust/src'"}},
+        "required": ["path"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "read_file",
+      "description": "Read a text file (optionally a 1-indexed inclusive line range). Output is prefixed with line numbers.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "path": {"type": "string"},
+          "start_line": {"type": "integer"},
+          "end_line": {"type": "integer"}
+        },
+        "required": ["path"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "search",
+      "description": "Regex search over files under 'c/' or 'rust/'. Returns path:line:text matches.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "pattern": {"type": "string"},
+          "path": {"type": "string", "description": "Directory or file to search; default both roots"}
+        },
+        "required": ["pattern"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "write_file",
+      "description": "Create or overwrite a file under 'rust/src/'. Benchmark tests (rust/src/bin/**) are protected and cannot be written.",
+      "parameters": {
+        "type": "object",
+        "properties": {"path": {"type": "string"}, "content": {"type": "string"}},
+        "required": ["path", "content"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "replace_in_file",
+      "description": "Replace exactly one occurrence of old_text with new_text in a file under 'rust/src/'. Fails if old_text is missing or not unique.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "path": {"type": "string"},
+          "old_text": {"type": "string"},
+          "new_text": {"type": "string"}
+        },
+        "required": ["path", "old_text", "new_text"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "cargo",
+      "description": "Run a cargo command on the Rust crate with the pinned toolchain (cargo +nightly-2025-05-13 ...). 'clippy' uses the graders' four lint categories and returns counts per category plus the warnings.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "command": {"type": "string", "enum": ["check", "build", "test", "clippy"]}
+        },
+        "required": ["command"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "unsafe_metrics",
+      "description": "Run the unsafe-metrics analysis on the Rust crate. Returns unsafe lines, unsafe calls, unsafe casts and pointer arithmetic counts with locations.",
+      "parameters": {"type": "object", "properties": {}}
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "finish",
+      "description": "End this iteration. The controller then runs the full evaluation (build, tests, clippy, unsafe metrics, integrity checks) and returns feedback in the next iteration.",
+      "parameters": {
+        "type": "object",
+        "properties": {"summary": {"type": "string", "description": "What was changed and what remains"}},
+        "required": ["summary"]
+      }
+    }
+  }
+]

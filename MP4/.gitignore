@@ -1,0 +1,9 @@
+# Rust build output
+target/
+# Secrets
+.env
+configs/.env
+# Python
+__pycache__/
+*.pyc
+.DS_Store
