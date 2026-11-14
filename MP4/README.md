@@ -280,6 +280,8 @@ and tested with no extra steps. The agent wrote only `src/<module>.rs` and added
 | `newmetrics/` | NewMetrics output for the final crate: `raw.log` (`cargo newmetrics`), `summary.json` (`aggregate.py`), and the tool's span lists `unsafe_spans.txt`, `decls.txt`, `derefs.txt` (all empty) |
 | `previous_runs/run_<start>/` | earlier runs of the same project, kept for transparency (`--fresh` archives instead of deleting) |
 
+Reasoning summaries are logged in `events.jsonl` whenever a provider returns them. The Gemini and OpenRouter endpoints used for the final runs did not.
+
 API keys are redacted from every log before it is written.
 
 ## Evaluation
