@@ -277,7 +277,7 @@ and tested with no extra steps. The agent wrote only `src/<module>.rs` and added
 | `iter_NN/diff.patch`, `iter_NN/snapshot/` | what the agent changed in iteration N, and the resulting sources |
 | `iter_00/` | baseline evaluation of the untouched interface skeleton |
 | `final_evaluation.{json,md}`, `summary.json`, `state.json` | final status, best iteration, metrics, request counts per model |
-| `newmetrics_raw.log`, `newmetrics_summary.json` | NewMetrics output for the final crate (`cargo newmetrics \| aggregate.py`) |
+| `newmetrics/` | NewMetrics output for the final crate: `raw.log` (`cargo newmetrics`), `summary.json` (`aggregate.py`), and the tool's span lists `unsafe_spans.txt`, `decls.txt`, `derefs.txt` (all empty) |
 | `previous_runs/run_<start>/` | earlier runs of the same project, kept for transparency (`--fresh` archives instead of deleting) |
 
 API keys are redacted from every log before it is written.
@@ -291,7 +291,7 @@ Final results, graders' commands, `nightly-2025-05-13`:
 | expr | yes | 2 / 2 | 2 | 23 |
 | rbtree-lab | yes | 6 / 6 | 1 | 20 |
 
-Safety, from the course **NewMetrics** tool (`trajectories/project_N/newmetrics_summary.json`):
+Safety, from the course **NewMetrics** tool (`trajectories/project_N/newmetrics/summary.json`):
 
 | Project | Unsafe lines | Unsafe calls | Unsafe casts | Pointer arithmetic | Raw-ptr derefs | Raw-ptr decls | Total spans |
 |---|---|---|---|---|---|---|---|
@@ -317,7 +317,7 @@ cargo +nightly-2025-05-13 build
 cargo +nightly-2025-05-13 test
 cargo +nightly-2025-05-13 clippy --all-targets --all-features -- \
     -W clippy::correctness -W clippy::style -W clippy::complexity -W clippy::perf
-bash ../../src/newmetrics/run_newmetrics.sh . summary.json
+bash ../../src/newmetrics/run_newmetrics.sh . summary.json   # [artifacts_dir] keeps the span lists
 ```
 
 ## Manual interventions log
