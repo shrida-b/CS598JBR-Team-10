@@ -34,12 +34,12 @@
     "passed": 6,
     "total": 6,
     "status": {
-      "test_init": "ok",
-      "test_find_single": "ok",
       "test_erase_root": "ok",
+      "test_find_single": "ok",
+      "test_init": "ok",
       "test_insert_single": "ok",
-      "test_to_array": "ok",
-      "test_multi_instance": "ok"
+      "test_multi_instance": "ok",
+      "test_to_array": "ok"
     },
     "failures": [],
     "compile_errors": [],
@@ -100,6 +100,7 @@
   "score": [
     1,
     6,
+    0,
     0,
     0
   ],

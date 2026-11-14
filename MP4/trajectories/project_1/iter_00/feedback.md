@@ -65,7 +65,6 @@ warning: type `state_t` should have an upper camel case name
 ```
 thread 'test1' panicked at src/mapper_expr.rs:201:5:
 not implemented
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
 
 #### test2
@@ -74,6 +73,7 @@ Parsing: y=26.0*2.0/2.0 + x*30.0/(20.0*1.0)
 
 thread 'test2' panicked at src/mapper_expr.rs:201:5:
 not implemented
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
 
 ## Clippy

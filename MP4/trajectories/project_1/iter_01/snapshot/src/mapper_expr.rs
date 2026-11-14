@@ -1,33 +1,103 @@
-#![forbid(unsafe_code)]
-
-use std::f32::consts::PI;
 use std::collections::HashMap;
+use std::f32::consts::PI;
 use std::sync::Arc;
-use lazy_static::lazy_static;
 
-macro_rules! trace_eval {
-    ($($arg:tt)*) => {
-        if TRACING {
-            eprintln!("-- {}", format!($($arg)*));
+#[derive(Clone, Copy, Debug)]
+pub enum MapperSignalValue {
+    F(f32),
+    I32(i32),
+}
+
+impl MapperSignalValue {
+    pub fn as_f32(&self) -> Option<f32> {
+        match self {
+            MapperSignalValue::F(v) => Some(*v),
+            MapperSignalValue::I32(_) => None,
         }
-    };
+    }
+
+    pub fn as_i32(&self) -> Option<i32> {
+        match self {
+            MapperSignalValue::I32(v) => Some(*v),
+            MapperSignalValue::F(_) => None,
+        }
+    }
+
+    fn coerce_f32(self) -> f32 {
+        match self {
+            MapperSignalValue::F(v) => v,
+            MapperSignalValue::I32(v) => v as f32,
+        }
+    }
+
+    fn coerce_i32(self) -> i32 {
+        match self {
+            MapperSignalValue::I32(v) => v,
+            MapperSignalValue::F(v) => v as i32,
+        }
+    }
 }
 
 const STACK_SIZE: usize = 256;
 const TRACING: bool = false;
 
+macro_rules! trace {
+    ($($arg:tt)*) => {
+        if TRACING {
+            println!("-- {}", format!($($arg)*));
+        }
+    };
+}
+
+macro_rules! die_unless {
+    ($cond:expr, $($arg:tt)*) => {
+        if !$cond {
+            println!("-- {}", format!($($arg)*));
+            assert!($cond);
+        }
+    };
+}
+
 fn minf(x: f32, y: f32) -> f32 {
-    if y < x { y } else { x }
+    if y < x {
+        y
+    } else {
+        x
+    }
 }
 
 fn maxf(x: f32, y: f32) -> f32 {
-    if y > x { y } else { x }
+    if y > x {
+        y
+    } else {
+        x
+    }
 }
 
 fn pif() -> f32 {
     PI
 }
 
+fn logbf(x: f32) -> f32 {
+    if x.is_nan() {
+        x
+    } else if x == 0.0 {
+        f32::NEG_INFINITY
+    } else if x.is_infinite() {
+        f32::INFINITY
+    } else {
+        let bits = x.to_bits();
+        let exp = ((bits >> 23) & 0xff) as i32;
+        if exp == 0 {
+            let mant = bits & 0x7f_ffff;
+            (-127 - (mant.leading_zeros() as i32 - 9)) as f32
+        } else {
+            (exp - 127) as f32
+        }
+    }
+}
+
+#[allow(dead_code)]
 #[repr(i32)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum ExprFunc {
@@ -70,7 +140,7 @@ struct FunctionEntry {
     func: fn(f32, f32) -> f32,
 }
 
-lazy_static! {
+lazy_static::lazy_static! {
     static ref FUNCTION_TABLE: HashMap<&'static str, FunctionEntry> = {
         let mut m = HashMap::new();
         m.insert("pow", FunctionEntry { name: "pow", arity: 2, func: f32::powf });
@@ -92,8 +162,8 @@ lazy_static! {
         m.insert("sinh", FunctionEntry { name: "sinh", arity: 1, func: |x, _| x.sinh() });
         m.insert("cosh", FunctionEntry { name: "cosh", arity: 1, func: |x, _| x.cosh() });
         m.insert("tanh", FunctionEntry { name: "tanh", arity: 1, func: |x, _| x.tanh() });
-        m.insert("logb", FunctionEntry { name: "logb", arity: 1, func: |x, _| x.log2().floor() });
-        m.insert("exp2", FunctionEntry { name: "exp2", arity: 1, func: |x, _| 2.0_f32.powf(x) });
+        m.insert("logb", FunctionEntry { name: "logb", arity: 1, func: |x, _| logbf(x) });
+        m.insert("exp2", FunctionEntry { name: "exp2", arity: 1, func: |x, _| x.exp2() });
         m.insert("log2", FunctionEntry { name: "log2", arity: 1, func: |x, _| x.log2() });
         m.insert("hypot", FunctionEntry { name: "hypot", arity: 2, func: f32::hypot });
         m.insert("cbrt", FunctionEntry { name: "cbrt", arity: 1, func: |x, _| x.cbrt() });
@@ -125,229 +195,187 @@ enum TokenType {
 }
 
 #[derive(Debug, Clone, Copy)]
-pub struct Token {
-    pub token_type: TokenType,
-    pub value: Option<f32>,
-    pub int_value: Option<i32>,
-    pub var: Option<char>,
-    pub op: Option<char>,
-    pub func: Option<ExprFunc>,
+struct Token {
+    token_type: TokenType,
+    value: Option<f32>,
+    int_value: Option<i32>,
+    var: Option<char>,
+    op: Option<char>,
+    func: Option<&'static FunctionEntry>,
 }
 
 impl Token {
-    fn new_float(f: f32) -> Self {
-        Token { token_type: TokenType::Float, value: Some(f), int_value: None, var: None, op: None, func: None }
-    }
-    fn new_int(i: i32) -> Self {
-        Token { token_type: TokenType::Int, value: None, int_value: Some(i), var: None, op: None, func: None }
-    }
-    fn new_op(op: char) -> Self {
-        Token { token_type: TokenType::Op, value: None, int_value: None, var: None, op: Some(op), func: None }
-    }
-    fn new_var(var: char) -> Self {
-        Token { token_type: TokenType::Var, value: None, int_value: None, var: Some(var), op: None, func: None }
-    }
-    fn new_func(func: ExprFunc) -> Self {
-        Token { token_type: TokenType::Func, value: None, int_value: None, var: None, op: None, func: Some(func) }
-    }
-    fn open_paren() -> Self {
-        Token { token_type: TokenType::OpenParen, value: None, int_value: None, var: None, op: None, func: None }
-    }
-    fn close_paren() -> Self {
-        Token { token_type: TokenType::CloseParen, value: None, int_value: None, var: None, op: None, func: None }
-    }
-    fn open_square() -> Self {
-        Token { token_type: TokenType::OpenSquare, value: None, int_value: None, var: None, op: None, func: None }
-    }
-    fn close_square() -> Self {
-        Token { token_type: TokenType::CloseSquare, value: None, int_value: None, var: None, op: None, func: None }
-    }
-    fn open_curly() -> Self {
-        Token { token_type: TokenType::OpenCurly, value: None, int_value: None, var: None, op: None, func: None }
-    }
-    fn close_curly() -> Self {
-        Token { token_type: TokenType::CloseCurly, value: None, int_value: None, var: None, op: None, func: None }
-    }
-    fn comma() -> Self {
-        Token { token_type: TokenType::Comma, value: None, int_value: None, var: None, op: None, func: None }
-    }
-    fn end() -> Self {
-        Token { token_type: TokenType::End, value: None, int_value: None, var: None, op: None, func: None }
-    }
-    fn to_float() -> Self {
-        Token { token_type: TokenType::ToFloat, value: None, int_value: None, var: None, op: None, func: None }
-    }
-    fn to_int32() -> Self {
-        Token { token_type: TokenType::ToInt32, value: None, int_value: None, var: None, op: None, func: None }
-    }
-}
-
-fn function_lookup(s: &str) -> Option<ExprFunc> {
-    FUNCTION_TABLE.get(s).map(|_| {
-        match s {
-            "pow" => ExprFunc::Pow,
-            "sin" => ExprFunc::Sin,
-            "cos" => ExprFunc::Cos,
-            "tan" => ExprFunc::Tan,
-            "abs" => ExprFunc::Abs,
-            "sqrt" => ExprFunc::Sqrt,
-            "log" => ExprFunc::Log,
-            "log10" => ExprFunc::Log10,
-            "exp" => ExprFunc::Exp,
-            "floor" => ExprFunc::Floor,
-            "round" => ExprFunc::Round,
-            "ceil" => ExprFunc::Ceil,
-            "asin" => ExprFunc::Asin,
-            "acos" => ExprFunc::Acos,
-            "atan" => ExprFunc::Atan,
-            "atan2" => ExprFunc::Atan2,
-            "sinh" => ExprFunc::Sinh,
-            "cosh" => ExprFunc::Cosh,
-            "tanh" => ExprFunc::Tanh,
-            "logb" => ExprFunc::Logb,
-            "exp2" => ExprFunc::Exp2,
-            "log2" => ExprFunc::Log2,
-            "hypot" => ExprFunc::Hypot,
-            "cbrt" => ExprFunc::Cbrt,
-            "trunc" => ExprFunc::Trunc,
-            "min" => ExprFunc::Min,
-            "max" => ExprFunc::Max,
-            "pi" => ExprFunc::Pi,
-            _ => ExprFunc::Unknown,
-        }
-    })
-}
-
-struct Lexer<'a> {
-    s: &'a str,
-    pos: usize,
-}
-
-impl<'a> Lexer<'a> {
-    fn new(s: &'a str) -> Self {
-        Lexer { s, pos: 0 }
-    }
-
-    fn peek(&self) -> Option<char> {
-        self.s.chars().nth(self.pos)
-    }
-
-    fn advance(&mut self) {
-        if let Some(c) = self.peek() {
-            self.pos += c.len_utf8();
+    fn simple(token_type: TokenType) -> Self {
+        Self {
+            token_type,
+            value: None,
+            int_value: None,
+            var: None,
+            op: None,
+            func: None,
         }
     }
 
-    fn next_token(&mut self) -> Token {
-        loop {
-            let c = match self.peek() {
-                Some(c) => c,
-                None => return Token::end(),
-            };
+    fn float(val: f32) -> Self {
+        Self {
+            token_type: TokenType::Float,
+            value: Some(val),
+            int_value: None,
+            var: None,
+            op: None,
+            func: None,
+        }
+    }
 
-            if c.is_ascii_digit() {
-                let start = self.pos;
-                while let Some(c) = self.peek() {
-                    if c.is_ascii_digit() {
-                        self.advance();
-                    } else {
-                        break;
-                    }
-                }
-                let int_str = &self.s[start..self.pos];
-                let int_val: i32 = int_str.parse().unwrap();
+    fn int(val: i32) -> Self {
+        Self {
+            token_type: TokenType::Int,
+            value: None,
+            int_value: Some(val),
+            var: None,
+            op: None,
+            func: None,
+        }
+    }
 
-                if self.peek() == Some('.') {
-                    self.advance();
-                    let frac_start = self.pos;
-                    while let Some(c) = self.peek() {
-                        if c.is_ascii_digit() {
-                            self.advance();
-                        } else {
-                            break;
-                        }
-                    }
-                    let frac_str = &self.s[frac_start..self.pos];
-                    let float_str = format!("{}.{}", int_str, frac_str);
-                    let float_val: f32 = float_str.parse().unwrap();
-                    return Token::new_float(float_val);
-                } else {
-                    return Token::new_int(int_val);
-                }
+    fn op(c: char) -> Self {
+        Self {
+            token_type: TokenType::Op,
+            value: None,
+            int_value: None,
+            var: None,
+            op: Some(c),
+            func: None,
+        }
+    }
+
+    fn var(c: char) -> Self {
+        Self {
+            token_type: TokenType::Var,
+            value: None,
+            int_value: None,
+            var: Some(c),
+            op: None,
+            func: None,
+        }
+    }
+
+    fn func(entry: Option<&'static FunctionEntry>) -> Self {
+        Self {
+            token_type: TokenType::Func,
+            value: None,
+            int_value: None,
+            var: None,
+            op: None,
+            func: entry,
+        }
+    }
+}
+
+fn function_lookup(s: &str) -> Option<&'static FunctionEntry> {
+    FUNCTION_TABLE.get(s)
+}
+
+fn expr_lex(s: &str) -> Result<Vec<Token>, &'static str> {
+    let bytes = s.as_bytes();
+    let mut i = 0;
+    let mut tokens = Vec::new();
+
+    loop {
+        while i < bytes.len() && bytes[i].is_ascii_whitespace() {
+            i += 1;
+        }
+        if i >= bytes.len() {
+            tokens.push(Token::simple(TokenType::End));
+            return Ok(tokens);
+        }
+
+        let b = bytes[i];
+        if b.is_ascii_digit() {
+            let start = i;
+            while i < bytes.len() && bytes[i].is_ascii_digit() {
+                i += 1;
             }
-
-            match c {
-                '.' => {
-                    self.advance();
-                    let start = self.pos;
-                    while let Some(c) = self.peek() {
-                        if c.is_ascii_digit() {
-                            self.advance();
-                        } else {
-                            break;
-                        }
+            if i < bytes.len() && bytes[i] == b'.' {
+                i += 1;
+                while i < bytes.len() && bytes[i].is_ascii_digit() {
+                    i += 1;
+                }
+                let val = s[start..i]
+                    .parse::<f32>()
+                    .map_err(|_| "Invalid float literal in lexer.")?;
+                tokens.push(Token::float(val));
+            } else {
+                let val = s[start..i]
+                    .parse::<i32>()
+                    .map_err(|_| "Invalid integer literal in lexer.")?;
+                tokens.push(Token::int(val));
+            }
+        } else if b == b'.' {
+            let start = i;
+            i += 1;
+            if i < bytes.len() && bytes[i].is_ascii_digit() {
+                while i < bytes.len() && bytes[i].is_ascii_digit() {
+                    i += 1;
+                }
+                let val = s[start..i]
+                    .parse::<f32>()
+                    .map_err(|_| "Invalid float literal in lexer.")?;
+                tokens.push(Token::float(val));
+            } else {
+                return Err("Error in lexical analysis.");
+            }
+        } else {
+            match b {
+                b'+' | b'-' | b'/' | b'*' | b'=' => {
+                    tokens.push(Token::op(b as char));
+                    i += 1;
+                }
+                b'(' => {
+                    tokens.push(Token::simple(TokenType::OpenParen));
+                    i += 1;
+                }
+                b')' => {
+                    tokens.push(Token::simple(TokenType::CloseParen));
+                    i += 1;
+                }
+                b'x' | b'y' => {
+                    tokens.push(Token::var(b as char));
+                    i += 1;
+                }
+                b'[' => {
+                    tokens.push(Token::simple(TokenType::OpenSquare));
+                    i += 1;
+                }
+                b']' => {
+                    tokens.push(Token::simple(TokenType::CloseSquare));
+                    i += 1;
+                }
+                b'{' => {
+                    tokens.push(Token::simple(TokenType::OpenCurly));
+                    i += 1;
+                }
+                b'}' => {
+                    tokens.push(Token::simple(TokenType::CloseCurly));
+                    i += 1;
+                }
+                b',' => {
+                    tokens.push(Token::simple(TokenType::Comma));
+                    i += 1;
+                }
+                _ if b.is_ascii_alphabetic() => {
+                    let start = i;
+                    while i < bytes.len() && bytes[i].is_ascii_alphanumeric() {
+                        i += 1;
                     }
-                    let frac_str = &self.s[start..self.pos];
-                    let float_str = format!("0.{}", frac_str);
-                    let float_val: f32 = float_str.parse().unwrap();
-                    return Token::new_float(float_val);
+                    let name = &s[start..i];
+                    tokens.push(Token::func(function_lookup(name)));
                 }
-                '+' | '-' | '*' | '/' | '=' => {
-                    self.advance();
-                    return Token::new_op(c);
-                }
-                '(' => { self.advance(); return Token::open_paren(); }
-                ')' => { self.advance(); return Token::close_paren(); }
-                'x' | 'y' => { self.advance(); return Token::new_var(c); }
-                '[' => { self.advance(); return Token::open_square(); }
-                ']' => { self.advance(); return Token::close_square(); }
-                '{' => { self.advance(); return Token::open_curly(); }
-                '}' => { self.advance(); return Token::close_curly(); }
-                ' ' | '\t' | '\r' | '\n' => { self.advance(); continue; }
-                ',' => { self.advance(); return Token::comma(); }
                 _ => {
-                    if c.is_ascii_alphabetic() {
-                        let start = self.pos;
-                        while let Some(c) = self.peek() {
-                            if c.is_ascii_alphanumeric() {
-                                self.advance();
-                            } else {
-                                break;
-                            }
-                        }
-                        let name = &self.s[start..self.pos];
-                        if let Some(func) = function_lookup(name) {
-                            return Token::new_func(func);
-                        } else {
-                            panic!("Unknown function: {}", name);
-                        }
-                    } else {
-                        panic!("Unknown character '{}' in lexer", c);
-                    }
+                    println!("unknown character '{}' in lexer", b as char);
+                    return Err("Error in lexical analysis.");
                 }
             }
-        }
-    }
-}
-
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum MapperSignalValue {
-    F(f32),
-    I32(i32),
-}
-
-impl MapperSignalValue {
-    pub fn as_f32(&self) -> Option<f32> {
-        match self {
-            MapperSignalValue::F(f) => Some(*f),
-            MapperSignalValue::I32(i) => Some(*i as f32),
-        }
-    }
-
-    pub fn as_i32(&self) -> Option<i32> {
-        match self {
-            MapperSignalValue::F(f) => Some(*f as i32),
-            MapperSignalValue::I32(i) => Some(*i),
         }
     }
 }
@@ -361,114 +389,6 @@ pub struct ExprNode {
     pub next: Option<Arc<ExprNode>>,
 }
 
-impl ExprNode {
-    pub fn new() -> ExprNode {
-        ExprNode {
-            tok: Token::end(),
-            is_float: 0,
-            history_index: 0,
-            vector_index: 0,
-            next: None,
-        }
-    }
-
-    pub fn expr_free(&self) {}
-}
-
-fn append_to_list(head: &mut ExprNode, tok: Token, is_float: i32) {
-    let mut current = head;
-    while let Some(next) = &current.next {
-        current = Arc::get_mut(current.next.as_mut().unwrap()).unwrap();
-    }
-    let new_node = ExprNode {
-        tok,
-        is_float,
-        history_index: 0,
-        vector_index: 0,
-        next: None,
-    };
-    current.next = Some(Arc::new(new_node));
-}
-
-fn collapse_expr_to_left(plhs: &mut ExprNode, rhs: &ExprNode, constant_folding: bool) {
-    let mut refvar = false;
-
-    let mut rhs_last = rhs.clone();
-    if rhs_last.tok.token_type == TokenType::Var {
-        refvar = true;
-    }
-    while let Some(next) = &rhs_last.next {
-        if next.tok.token_type == TokenType::Var {
-            refvar = true;
-        }
-        rhs_last = (**next).clone();
-    }
-
-    let mut plhs_last = plhs.clone();
-    if plhs_last.tok.token_type == TokenType::Var {
-        refvar = true;
-    }
-    while let Some(next) = &plhs_last.next {
-        if next.tok.token_type == TokenType::Var {
-            refvar = true;
-        }
-        plhs_last = (**next).clone();
-    }
-
-    let lhs_is_float = plhs_last.is_float != 0;
-    let rhs_is_float = rhs_last.is_float != 0;
-    let is_float = if lhs_is_float || rhs_is_float { 1 } else { 0 };
-
-    let mut new_lhs = plhs.clone();
-    if lhs_is_float && !rhs_is_float {
-        let coerce = ExprNode {
-            tok: Token::to_float(),
-            is_float: 1,
-            history_index: 0,
-            vector_index: 0,
-            next: None,
-        };
-        rhs_last.next = Some(Arc::new(coerce));
-    } else if !lhs_is_float && rhs_is_float {
-        let coerce = ExprNode {
-            tok: Token::to_float(),
-            is_float: 1,
-            history_index: 0,
-            vector_index: 0,
-            next: Some(Arc::new(new_lhs)),
-        };
-        new_lhs = coerce;
-    }
-
-    rhs_last.next = Some(Arc::new(new_lhs));
-    *plhs = rhs.clone();
-
-    if constant_folding && !refvar {
-        let mut expr = MapperExpr {
-            node: plhs.clone(),
-            vector_size: 1,
-            history_size: 1,
-            history_pos: 0,
-            input_history: vec![],
-            output_history: vec![],
-        };
-        let v = mapper_expr_evaluate(&mut expr, &MapperSignalValue::F(0.0));
-
-        let mut current = plhs;
-        while current.next.is_some() {
-            current = Arc::get_mut(current.next.as_mut().unwrap()).unwrap();
-        }
-        current.next = None;
-        current.is_float = is_float;
-        if is_float != 0 {
-            current.tok = Token::new_float(v.as_f32().unwrap());
-        } else {
-            current.tok = Token::new_int(v.as_i32().unwrap());
-        }
-    }
-}
-
-#[derive(Debug, Clone)]
 pub struct MapperExpr {
     pub node: ExprNode,
     pub vector_size: i32,
@@ -478,559 +398,796 @@ pub struct MapperExpr {
     pub output_history: Vec<MapperSignalValue>,
 }
 
+#[allow(non_camel_case_types)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum StateT {
-    YequalY,
-    YequalEq,
-    Expr,
-    ExprRight,
-    Term,
-    TermRight,
-    Value,
-    Negate,
-    VarRight,
-    VarVectindex,
-    VarHistindex,
-    CloseVectindex,
-    CloseHistindex,
-    OpenParen,
-    CloseParen,
-    Comma,
-    End,
+pub enum state_t {
+    YEQUAL_Y,
+    YEQUAL_EQ,
+    EXPR,
+    EXPR_RIGHT,
+    TERM,
+    TERM_RIGHT,
+    VALUE,
+    NEGATE,
+    VAR_RIGHT,
+    VAR_VECTINDEX,
+    VAR_HISTINDEX,
+    CLOSE_VECTINDEX,
+    CLOSE_HISTINDEX,
+    OPEN_PAREN,
+    CLOSE_PAREN,
+    COMMA,
+    END,
 }
 
-#[derive(Debug, Clone)]
-enum StackObj {
-    State(StateT),
+#[allow(non_camel_case_types)]
+enum stack_obj_t {
+    State(state_t),
     Node(ExprNode),
 }
 
-pub fn mapper_expr_new_from_string(s: &str, input_is_float: i32, output_is_float: i32, vector_size: i32) -> MapperExpr {
-    let mut lexer = Lexer::new(s);
-    let mut stack: Vec<StackObj> = Vec::with_capacity(STACK_SIZE);
-    let mut result: Option<ExprNode> = None;
-    let _error_message: Option<String> = None;
-    let mut next_token = true;
-    let mut tok = Token::end();
-    let mut var_allowed = true;
-    let mut oldest_samps = 0.0f32;
-
-    stack.push(StackObj::State(StateT::Expr));
-    stack.push(StackObj::State(StateT::YequalEq));
-    stack.push(StackObj::State(StateT::YequalY));
-
-    loop {
-        if stack.is_empty() {
-            break;
+impl ExprNode {
+    pub fn new() -> ExprNode {
+        ExprNode {
+            tok: Token::simple(TokenType::End),
+            is_float: 0,
+            history_index: 0,
+            vector_index: 0,
+            next: None,
         }
+    }
 
+    fn with_token(tok: Token, is_float: i32) -> ExprNode {
+        ExprNode {
+            tok,
+            is_float,
+            history_index: 0,
+            vector_index: 0,
+            next: None,
+        }
+    }
+
+    pub fn expr_free(&self) {}
+}
+
+impl Default for ExprNode {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+fn printtoken(t: &Token) {
+    match t.token_type {
+        TokenType::Float => print!("{}", t.value.unwrap_or(0.0)),
+        TokenType::Int => print!("{}", t.int_value.unwrap_or(0)),
+        TokenType::Op => print!("{}", t.op.unwrap_or('?')),
+        TokenType::OpenParen => print!("("),
+        TokenType::CloseParen => print!(")"),
+        TokenType::Var => print!("VAR({})", t.var.unwrap_or('?')),
+        TokenType::OpenSquare => print!("["),
+        TokenType::CloseSquare => print!("]"),
+        TokenType::OpenCurly => print!("{{"),
+        TokenType::CloseCurly => print!("}}"),
+        TokenType::Func => print!("FUNC({})", t.func.map_or("unknown", |f| f.name)),
+        TokenType::Comma => print!(","),
+        TokenType::End => print!("END"),
+        TokenType::ToFloat => print!("(float)"),
+        TokenType::ToInt32 => print!("(int32)"),
+    }
+}
+
+fn printexprnode(s: &str, list: &ExprNode) {
+    print!("{s}");
+    let mut cur = Some(list);
+    while let Some(node) = cur {
+        if node.is_float != 0
+            && node.tok.token_type != TokenType::Float
+            && node.tok.token_type != TokenType::ToFloat
+        {
+            print!(".");
+        }
+        printtoken(&node.tok);
+        if node.tok.token_type == TokenType::Var {
+            if node.history_index < 0 {
+                print!("{{{}}}", node.history_index);
+            }
+            if node.vector_index > -1 {
+                print!("[{}]", node.vector_index);
+            }
+        }
+        cur = node.next.as_deref();
+        if cur.is_some() {
+            print!(" ");
+        }
+    }
+}
+
+#[allow(dead_code)]
+fn printexpr(s: &str, expr: &MapperExpr) {
+    printexprnode(s, &expr.node);
+}
+
+fn printstack(stack: &[stack_obj_t]) {
+    print!("Stack: ");
+    for item in stack {
+        match item {
+            stack_obj_t::Node(node) => {
+                print!("[");
+                printexprnode("", node);
+                print!("] ");
+            }
+            stack_obj_t::State(state) => {
+                print!("{state:?} ");
+            }
+        }
+    }
+    println!();
+}
+
+fn contains_var(node: &ExprNode) -> bool {
+    let mut cur = Some(node);
+    while let Some(n) = cur {
+        if n.tok.token_type == TokenType::Var {
+            return true;
+        }
+        cur = n.next.as_deref();
+    }
+    false
+}
+
+fn last_node(node: &ExprNode) -> &ExprNode {
+    let mut cur = node;
+    while let Some(ref next) = cur.next {
+        cur = next;
+    }
+    cur
+}
+
+fn append_tail(head: &mut ExprNode, tail: ExprNode) {
+    let mut cur = head;
+    while let Some(ref mut next) = cur.next {
+        cur = Arc::make_mut(next);
+    }
+    cur.next = Some(Arc::new(tail));
+}
+
+fn take_last_node(head: &mut ExprNode) -> Option<ExprNode> {
+    head.next.as_ref()?;
+    let mut cur = head;
+    while cur
+        .next
+        .as_ref()
+        .is_some_and(|next| next.next.is_some())
+    {
+        cur = Arc::make_mut(cur.next.as_mut().unwrap());
+    }
+    let last_arc = cur.next.take()?;
+    Some(Arc::try_unwrap(last_arc).unwrap_or_else(|a| (*a).clone()))
+}
+
+fn collapse_expr_to_left(
+    plhs: &mut ExprNode,
+    mut rhs: ExprNode,
+    constant_folding: i32,
+) -> Result<(), &'static str> {
+    let refvar = contains_var(plhs) || contains_var(&rhs);
+    let lhs_is_float = last_node(plhs).is_float != 0;
+    let rhs_is_float = last_node(&rhs).is_float != 0;
+    let is_float = lhs_is_float || rhs_is_float;
+
+    if lhs_is_float && !rhs_is_float {
+        append_tail(&mut rhs, ExprNode::with_token(Token::simple(TokenType::ToFloat), 1));
+        if let Some(last) = take_last_node(plhs) {
+            append_tail(&mut rhs, last);
+            append_tail(plhs, rhs);
+        } else {
+            replace_single(plhs, rhs);
+        }
+    } else if !lhs_is_float && rhs_is_float {
+        if let Some(mut last) = take_last_node(plhs) {
+            last.is_float = 1;
+            append_tail(&mut rhs, last);
+            let mut coerce = ExprNode::with_token(Token::simple(TokenType::ToFloat), 1);
+            coerce.next = Some(Arc::new(rhs));
+            append_tail(plhs, coerce);
+        } else {
+            let mut last = std::mem::replace(
+                plhs,
+                ExprNode::with_token(Token::simple(TokenType::ToFloat), 1),
+            );
+            last.is_float = 1;
+            append_tail(&mut rhs, last);
+            plhs.next = Some(Arc::new(rhs));
+        }
+    } else if let Some(last) = take_last_node(plhs) {
+        append_tail(&mut rhs, last);
+        append_tail(plhs, rhs);
+    } else {
+        replace_single(plhs, rhs);
+    }
+
+    if constant_folding != 0 && !refvar {
+        let v = evaluate_node_list(plhs, None)?;
+        plhs.next = None;
+        plhs.is_float = i32::from(is_float);
+        if is_float {
+            plhs.tok = Token::float(v.coerce_f32());
+        } else {
+            plhs.tok = Token::int(v.coerce_i32());
+        }
+    }
+    Ok(())
+}
+
+fn replace_single(plhs: &mut ExprNode, rhs: ExprNode) {
+    let last = std::mem::replace(plhs, rhs);
+    append_tail(plhs, last);
+}
+
+fn parse_expr(
+    s: &str,
+    input_is_float: i32,
+    output_is_float: i32,
+    vector_size: i32,
+) -> Result<MapperExpr, &'static str> {
+    let tokens = expr_lex(s)?;
+    let mut tok_idx = 0;
+    let mut stack: Vec<stack_obj_t> = Vec::with_capacity(STACK_SIZE);
+    let mut next_token = true;
+    let mut var_allowed = true;
+    let mut oldest_samps: f32 = 0.0;
+    let mut tok = tokens[0];
+
+    stack.push(stack_obj_t::State(state_t::EXPR));
+    stack.push(stack_obj_t::State(state_t::YEQUAL_EQ));
+    stack.push(stack_obj_t::State(state_t::YEQUAL_Y));
+
+    let mut result: Option<ExprNode> = None;
+
+    while !stack.is_empty() {
+        if stack.len() > STACK_SIZE {
+            return Err("Parser stack overflow.");
+        }
         if next_token {
-            tok = lexer.next_token();
+            tok = tokens[tok_idx];
+            if tok_idx + 1 < tokens.len() {
+                tok_idx += 1;
+            }
         }
         next_token = false;
 
-        let is_node = matches!(stack.last(), Some(StackObj::Node(_)));
-        if is_node {
-            let node = match stack.pop().unwrap() {
-                StackObj::Node(n) => n,
-                _ => unreachable!(),
-            };
-            if stack.is_empty() {
-                result = Some(node);
-                break;
+        if matches!(stack.last(), Some(stack_obj_t::Node(_))) {
+            let len = stack.len();
+            if len == 1 {
+                if let Some(stack_obj_t::Node(node)) = stack.pop() {
+                    result = Some(node);
+                    break;
+                }
             }
-            if let Some(&StackObj::State(state)) = stack.last() {
-                stack.pop();
-                if let Some(StackObj::Node(node2)) = stack.last().cloned() {
-                    stack.pop();
-                    if matches!(state, StateT::ExprRight | StateT::TermRight | StateT::CloseParen) {
-                        let mut node2_mut = node2;
-                        collapse_expr_to_left(&mut node2_mut, &node, true);
-                        stack.push(StackObj::Node(node2_mut));
-                    } else if state == StateT::CloseHistindex {
-                        let mut node2_mut = node2;
-                        if node.tok.token_type == TokenType::Float {
-                            node2_mut.history_index = node.tok.value.unwrap() as i32;
-                        } else {
-                            node2_mut.history_index = node.tok.int_value.unwrap();
+            if len >= 2 && matches!(stack[len - 2], stack_obj_t::State(_)) {
+                if len >= 3 && matches!(stack[len - 3], stack_obj_t::Node(_)) {
+                    match &stack[len - 2] {
+                        stack_obj_t::State(state_t::EXPR_RIGHT)
+                        | stack_obj_t::State(state_t::TERM_RIGHT)
+                        | stack_obj_t::State(state_t::CLOSE_PAREN) => {
+                            let Some(stack_obj_t::Node(rhs)) = stack.pop() else {
+                                return Err("Expected node on stack.");
+                            };
+                            let new_len = stack.len();
+                            if let stack_obj_t::Node(ref mut lhs) = stack[new_len - 2] {
+                                collapse_expr_to_left(lhs, rhs, 1)?;
+                            }
                         }
-                        if oldest_samps > node2_mut.history_index as f32 {
-                            oldest_samps = node2_mut.history_index as f32;
+                        stack_obj_t::State(state_t::CLOSE_HISTINDEX) => {
+                            let Some(stack_obj_t::Node(idx_node)) = stack.pop() else {
+                                return Err("Expected node on stack.");
+                            };
+                            die_unless!(
+                                idx_node.next.is_none()
+                                    && matches!(
+                                        idx_node.tok.token_type,
+                                        TokenType::Int | TokenType::Float
+                                    ),
+                                "expected lonely INT or FLOAT expression on the stack."
+                            );
+                            let hist_idx = match idx_node.tok.token_type {
+                                TokenType::Float => idx_node.tok.value.unwrap_or(0.0) as i32,
+                                TokenType::Int => idx_node.tok.int_value.unwrap_or(0),
+                                _ => return Err("Expected INT or FLOAT history index."),
+                            };
+                            let new_len = stack.len();
+                            if let stack_obj_t::Node(ref mut var_node) = stack[new_len - 2] {
+                                die_unless!(
+                                    var_node.tok.token_type == TokenType::Var,
+                                    "expected VAR two-down on the stack."
+                                );
+                                var_node.history_index = hist_idx;
+                                if oldest_samps > hist_idx as f32 {
+                                    oldest_samps = hist_idx as f32;
+                                }
+                            }
                         }
-                        stack.push(StackObj::Node(node2_mut));
-                    } else if state == StateT::CloseVectindex {
-                        let mut node2_mut = node2;
-                        if node.tok.token_type == TokenType::Float {
-                            node2_mut.vector_index = node.tok.value.unwrap() as i32;
-                        } else {
-                            node2_mut.vector_index = node.tok.int_value.unwrap();
+                        stack_obj_t::State(state_t::CLOSE_VECTINDEX) => {
+                            let Some(stack_obj_t::Node(idx_node)) = stack.pop() else {
+                                return Err("Expected node on stack.");
+                            };
+                            die_unless!(
+                                idx_node.next.is_none()
+                                    && matches!(
+                                        idx_node.tok.token_type,
+                                        TokenType::Int | TokenType::Float
+                                    ),
+                                "expected lonely INT or FLOAT expression on the stack."
+                            );
+                            let vect_idx = match idx_node.tok.token_type {
+                                TokenType::Float => idx_node.tok.value.unwrap_or(0.0) as i32,
+                                TokenType::Int => idx_node.tok.int_value.unwrap_or(0),
+                                _ => return Err("Expected INT or FLOAT vector index."),
+                            };
+                            if vect_idx > 0 {
+                                return Err("Vector indexing not yet implemented.");
+                            }
+                            if vect_idx < 0 || vect_idx >= vector_size {
+                                return Err("Vector index outside input size.");
+                            }
+                            let new_len = stack.len();
+                            if let stack_obj_t::Node(ref mut var_node) = stack[new_len - 2] {
+                                die_unless!(
+                                    var_node.tok.token_type == TokenType::Var,
+                                    "expected VAR two-down on the stack."
+                                );
+                                var_node.vector_index = vect_idx;
+                            }
                         }
-                        stack.push(StackObj::Node(node2_mut));
-                    } else {
-                        stack.push(StackObj::Node(node2));
-                        stack.push(StackObj::Node(node));
+                        _ => return Err("Unexpected parser state below node."),
                     }
                 } else {
-                    stack.push(StackObj::Node(node));
+                    stack.swap(len - 2, len - 1);
                 }
-            } else {
-                stack.push(StackObj::Node(node));
+            }
+            if TRACING {
+                printstack(&stack);
             }
             continue;
         }
 
         let state = match stack.last() {
-            Some(StackObj::State(s)) => *s,
-            _ => break,
+            Some(stack_obj_t::State(st)) => *st,
+            _ => return Err("Expected state on parser stack."),
         };
 
         match state {
-            StateT::YequalY => {
+            state_t::YEQUAL_Y => {
                 if tok.token_type == TokenType::Var && tok.var == Some('y') {
                     stack.pop();
+                    next_token = true;
                 } else {
-                    break;
+                    return Err("Error in y= prefix.");
                 }
-                next_token = true;
             }
-            StateT::YequalEq => {
+            state_t::YEQUAL_EQ => {
                 if tok.token_type == TokenType::Op && tok.op == Some('=') {
                     stack.pop();
+                    next_token = true;
                 } else {
-                    break;
+                    return Err("Error in y= prefix.");
                 }
-                next_token = true;
             }
-            StateT::Expr => {
+            state_t::EXPR => {
                 stack.pop();
-                stack.push(StackObj::State(StateT::ExprRight));
-                stack.push(StackObj::State(StateT::Term));
+                stack.push(stack_obj_t::State(state_t::EXPR_RIGHT));
+                stack.push(stack_obj_t::State(state_t::TERM));
             }
-            StateT::ExprRight => {
-                if tok.token_type == TokenType::Op {
-                    stack.pop();
-                    if tok.op == Some('+') || tok.op == Some('-') {
-                        if let Some(StackObj::Node(node)) = stack.last_mut() {
-                            let is_float = node.is_float;
-                            append_to_list(node, tok, is_float);
-                        }
-                        stack.push(StackObj::State(StateT::Expr));
-                        next_token = true;
-                    }
-                } else {
-                    stack.pop();
-                }
-            }
-            StateT::Term => {
+            state_t::EXPR_RIGHT => {
                 stack.pop();
-                stack.push(StackObj::State(StateT::TermRight));
-                stack.push(StackObj::State(StateT::Value));
-            }
-            StateT::TermRight => {
-                if tok.token_type == TokenType::Op {
-                    stack.pop();
-                    if tok.op == Some('*') || tok.op == Some('/') {
-                        if let Some(StackObj::Node(node)) = stack.last_mut() {
-                            let is_float = node.is_float;
-                            append_to_list(node, tok, is_float);
-                        }
-                        stack.push(StackObj::State(StateT::Term));
-                        next_token = true;
+                if tok.token_type == TokenType::Op && matches!(tok.op, Some('+') | Some('-')) {
+                    if let Some(stack_obj_t::Node(node)) = stack.last_mut() {
+                        let is_f = last_node(node).is_float;
+                        append_tail(node, ExprNode::with_token(tok, is_f));
                     }
-                } else {
-                    stack.pop();
-                }
-            }
-            StateT::Value => {
-                match tok.token_type {
-                    TokenType::Int => {
-                        stack.pop();
-                        let node = ExprNode { tok, is_float: 0, history_index: 0, vector_index: 0, next: None };
-                        stack.push(StackObj::Node(node));
-                        next_token = true;
-                    }
-                    TokenType::Float => {
-                        stack.pop();
-                        let node = ExprNode { tok, is_float: 1, history_index: 0, vector_index: 0, next: None };
-                        stack.push(StackObj::Node(node));
-                        next_token = true;
-                    }
-                    TokenType::Var => {
-                        if var_allowed {
-                            stack.pop();
-                            let node = ExprNode { tok, is_float: input_is_float, history_index: 0, vector_index: 0, next: None };
-                            stack.push(StackObj::Node(node));
-                            stack.push(StackObj::State(StateT::VarRight));
-                            next_token = true;
-                        } else {
-                            break;
-                        }
-                    }
-                    TokenType::OpenParen => {
-                        stack.pop();
-                        stack.push(StackObj::State(StateT::CloseParen));
-                        stack.push(StackObj::State(StateT::Expr));
-                        next_token = true;
-                    }
-                    TokenType::Func => {
-                        stack.pop();
-                        let node = ExprNode { tok, is_float: 1, history_index: 0, vector_index: 0, next: None };
-                        stack.push(StackObj::Node(node));
-                        let func_name = match tok.func {
-                            Some(ExprFunc::Pow) => "pow",
-                            Some(ExprFunc::Sin) => "sin",
-                            Some(ExprFunc::Cos) => "cos",
-                            Some(ExprFunc::Tan) => "tan",
-                            Some(ExprFunc::Abs) => "abs",
-                            Some(ExprFunc::Sqrt) => "sqrt",
-                            Some(ExprFunc::Log) => "log",
-                            Some(ExprFunc::Log10) => "log10",
-                            Some(ExprFunc::Exp) => "exp",
-                            Some(ExprFunc::Floor) => "floor",
-                            Some(ExprFunc::Round) => "round",
-                            Some(ExprFunc::Ceil) => "ceil",
-                            Some(ExprFunc::Asin) => "asin",
-                            Some(ExprFunc::Acos) => "acos",
-                            Some(ExprFunc::Atan) => "atan",
-                            Some(ExprFunc::Atan2) => "atan2",
-                            Some(ExprFunc::Sinh) => "sinh",
-                            Some(ExprFunc::Cosh) => "cosh",
-                            Some(ExprFunc::Tanh) => "tanh",
-                            Some(ExprFunc::Logb) => "logb",
-                            Some(ExprFunc::Exp2) => "exp2",
-                            Some(ExprFunc::Log2) => "log2",
-                            Some(ExprFunc::Hypot) => "hypot",
-                            Some(ExprFunc::Cbrt) => "cbrt",
-                            Some(ExprFunc::Trunc) => "trunc",
-                            Some(ExprFunc::Min) => "min",
-                            Some(ExprFunc::Max) => "max",
-                            Some(ExprFunc::Pi) => "pi",
-                            _ => "",
-                        };
-                        let arity = FUNCTION_TABLE.get(func_name).map(|e| e.arity).unwrap_or(0);
-                        if arity > 0 {
-                            stack.push(StackObj::State(StateT::CloseParen));
-                            stack.push(StackObj::State(StateT::Expr));
-                            for _ in 1..arity {
-                                stack.push(StackObj::State(StateT::Comma));
-                                stack.push(StackObj::State(StateT::Expr));
-                            }
-                            stack.push(StackObj::State(StateT::OpenParen));
-                        }
-                        next_token = true;
-                    }
-                    TokenType::Op if tok.op == Some('-') => {
-                        stack.pop();
-                        stack.push(StackObj::State(StateT::Negate));
-                        stack.push(StackObj::State(StateT::Value));
-                        next_token = true;
-                    }
-                    _ => {
-                        break;
-                    }
-                }
-            }
-            StateT::Negate => {
-                stack.pop();
-                if let Some(StackObj::Node(node)) = stack.last_mut() {
-                    let zero_node = ExprNode { tok: Token::new_int(0), is_float: 0, history_index: 0, vector_index: 0, next: Some(Arc::new(ExprNode { tok: Token::new_op('-'), is_float: 0, history_index: 0, vector_index: 0, next: None })) };
-                    let mut zero_node_mut = zero_node;
-                    collapse_expr_to_left(&mut zero_node_mut, node, true);
-                    *stack.last_mut().unwrap() = StackObj::Node(zero_node_mut);
-                } else {
-                    break;
-                }
-            }
-            StateT::VarRight => {
-                if tok.token_type == TokenType::OpenSquare {
-                    stack.pop();
-                    stack.push(StackObj::State(StateT::VarVectindex));
-                } else if tok.token_type == TokenType::OpenCurly {
-                    stack.pop();
-                    stack.push(StackObj::State(StateT::VarHistindex));
-                } else {
-                    stack.pop();
-                }
-            }
-            StateT::VarVectindex => {
-                stack.pop();
-                if tok.token_type == TokenType::OpenSquare {
-                    var_allowed = false;
-                    stack.push(StackObj::State(StateT::CloseVectindex));
-                    stack.push(StackObj::State(StateT::Expr));
+                    stack.push(stack_obj_t::State(state_t::EXPR));
                     next_token = true;
                 }
             }
-            StateT::VarHistindex => {
+            state_t::TERM => {
+                stack.pop();
+                stack.push(stack_obj_t::State(state_t::TERM_RIGHT));
+                stack.push(stack_obj_t::State(state_t::VALUE));
+            }
+            state_t::TERM_RIGHT => {
+                stack.pop();
+                if tok.token_type == TokenType::Op && matches!(tok.op, Some('*') | Some('/')) {
+                    if let Some(stack_obj_t::Node(node)) = stack.last_mut() {
+                        let is_f = last_node(node).is_float;
+                        append_tail(node, ExprNode::with_token(tok, is_f));
+                    }
+                    stack.push(stack_obj_t::State(state_t::TERM));
+                    next_token = true;
+                }
+            }
+            state_t::VALUE => match tok.token_type {
+                TokenType::Int => {
+                    stack.pop();
+                    stack.push(stack_obj_t::Node(ExprNode::with_token(tok, 0)));
+                    next_token = true;
+                }
+                TokenType::Float => {
+                    stack.pop();
+                    stack.push(stack_obj_t::Node(ExprNode::with_token(tok, 1)));
+                    next_token = true;
+                }
+                TokenType::Var => {
+                    if var_allowed {
+                        stack.pop();
+                        stack.push(stack_obj_t::Node(ExprNode::with_token(tok, input_is_float)));
+                        stack.push(stack_obj_t::State(state_t::VAR_RIGHT));
+                        next_token = true;
+                    } else {
+                        return Err("Unexpected variable reference.");
+                    }
+                }
+                TokenType::OpenParen => {
+                    stack.pop();
+                    stack.push(stack_obj_t::State(state_t::CLOSE_PAREN));
+                    stack.push(stack_obj_t::State(state_t::EXPR));
+                    next_token = true;
+                }
+                TokenType::Func => {
+                    stack.pop();
+                    let entry = tok.func.ok_or("Unknown function.")?;
+                    stack.push(stack_obj_t::Node(ExprNode::with_token(tok, 1)));
+                    if entry.arity > 0 {
+                        stack.push(stack_obj_t::State(state_t::CLOSE_PAREN));
+                        stack.push(stack_obj_t::State(state_t::EXPR));
+                        for _ in 1..entry.arity {
+                            stack.push(stack_obj_t::State(state_t::COMMA));
+                            stack.push(stack_obj_t::State(state_t::EXPR));
+                        }
+                        stack.push(stack_obj_t::State(state_t::OPEN_PAREN));
+                    }
+                    next_token = true;
+                }
+                TokenType::Op if tok.op == Some('-') => {
+                    stack.pop();
+                    stack.push(stack_obj_t::State(state_t::NEGATE));
+                    stack.push(stack_obj_t::State(state_t::VALUE));
+                    next_token = true;
+                }
+                _ => return Err("Expected value."),
+            },
+            state_t::NEGATE => {
+                stack.pop();
+                if let Some(stack_obj_t::Node(rhs)) = stack.pop() {
+                    let mut e = ExprNode::with_token(Token::int(0), 0);
+                    e.next = Some(Arc::new(ExprNode::with_token(Token::op('-'), 0)));
+                    collapse_expr_to_left(&mut e, rhs, 1)?;
+                    stack.push(stack_obj_t::Node(e));
+                } else {
+                    return Err("Expected to negate an expression.");
+                }
+            }
+            state_t::VAR_RIGHT => {
+                stack.pop();
+                if tok.token_type == TokenType::OpenSquare {
+                    stack.push(stack_obj_t::State(state_t::VAR_VECTINDEX));
+                } else if tok.token_type == TokenType::OpenCurly {
+                    stack.push(stack_obj_t::State(state_t::VAR_HISTINDEX));
+                }
+            }
+            state_t::VAR_VECTINDEX => {
+                stack.pop();
+                if tok.token_type == TokenType::OpenSquare {
+                    var_allowed = false;
+                    stack.push(stack_obj_t::State(state_t::CLOSE_VECTINDEX));
+                    stack.push(stack_obj_t::State(state_t::EXPR));
+                    next_token = true;
+                }
+            }
+            state_t::VAR_HISTINDEX => {
                 stack.pop();
                 if tok.token_type == TokenType::OpenCurly {
                     var_allowed = false;
-                    stack.push(StackObj::State(StateT::CloseHistindex));
-                    stack.push(StackObj::State(StateT::Expr));
+                    stack.push(stack_obj_t::State(state_t::CLOSE_HISTINDEX));
+                    stack.push(stack_obj_t::State(state_t::EXPR));
                     next_token = true;
                 }
             }
-            StateT::CloseVectindex => {
+            state_t::CLOSE_VECTINDEX => {
                 if tok.token_type == TokenType::CloseSquare {
                     var_allowed = true;
                     stack.pop();
-                    stack.push(StackObj::State(StateT::VarHistindex));
+                    stack.push(stack_obj_t::State(state_t::VAR_HISTINDEX));
                     next_token = true;
                 } else {
-                    break;
+                    return Err("Expected ']'.");
                 }
             }
-            StateT::CloseHistindex => {
+            state_t::CLOSE_HISTINDEX => {
                 if tok.token_type == TokenType::CloseCurly {
                     var_allowed = true;
                     stack.pop();
-                    stack.push(StackObj::State(StateT::VarVectindex));
+                    stack.push(stack_obj_t::State(state_t::VAR_VECTINDEX));
                     next_token = true;
                 } else {
-                    break;
+                    return Err("Expected '}'.");
                 }
             }
-            StateT::CloseParen => {
+            state_t::CLOSE_PAREN => {
                 if tok.token_type == TokenType::CloseParen {
                     stack.pop();
                     next_token = true;
                 } else {
-                    break;
+                    return Err("Expected ')'.");
                 }
             }
-            StateT::Comma => {
+            state_t::COMMA => {
                 if tok.token_type == TokenType::Comma {
                     stack.pop();
-                    let mut i = stack.len();
-                    while i > 0 {
-                        i -= 1;
-                        if matches!(stack[i], StackObj::Node(_)) {
-                            break;
-                        }
-                    }
-                    if i < stack.len() {
-                        if let StackObj::Node(prev_node) = &stack[i] {
-                            let prev_node = prev_node.clone();
-                            if let StackObj::Node(top_node) = &stack[stack.len() - 1] {
-                                let top_node = top_node.clone();
-                                let mut prev_node_mut = prev_node;
-                                collapse_expr_to_left(&mut prev_node_mut, &top_node, false);
-                                stack[i] = StackObj::Node(prev_node_mut);
-                            }
-                            stack.pop();
+                    let prev_idx = stack[..stack.len().saturating_sub(1)]
+                        .iter()
+                        .rposition(|x| matches!(x, stack_obj_t::Node(_)));
+                    if let Some(i) = prev_idx {
+                        let Some(stack_obj_t::Node(rhs)) = stack.pop() else {
+                            return Err("Expected node before comma.");
+                        };
+                        if let stack_obj_t::Node(ref mut lhs) = stack[i] {
+                            collapse_expr_to_left(lhs, rhs, 0)?;
                         }
                     }
                     next_token = true;
                 } else {
-                    break;
+                    return Err("Expected ','.");
                 }
             }
-            StateT::OpenParen => {
+            state_t::OPEN_PAREN => {
                 if tok.token_type == TokenType::OpenParen {
                     stack.pop();
                     next_token = true;
                 } else {
-                    break;
+                    return Err("Expected '('.");
                 }
             }
-            StateT::End => {
+            state_t::END => {
                 if tok.token_type == TokenType::End {
                     stack.pop();
                 } else {
-                    break;
+                    return Err("Expected END.");
                 }
             }
         }
+
+        if TRACING {
+            printstack(&stack);
+        }
     }
 
-    let mut result = result.unwrap_or_else(ExprNode::new);
-    let mut last_node = &mut result;
-    while let Some(next) = &last_node.next {
-        last_node = Arc::get_mut(last_node.next.as_mut().unwrap()).unwrap();
-    }
-    if last_node.is_float != 0 && output_is_float == 0 {
-        append_to_list(&mut result, Token::to_int32(), 0);
-    } else if last_node.is_float == 0 && output_is_float != 0 {
-        append_to_list(&mut result, Token::to_float(), 1);
+    let mut expr_node = result.ok_or("Failed to parse expression.")?;
+
+    if oldest_samps < -100.0 {
+        trace!("Expression contains history reference of {}", oldest_samps);
+        return Err("History reference out of bounds.");
     }
 
-    let history_size = (oldest_samps.ceil() as i32).abs() + 1;
-    let input_history = vec![MapperSignalValue::F(0.0); (vector_size * history_size) as usize];
-    let output_history = vec![MapperSignalValue::F(0.0); history_size as usize];
+    let final_is_float = last_node(&expr_node).is_float != 0;
+    if final_is_float && output_is_float == 0 {
+        append_tail(
+            &mut expr_node,
+            ExprNode::with_token(Token::simple(TokenType::ToInt32), 0),
+        );
+    } else if !final_is_float && output_is_float != 0 {
+        append_tail(
+            &mut expr_node,
+            ExprNode::with_token(Token::simple(TokenType::ToFloat), 1),
+        );
+    }
 
-    MapperExpr {
-        node: result,
+    if vector_size > 1 {
+        let mut cur = Some(&expr_node);
+        while let Some(n) = cur {
+            if n.tok.token_type == TokenType::Var && n.vector_index > 0 {
+                trace!("vector indexing not yet implemented");
+                return Err("Vector indexing not yet implemented.");
+            }
+            cur = n.next.as_deref();
+        }
+    }
+
+    let history_size = ((-oldest_samps).ceil() as i32) + 1;
+    let zero_in = if input_is_float != 0 {
+        MapperSignalValue::F(0.0)
+    } else {
+        MapperSignalValue::I32(0)
+    };
+    let zero_out = if output_is_float != 0 {
+        MapperSignalValue::F(0.0)
+    } else {
+        MapperSignalValue::I32(0)
+    };
+
+    Ok(MapperExpr {
+        node: expr_node,
         vector_size,
         history_size,
         history_pos: -1,
-        input_history,
-        output_history,
+        input_history: vec![zero_in; (vector_size * history_size) as usize],
+        output_history: vec![zero_out; history_size as usize],
+    })
+}
+
+pub fn mapper_expr_new_from_string(
+    s: &str,
+    input_is_float: i32,
+    output_is_float: i32,
+    vector_size: i32,
+) -> MapperExpr {
+    match parse_expr(s, input_is_float, output_is_float, vector_size) {
+        Ok(expr) => expr,
+        Err(msg) => {
+            println!("{msg}");
+            panic!("{msg}");
+        }
     }
 }
 
-pub fn mapper_expr_evaluate<'a>(mapper: &mut MapperExpr, input: &'a MapperSignalValue) -> MapperSignalValue {
+fn evaluate_node_list(
+    start_node: &ExprNode,
+    mapper: Option<&MapperExpr>,
+) -> Result<MapperSignalValue, &'static str> {
     let mut stack: Vec<MapperSignalValue> = Vec::with_capacity(STACK_SIZE);
-    let mut node: Option<Arc<ExprNode>> = Some(Arc::new(mapper.node.clone()));
+    let mut cur = Some(start_node);
 
-    mapper.history_pos = (mapper.history_pos + 1) % mapper.history_size;
-    let start = (mapper.history_pos * mapper.vector_size) as usize;
-    let end = start + mapper.vector_size as usize;
-    if end <= mapper.input_history.len() {
-        for i in start..end {
-            mapper.input_history[i] = *input;
-        }
-    }
-
-    while let Some(current) = node {
-        match current.tok.token_type {
+    while let Some(node) = cur {
+        match node.tok.token_type {
             TokenType::Int => {
-                stack.push(MapperSignalValue::I32(current.tok.int_value.unwrap()));
+                stack.push(MapperSignalValue::I32(node.tok.int_value.unwrap_or(0)));
             }
             TokenType::Float => {
-                stack.push(MapperSignalValue::F(current.tok.value.unwrap()));
+                stack.push(MapperSignalValue::F(node.tok.value.unwrap_or(0.0)));
             }
             TokenType::Var => {
-                let idx = ((current.history_index + mapper.history_pos + mapper.history_size) % mapper.history_size) as usize;
-                match current.tok.var {
+                let m = mapper.ok_or("Input required but not provided for expression evaluation.")?;
+                let idx = (node.history_index + m.history_pos + m.history_size)
+                    .rem_euclid(m.history_size);
+                match node.tok.var {
                     Some('x') => {
-                        let idx = idx * mapper.vector_size as usize + current.vector_index as usize;
-                        if idx < mapper.input_history.len() {
-                            stack.push(mapper.input_history[idx]);
-                        } else {
-                            stack.push(MapperSignalValue::F(0.0));
-                        }
+                        let v_idx = (idx * m.vector_size + node.vector_index) as usize;
+                        stack.push(m.input_history[v_idx]);
                     }
                     Some('y') => {
-                        if idx < mapper.output_history.len() {
-                            stack.push(mapper.output_history[idx]);
-                        } else {
-                            stack.push(MapperSignalValue::F(0.0));
-                        }
+                        stack.push(m.output_history[idx as usize]);
                     }
-                    _ => {
-                        stack.push(MapperSignalValue::F(0.0));
-                    }
+                    _ => return Err("Unknown variable in expression."),
                 }
             }
             TokenType::ToFloat => {
-                if let Some(top) = stack.last_mut() {
-                    *top = MapperSignalValue::F(top.as_f32().unwrap());
-                }
+                let top = stack.last_mut().ok_or("Stack underflow on ToFloat.")?;
+                *top = MapperSignalValue::F(top.coerce_f32());
             }
             TokenType::ToInt32 => {
-                if let Some(top) = stack.last_mut() {
-                    *top = MapperSignalValue::I32(top.as_i32().unwrap());
-                }
+                let top = stack.last_mut().ok_or("Stack underflow on ToInt32.")?;
+                *top = MapperSignalValue::I32(top.coerce_i32());
             }
             TokenType::Op => {
-                if stack.len() < 2 {
-                    stack.push(MapperSignalValue::F(0.0));
-                    node = current.next.clone();
-                    continue;
-                }
-                let right = stack.pop().unwrap();
-                let left = stack.pop().unwrap();
-                let is_float = current.is_float != 0;
-                if is_float {
-                    let l = left.as_f32().unwrap();
-                    let r = right.as_f32().unwrap();
-                    let result = match current.tok.op {
-                        Some('+') => l + r,
-                        Some('-') => l - r,
-                        Some('*') => l * r,
-                        Some('/') => l / r,
-                        _ => 0.0,
+                let right = stack.pop().ok_or("Stack underflow on Op.")?;
+                let left = stack.pop().ok_or("Stack underflow on Op.")?;
+                let op = node.tok.op.ok_or("Missing operator.")?;
+                if node.is_float != 0 {
+                    let l = left.coerce_f32();
+                    let r = right.coerce_f32();
+                    let res = match op {
+                        '+' => l + r,
+                        '-' => l - r,
+                        '*' => l * r,
+                        '/' => l / r,
+                        _ => return Err("Unknown operator."),
                     };
-                    trace_eval!("{} {} {} = {}", l, current.tok.op.unwrap(), r, result);
-                    stack.push(MapperSignalValue::F(result));
+                    trace!("{} {} {} = {}", l, op, r, res);
+                    stack.push(MapperSignalValue::F(res));
                 } else {
-                    let l = left.as_i32().unwrap();
-                    let r = right.as_i32().unwrap();
-                    let result = match current.tok.op {
-                        Some('+') => l + r,
-                        Some('-') => l - r,
-                        Some('*') => l * r,
-                        Some('/') => l / r,
-                        _ => 0,
+                    let l = left.coerce_i32();
+                    let r = right.coerce_i32();
+                    let res = match op {
+                        '+' => l.wrapping_add(r),
+                        '-' => l.wrapping_sub(r),
+                        '*' => l.wrapping_mul(r),
+                        '/' => l.wrapping_div(r),
+                        _ => return Err("Unknown operator."),
                     };
-                    trace_eval!("{} {} {} = {}", l, current.tok.op.unwrap(), r, result);
-                    stack.push(MapperSignalValue::I32(result));
+                    trace!("{} {} {} = {}", l, op, r, res);
+                    stack.push(MapperSignalValue::I32(res));
                 }
             }
             TokenType::Func => {
-                if let Some(func) = current.tok.func {
-                    let func_name = match func {
-                        ExprFunc::Pow => "pow",
-                        ExprFunc::Sin => "sin",
-                        ExprFunc::Cos => "cos",
-                        ExprFunc::Tan => "tan",
-                        ExprFunc::Abs => "abs",
-                        ExprFunc::Sqrt => "sqrt",
-                        ExprFunc::Log => "log",
-                        ExprFunc::Log10 => "log10",
-                        ExprFunc::Exp => "exp",
-                        ExprFunc::Floor => "floor",
-                        ExprFunc::Round => "round",
-                        ExprFunc::Ceil => "ceil",
-                        ExprFunc::Asin => "asin",
-                        ExprFunc::Acos => "acos",
-                        ExprFunc::Atan => "atan",
-                        ExprFunc::Atan2 => "atan2",
-                        ExprFunc::Sinh => "sinh",
-                        ExprFunc::Cosh => "cosh",
-                        ExprFunc::Tanh => "tanh",
-                        ExprFunc::Logb => "logb",
-                        ExprFunc::Exp2 => "exp2",
-                        ExprFunc::Log2 => "log2",
-                        ExprFunc::Hypot => "hypot",
-                        ExprFunc::Cbrt => "cbrt",
-                        ExprFunc::Trunc => "trunc",
-                        ExprFunc::Min => "min",
-                        ExprFunc::Max => "max",
-                        ExprFunc::Pi => "pi",
-                        _ => "",
-                    };
-                    if let Some(entry) = FUNCTION_TABLE.get(func_name) {
-                        match entry.arity {
-                            0 => {
-                                let result = (entry.func)(0.0, 0.0);
-                                trace_eval!("{} = {}", entry.name, result);
-                                stack.push(MapperSignalValue::F(result));
-                            }
-                            1 => {
-                                if let Some(right) = stack.pop() {
-                                    let r = right.as_f32().unwrap();
-                                    let result = (entry.func)(r, 0.0);
-                                    trace_eval!("{}({}) = {}", entry.name, r, result);
-                                    stack.push(MapperSignalValue::F(result));
-                                }
-                            }
-                            2 => {
-                                if stack.len() >= 2 {
-                                    let right = stack.pop().unwrap();
-                                    let left = stack.pop().unwrap();
-                                    let l = left.as_f32().unwrap();
-                                    let r = right.as_f32().unwrap();
-                                    let result = (entry.func)(l, r);
-                                    trace_eval!("{}({},{}) = {}", entry.name, l, r, result);
-                                    stack.push(MapperSignalValue::F(result));
-                                }
-                            }
-                            _ => {}
-                        }
+                let entry = node.tok.func.ok_or("Unknown function.")?;
+                match entry.arity {
+                    0 => {
+                        let res = (entry.func)(0.0, 0.0);
+                        trace!("{} = {}", entry.name, res);
+                        stack.push(MapperSignalValue::F(res));
                     }
+                    1 => {
+                        let right = stack.pop().ok_or("Stack underflow on Func1.")?.coerce_f32();
+                        let res = (entry.func)(right, 0.0);
+                        trace!("{}({}) = {}", entry.name, right, res);
+                        stack.push(MapperSignalValue::F(res));
+                    }
+                    2 => {
+                        let right = stack.pop().ok_or("Stack underflow on Func2.")?.coerce_f32();
+                        let left = stack.pop().ok_or("Stack underflow on Func2.")?.coerce_f32();
+                        let res = (entry.func)(left, right);
+                        trace!("{}({},{}) = {}", entry.name, left, right, res);
+                        stack.push(MapperSignalValue::F(res));
+                    }
+                    _ => return Err("Unsupported function arity."),
                 }
             }
-            _ => {
-                stack.push(MapperSignalValue::F(0.0));
-            }
+            _ => return Err("Unexpected token in expression."),
         }
-        node = current.next.clone();
+        cur = node.next.as_deref();
     }
 
-    let result = stack.pop().unwrap_or(MapperSignalValue::F(0.0));
-    if (mapper.history_pos as usize) < mapper.output_history.len() {
-        mapper.output_history[mapper.history_pos as usize] = result;
+    stack.first().copied().ok_or("Empty evaluation stack.")
+}
+
+pub fn mapper_expr_evaluate<'a>(
+    mapper: &mut MapperExpr,
+    input: &'a MapperSignalValue,
+) -> MapperSignalValue {
+    mapper.history_pos = (mapper.history_pos + 1) % mapper.history_size;
+    let base = (mapper.history_pos * mapper.vector_size) as usize;
+    mapper.input_history[base] = *input;
+
+    match evaluate_node_list(&mapper.node, Some(mapper)) {
+        Ok(val) => {
+            mapper.output_history[mapper.history_pos as usize] = val;
+            val
+        }
+        Err(msg) => {
+            trace!("{}", msg);
+            MapperSignalValue::I32(0)
+        }
     }
-    result
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn c_test2_integer_mode() {
+        let mut e = mapper_expr_new_from_string("y=26*2/2+x*30/(20*1)", 0, 0, 1);
+        for x in [3, 321] {
+            let expected = 26 * 2 / 2 + x * 30 / 20;
+            let out = mapper_expr_evaluate(&mut e, &MapperSignalValue::I32(x));
+            assert_eq!(out.as_i32(), Some(expected));
+            assert_eq!(out.as_f32(), None);
+        }
+        e.node.expr_free();
+    }
+
+    #[test]
+    fn history_input_and_output() {
+        let mut e = mapper_expr_new_from_string("y=x+x{-1}+y{-1}", 1, 1, 1);
+        let y0 = mapper_expr_evaluate(&mut e, &MapperSignalValue::F(1.0));
+        assert_eq!(y0.as_f32(), Some(1.0));
+        let y1 = mapper_expr_evaluate(&mut e, &MapperSignalValue::F(2.0));
+        assert_eq!(y1.as_f32(), Some(4.0));
+        let y2 = mapper_expr_evaluate(&mut e, &MapperSignalValue::F(3.0));
+        assert_eq!(y2.as_f32(), Some(9.0));
+    }
+
+    #[test]
+    fn functions_and_coercion() {
+        let mut e = mapper_expr_new_from_string("y=min(x, max(2, logb(8))) + atan2(1, 1)", 0, 1, 1);
+        let out = mapper_expr_evaluate(&mut e, &MapperSignalValue::I32(5));
+        let expected = 3.0_f32 + std::f32::consts::FRAC_PI_4;
+        assert!((out.as_f32().unwrap() - expected).abs() < 1e-6);
+
+        let mut e_int = mapper_expr_new_from_string("y=-x[0]+sin(pi/2)", 0, 0, 1);
+        let out_int = mapper_expr_evaluate(&mut e_int, &MapperSignalValue::I32(10));
+        assert_eq!(out_int.as_i32(), Some(-9));
+
+        let n = ExprNode::new();
+        n.expr_free();
+    }
 }

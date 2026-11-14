@@ -11,6 +11,29 @@ Rust crate `rbtree` (under `rust/`). Modules to implement:
 Benchmark tests (read-only):
 - rust/src/bin/test.rs
 
+Required public API (from the interface; every item must exist with exactly this
+signature, even if the tests do not use it):
+- [rbtree] pub enum Color
+- [rbtree] pub type Key
+- [rbtree] pub type NodeRef
+- [rbtree] pub struct Node
+- [rbtree] pub struct RBTree
+- [rbtree] pub fn new() -> Self
+- [rbtree] pub fn right_rotate(&mut self, x: NodeRef)
+- [rbtree] pub fn left_rotate(&mut self, x: NodeRef)
+- [rbtree] pub fn free_node(node: Option<NodeRef>)
+- [rbtree] pub fn delete_rbtree(self)
+- [rbtree] pub fn rbtree_insert_fixup(&mut self, z: NodeRef)
+- [rbtree] pub fn rbtree_insert(&mut self, key: Key) -> Option<NodeRef>
+- [rbtree] pub fn rbtree_find(&self, key: Key) -> Option<NodeRef>
+- [rbtree] pub fn rbtree_min(&self) -> Option<NodeRef>
+- [rbtree] pub fn rbtree_max(&self) -> Option<NodeRef>
+- [rbtree] pub fn transplant(&mut self, u: NodeRef, v: Option<NodeRef>)
+- [rbtree] pub fn delete_fixup(&mut self, x: Option<NodeRef>)
+- [rbtree] pub fn erase(&mut self, p: NodeRef)
+- [rbtree] pub fn subtree_to_array(&self, curr: Option<NodeRef>, arr: &mut Vec<Key>, n: usize, count: &mut usize)
+- [rbtree] pub fn to_array(&self, n: usize) -> Vec<Key>
+
 Steps:
 1. Study the C sources and headers to understand data structures and behavior.
 2. Study the Rust interface file(s) and the tests to learn the exact required API

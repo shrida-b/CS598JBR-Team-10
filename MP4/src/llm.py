@@ -20,6 +20,7 @@ from common import MP4, estimate_tokens, pacific_date
 
 DUMMY_SIGNATURE = "skip_thought_signature_validator"   # documented Gemini escape hatch
 COOLDOWN_SECONDS = 300
+HANG_COOLDOWN_SECONDS = 1800          # after a timeout / dropped connection
 
 
 class QuotaExhausted(Exception):
@@ -206,11 +207,11 @@ class ModelPool:
                 self.cooldown[key] = time.time() + COOLDOWN_SECONDS
                 return None
             except (urllib.error.URLError, TimeoutError, ConnectionError) as e:
-                self.traj.event("llm_error", provider=provider, model=model["id"], error=str(e))
-                if waits:
-                    time.sleep(waits.pop(0))
-                    continue
-                self.cooldown[key] = time.time() + COOLDOWN_SECONDS
+                # A hung/dropped connection already cost up to request_timeout seconds: do not retry the
+                # same model; bench it for a while and move on to the next one in the cascade.
+                self.traj.event("llm_error", provider=provider, model=model["id"], error=str(e),
+                                action=f"skip model for {HANG_COOLDOWN_SECONDS}s")
+                self.cooldown[key] = time.time() + HANG_COOLDOWN_SECONDS
                 return None
             self._record(key, provider)
             try:

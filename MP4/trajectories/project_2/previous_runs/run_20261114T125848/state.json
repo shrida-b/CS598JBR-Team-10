@@ -1,0 +1,33 @@
+{
+  "project": "project_2",
+  "name": "rbtree-lab",
+  "started": "2026-11-14T12:58:48-06:00",
+  "iteration": 0,
+  "best_iteration": 0,
+  "best_score": [
+    -1
+  ],
+  "no_progress": 0,
+  "status": "running",
+  "history": [
+    {
+      "iteration": 0,
+      "score": [
+        1,
+        0,
+        0,
+        0,
+        -4
+      ],
+      "note": "skeleton baseline"
+    }
+  ],
+  "runs": [
+    {
+      "started": "2026-11-14T12:58:48-06:00",
+      "provider": "gemini"
+    }
+  ],
+  "requests": {},
+  "models_used": {}
+}

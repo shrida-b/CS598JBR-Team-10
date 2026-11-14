@@ -8,8 +8,10 @@
 All models, endpoints and tools used here are **free**: free-tier API keys only, no
 paid credits.
 
-> **Status:** Task 1 (setup) and Task 2 (pipeline + trajectories) are complete;
-> see `trajectories/project_<N>/TRAJECTORY.md` for each run.
+> **Status:** Tasks 1–3 are complete. Both final translations come from the final
+> pipeline (project_1 ran before the last `llm.py` change, which only affects retries
+> after a network timeout); see `trajectories/project_<N>/TRAJECTORY.md`.
+> Earlier development runs are kept in `trajectories/project_<N>/previous_runs/`.
 
 ## Directory layout
 
@@ -238,6 +240,7 @@ the agent.
 | 2026-11-13 | Controller fixes after the first project_1 run: (a) the signature check ignores lifetime annotations that elision infers (`fn f<'a>(x: &'a T)` ≡ `fn f(x: &T)`); (b) integrity violations became their own score term instead of counting as "does not build"; (c) per-minute limits set below Google's (4 / 12 RPM), because failed requests also count | Run 1 flagged an elided lifetime as an interface change and reverted a 1/2-tests translation to the empty skeleton. Run 1 is archived in `trajectories/project_1/previous_runs/` and the project was rerun with `--fresh` | No. Only the controller changed |
 | 2026-11-13 | Pipeline improvements after project_1 runs 2–3: (a) the prompts carry an auto-extracted **required public API checklist** from the interface file; (b) the agent's `cargo check/build` tool also reports interface violations; (c) the controller never reverts to the untouched skeleton (iteration 0), only to an earlier real translation; (d) repair prompts inline the C sources as well as the current Rust; (e) `--provider` overrides still fall back to the default provider | Every model dropped interface items the tests do not use (`ExprNode::new`, `expr_free`, `state_t`). Run 3 (OpenRouter) was reverted to the skeleton after iteration 1 and was stopped by hand during iteration 2 to save quota. Runs 2–3 are archived in `trajectories/project_1/previous_runs/` | No. Only prompts and controller changed; nothing is project-specific |
 | 2026-11-13 | The untouched skeleton (iteration 0) no longer competes for "best": the first real translation always becomes the best snapshot, and later regressions revert to the best translation | In run 4 the skeleton (builds, 0 tests, 0 violations) outscored real translations that built but failed tests. The run would have ended on the skeleton, and a non-building iteration could not be reverted | No. Controller only |
+| 2026-11-14 | `src/llm.py`: a timed-out or dropped connection is no longer retried on the same model; the model is benched for 30 min and the cascade moves on | `gemini-3.8-flash` repeatedly hung until the 300 s timeout, and each hang was retried 3×. The project_2 rerun on the final pipeline was stopped by hand mid-iteration and restarted with `--fresh`; the stopped run is archived in `trajectories/project_2/previous_runs/` | No. Controller only |
 
 ## API / usage limits affecting the experiment
 

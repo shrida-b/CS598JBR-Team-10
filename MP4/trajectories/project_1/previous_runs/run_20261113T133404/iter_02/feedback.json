@@ -1,0 +1,69 @@
+{
+  "integrity": {
+    "ok": false,
+    "violations": [
+      "public enum `state_t` missing"
+    ],
+    "restored": []
+  },
+  "build": {
+    "ok": false,
+    "errors": [
+      {
+        "level": "error",
+        "code": null,
+        "file": "src/mapper_expr.rs",
+        "line": 1021,
+        "message": "this file contains an unclosed delimiter",
+        "rendered": "error: this file contains an unclosed delimiter\n    --> src/mapper_expr.rs:1021:3\n     |\n485  | pub enum StateT {\n     |                 - unclosed delimiter\n...\n1021 | }\n     |  ^\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      }
+    ],
+    "warnings": [],
+    "timed_out": false
+  },
+  "tests": {
+    "compiled": false,
+    "passed": 0,
+    "total": 2,
+    "status": {
+      "test1": "NOT RUN",
+      "test2": "NOT RUN"
+    },
+    "failures": [],
+    "compile_errors": [],
+    "timed_out": false
+  },
+  "clippy": null,
+  "unsafe": {
+    "tool": "builtin-approximate",
+    "files": [
+      "src/lib.rs",
+      "src/mapper_expr.rs"
+    ],
+    "metrics": {
+      "unsafe_lines": 0,
+      "unsafe_calls": 0,
+      "unsafe_casts": 0,
+      "pointer_arithmetic": 0,
+      "unsafe_blocks": 0,
+      "unsafe_fns": 0,
+      "unsafe_impls": 0,
+      "raw_pointer_types": 0,
+      "ffi": 0,
+      "manual_alloc": 0,
+      "transmute": 0,
+      "forbid_unsafe_code": 0,
+      "primary_total": 0
+    },
+    "locations": []
+  },
+  "score": [
+    0,
+    0,
+    -1,
+    0,
+    -1000000
+  ],
+  "success": false
+}

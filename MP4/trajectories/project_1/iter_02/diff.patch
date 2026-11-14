@@ -1,31 +1,19 @@
 --- a/src/mapper_expr.rs
 +++ b/src/mapper_expr.rs
-@@ -479,25 +479,10 @@
+@@ -195,7 +195,7 @@
  }
  
- #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+pub type state_t = StateT;
-+
-+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
- pub enum StateT {
--    YequalY,
--    YequalEq,
--    Expr,
--    ExprRight,
--    Term,
--    TermRight,
--    Value,
--    Negate,
--    VarRight,
--    VarVectindex,
--    VarHistindex,
--    CloseVectindex,
--    CloseHistindex,
--    OpenParen,
--    CloseParen,
--    Comma,
--    End,
--}
+ #[derive(Debug, Clone, Copy)]
+-struct Token {
++pub struct Token {
+     token_type: TokenType,
+     value: Option<f32>,
+     int_value: Option<i32>,
+@@ -1129,6 +1129,7 @@
+     stack.first().copied().ok_or("Empty evaluation stack.")
+ }
  
- #[derive(Debug, Clone)]
- enum StackObj {
++#[allow(clippy::needless_lifetimes)]
+ pub fn mapper_expr_evaluate<'a>(
+     mapper: &mut MapperExpr,
+     input: &'a MapperSignalValue,

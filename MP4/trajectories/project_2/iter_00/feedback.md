@@ -54,18 +54,23 @@ warning: unused variable: `key`
 
 ## Tests
 0/6 passed.
+- test_multi_instance: FAILED
 - test_find_single: FAILED
 - test_init: FAILED
-- test_erase_root: FAILED
-- test_multi_instance: FAILED
 - test_insert_single: FAILED
 - test_to_array: FAILED
+- test_erase_root: FAILED
+
+#### test_multi_instance
+```
+thread 'test_multi_instance' panicked at src/rbtree.rs:30:9:
+not implemented
+```
 
 #### test_find_single
 ```
 thread 'test_find_single' panicked at src/rbtree.rs:30:9:
 not implemented
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
 
 #### test_init
@@ -74,27 +79,22 @@ thread 'test_init' panicked at src/rbtree.rs:30:9:
 not implemented
 ```
 
-#### test_erase_root
-```
-thread 'test_erase_root' panicked at src/rbtree.rs:30:9:
-not implemented
-```
-
-#### test_multi_instance
-```
-thread 'test_multi_instance' panicked at src/rbtree.rs:30:9:
-not implemented
-```
-
 #### test_insert_single
 ```
 thread 'test_insert_single' panicked at src/rbtree.rs:30:9:
 not implemented
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
 
 #### test_to_array
 ```
 thread 'test_to_array' panicked at src/rbtree.rs:30:9:
+not implemented
+```
+
+#### test_erase_root
+```
+thread 'test_erase_root' panicked at src/rbtree.rs:30:9:
 not implemented
 ```
 

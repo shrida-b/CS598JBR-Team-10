@@ -33,37 +33,37 @@
       "models": [
         {
           "id": "gemini-4-hydrogen",
-          "rpm": 5,
+          "rpm": 4,
           "tpm": 250000,
           "rpd": 20
         },
         {
           "id": "gemini-3.8-flash",
-          "rpm": 5,
+          "rpm": 4,
           "tpm": 250000,
           "rpd": 20
         },
         {
           "id": "gemini-3.6-flash",
-          "rpm": 5,
+          "rpm": 4,
           "tpm": 250000,
           "rpd": 20
         },
         {
           "id": "gemini-3-flash-preview",
-          "rpm": 5,
+          "rpm": 4,
           "tpm": 250000,
           "rpd": 20
         },
         {
           "id": "gemini-3.5-flash-lite",
-          "rpm": 15,
+          "rpm": 12,
           "tpm": 250000,
           "rpd": 500
         },
         {
           "id": "gemini-3.1-flash-lite",
-          "rpm": 15,
+          "rpm": 12,
           "tpm": 250000,
           "rpd": 500
         }
@@ -128,7 +128,7 @@
     "max_iterations": 6,
     "stop_on_success": true,
     "clippy_target_total": 0,
-    "no_progress_patience": 2
+    "no_progress_patience": 3
   },
   "evaluation": {
     "build": [

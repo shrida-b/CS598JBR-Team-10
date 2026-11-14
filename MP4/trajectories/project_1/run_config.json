@@ -261,5 +261,5 @@
   },
   "project_id": "project_1",
   "max_iterations": 6,
-  "provider_override": "openrouter"
+  "provider_override": null
 }

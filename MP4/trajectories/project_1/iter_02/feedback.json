@@ -1,40 +1,66 @@
 {
   "integrity": {
-    "ok": false,
-    "violations": [
-      "public enum `state_t` missing"
-    ],
+    "ok": true,
+    "violations": [],
     "restored": []
   },
   "build": {
-    "ok": false,
-    "errors": [
+    "ok": true,
+    "errors": [],
+    "warnings": [
       {
-        "level": "error",
-        "code": null,
-        "file": "src/mapper_expr.rs",
-        "line": 1021,
-        "message": "this file contains an unclosed delimiter",
-        "rendered": "error: this file contains an unclosed delimiter\n    --> src/mapper_expr.rs:1021:3\n     |\n485  | pub enum StateT {\n     |                 - unclosed delimiter\n...\n1021 | }\n     |  ^\n\n",
-        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+        "level": "warning",
+        "code": "unused_imports",
+        "file": "src/bin/test.rs",
+        "line": 1,
+        "message": "unused import: `expr::mapper_expr`",
+        "rendered": "warning: unused import: `expr::mapper_expr`\n --> src/bin/test.rs:1:5\n  |\n1 | use expr::mapper_expr;\n  |     ^^^^^^^^^^^^^^^^^\n  |\n  = note: `#[warn(unused_imports)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/bin/test.rs"
       }
     ],
-    "warnings": [],
     "timed_out": false
   },
   "tests": {
-    "compiled": false,
-    "passed": 0,
+    "compiled": true,
+    "passed": 2,
     "total": 2,
     "status": {
-      "test1": "NOT RUN",
-      "test2": "NOT RUN"
+      "test2": "ok",
+      "test1": "ok"
     },
     "failures": [],
     "compile_errors": [],
     "timed_out": false
   },
-  "clippy": null,
+  "clippy": {
+    "compiled": true,
+    "categories": {
+      "correctness": {
+        "src": 0,
+        "tests": 0
+      },
+      "style": {
+        "src": 0,
+        "tests": 3
+      },
+      "complexity": {
+        "src": 0,
+        "tests": 1
+      },
+      "perf": {
+        "src": 0,
+        "tests": 0
+      }
+    },
+    "src_total": 0,
+    "tests_total": 4,
+    "grader_command": {
+      "clippy_warnings": 4,
+      "clippy_warnings_src": 0,
+      "rustc_warnings": 2
+    },
+    "warnings": []
+  },
   "unsafe": {
     "tool": "builtin-approximate",
     "files": [
@@ -53,17 +79,17 @@
       "ffi": 0,
       "manual_alloc": 0,
       "transmute": 0,
-      "forbid_unsafe_code": 0,
+      "forbid_unsafe_code": 1,
       "primary_total": 0
     },
     "locations": []
   },
   "score": [
+    1,
+    2,
     0,
     0,
-    -1,
-    0,
-    -1000000
+    0
   ],
-  "success": false
+  "success": true
 }

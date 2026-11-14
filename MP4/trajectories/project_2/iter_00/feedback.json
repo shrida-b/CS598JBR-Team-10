@@ -169,37 +169,37 @@
     "passed": 0,
     "total": 6,
     "status": {
+      "test_multi_instance": "FAILED",
       "test_find_single": "FAILED",
       "test_init": "FAILED",
-      "test_erase_root": "FAILED",
-      "test_multi_instance": "FAILED",
       "test_insert_single": "FAILED",
-      "test_to_array": "FAILED"
+      "test_to_array": "FAILED",
+      "test_erase_root": "FAILED"
     },
     "failures": [
       {
+        "test": "test_multi_instance",
+        "message": "thread 'test_multi_instance' panicked at src/rbtree.rs:30:9:\nnot implemented"
+      },
+      {
         "test": "test_find_single",
-        "message": "thread 'test_find_single' panicked at src/rbtree.rs:30:9:\nnot implemented\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace"
+        "message": "thread 'test_find_single' panicked at src/rbtree.rs:30:9:\nnot implemented"
       },
       {
         "test": "test_init",
         "message": "thread 'test_init' panicked at src/rbtree.rs:30:9:\nnot implemented"
       },
       {
-        "test": "test_erase_root",
-        "message": "thread 'test_erase_root' panicked at src/rbtree.rs:30:9:\nnot implemented"
-      },
-      {
-        "test": "test_multi_instance",
-        "message": "thread 'test_multi_instance' panicked at src/rbtree.rs:30:9:\nnot implemented"
-      },
-      {
         "test": "test_insert_single",
-        "message": "thread 'test_insert_single' panicked at src/rbtree.rs:30:9:\nnot implemented"
+        "message": "thread 'test_insert_single' panicked at src/rbtree.rs:30:9:\nnot implemented\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace"
       },
       {
         "test": "test_to_array",
         "message": "thread 'test_to_array' panicked at src/rbtree.rs:30:9:\nnot implemented"
+      },
+      {
+        "test": "test_erase_root",
+        "message": "thread 'test_erase_root' panicked at src/rbtree.rs:30:9:\nnot implemented"
       }
     ],
     "compile_errors": [],
@@ -292,6 +292,7 @@
   },
   "score": [
     1,
+    0,
     0,
     0,
     -4

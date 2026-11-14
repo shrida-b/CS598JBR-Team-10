@@ -499,11 +499,11 @@
     "failures": [
       {
         "test": "test1",
-        "message": "thread 'test1' panicked at src/mapper_expr.rs:201:5:\nnot implemented\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace"
+        "message": "thread 'test1' panicked at src/mapper_expr.rs:201:5:\nnot implemented"
       },
       {
         "test": "test2",
-        "message": "Parsing: y=26.0*2.0/2.0 + x*30.0/(20.0*1.0)\n\nthread 'test2' panicked at src/mapper_expr.rs:201:5:\nnot implemented"
+        "message": "Parsing: y=26.0*2.0/2.0 + x*30.0/(20.0*1.0)\n\nthread 'test2' panicked at src/mapper_expr.rs:201:5:\nnot implemented\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace"
       }
     ],
     "compile_errors": [],
