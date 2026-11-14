@@ -160,8 +160,18 @@ def run_metrics(crate: Path, command: str = "") -> dict:
     """Use the instructional team's tool if configured, otherwise the built-in scanner."""
     if not command:
         return scan_crate(crate)
-    cmd = [part.replace("{crate}", str(crate)) for part in shlex.split(command)]
-    res = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+    mp4 = Path(__file__).resolve().parent.parent
+    cmd = [part.replace("{crate}", str(crate)).replace("{mp4}", str(mp4)) for part in shlex.split(command)]
+    try:
+        res = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        fallback = scan_crate(crate)
+        fallback["tool"] = f"builtin-approximate (configured tool failed: {e})"
+        return fallback
+    if res.returncode != 0:
+        fallback = scan_crate(crate)
+        fallback["tool"] = f"builtin-approximate (configured tool exited {res.returncode}: {res.stderr.strip()[:200]})"
+        return fallback
     out = {"tool": command, "raw_output": res.stdout[-20000:] + res.stderr[-4000:], "returncode": res.returncode}
     try:
         parsed = json.loads(res.stdout)

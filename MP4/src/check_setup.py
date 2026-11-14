@@ -99,6 +99,18 @@ def load_configs() -> tuple[dict, dict, list]:
     return cfg, projects, tools
 
 
+def check_newmetrics(cfg: dict) -> None:
+    """The instructional team's unsafe-metrics tool (optional: falls back to the built-in scanner)."""
+    if not cfg["unsafe_metrics"]["command"]:
+        report(SKIP, "newmetrics", "no [unsafe_metrics].command configured (built-in scanner)")
+        return
+    if shutil.which("cargo-newmetrics"):
+        report(OK, "newmetrics", "cargo-newmetrics installed; " + cfg["unsafe_metrics"]["command"])
+    else:
+        report(FAIL, "newmetrics", "cargo-newmetrics not found: cargo install --debug --locked --path "
+               "<CS598JBR-Team-0>/MP4/newmetrics --force (see README)")
+
+
 def check_paths(cfg: dict, projects: dict) -> None:
     missing = [cfg["agent"][key] for key in ("system_prompt", "translate_prompt", "repair_prompt")
                if not (MP4 / cfg["agent"][key]).exists()]
@@ -264,6 +276,7 @@ def main() -> int:
     check_python()
     cfg, projects, _tools = load_configs()
     check_toolchain(cfg["pipeline"]["toolchain"])
+    check_newmetrics(cfg)
     check_paths(cfg, projects)
     check_specs_compile(cfg, projects)
 

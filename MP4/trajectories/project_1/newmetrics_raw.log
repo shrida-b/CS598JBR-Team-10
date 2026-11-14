@@ -1,0 +1,47 @@
+Running cargo newmetrics
+Testing sysroot consistency...
+Done
+Target name: expr
+     Removed 18 files, 25.0KiB total
+    Checking lazy_static v1.5.0
+Running cargo rustc
+cargo rustc finished
+    Checking expr v0.1.0 (/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1)
+Running cargo rustc
+Pointer arithmetic: 0
+Unsafe lines: 0
+Unsafe calls: 0
+Unsafe casts: 0
+Total spans: 40759
+Unsafe ratio: 0
+Raw pointer dereferences: 0
+Raw pointer declarations: 0
+cargo rustc finished
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.85s
+Target name: test
+Running cargo rustc
+cargo rustc finished
+Running cargo rustc
+cargo rustc finished
+    Checking expr v0.1.0 (/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1)
+Running cargo rustc
+warning: unused import: `expr::mapper_expr`
+ --> src/bin/test.rs:1:5
+  |
+1 | use expr::mapper_expr;
+  |     ^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+Pointer arithmetic: 0
+Unsafe lines: 0
+Unsafe calls: 0
+Unsafe casts: 0
+Total spans: 1288
+Unsafe ratio: 0
+Raw pointer dereferences: 0
+Raw pointer declarations: 0
+cargo rustc finished
+warning: `expr` (bin "test") generated 1 warning (run `cargo fix --bin "test"` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+cargo newmetrics finished

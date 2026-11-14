@@ -35,11 +35,11 @@
     "total": 6,
     "status": {
       "test_erase_root": "ok",
-      "test_multi_instance": "ok",
-      "test_to_array": "ok",
-      "test_insert_single": "ok",
       "test_find_single": "ok",
-      "test_init": "ok"
+      "test_init": "ok",
+      "test_insert_single": "ok",
+      "test_multi_instance": "ok",
+      "test_to_array": "ok"
     },
     "failures": [],
     "compile_errors": [],
@@ -75,12 +75,22 @@
     "warnings": []
   },
   "unsafe": {
-    "tool": "builtin-approximate",
-    "files": [
-      "src/lib.rs",
-      "src/rbtree.rs"
-    ],
+    "tool": "bash {mp4}/src/newmetrics/run_newmetrics.sh {crate}",
+    "raw_output": "{\n  \"pointer_arithmetic\": 0,\n  \"unsafe_lines\": 0,\n  \"unsafe_calls\": 0,\n  \"unsafe_casts\": 0,\n  \"total_spans\": 21306,\n  \"raw_pointer_dereferences\": 0,\n  \"raw_pointer_declarations\": 0,\n  \"unsafe_ratio\": 0.0\n}\n",
+    "returncode": 0,
     "metrics": {
+      "pointer_arithmetic": 0,
+      "unsafe_lines": 0,
+      "unsafe_calls": 0,
+      "unsafe_casts": 0,
+      "total_spans": 21306,
+      "raw_pointer_dereferences": 0,
+      "raw_pointer_declarations": 0,
+      "unsafe_ratio": 0.0,
+      "primary_total": 0,
+      "forbid_unsafe_code": 1
+    },
+    "builtin": {
       "unsafe_lines": 0,
       "unsafe_calls": 0,
       "unsafe_casts": 0,

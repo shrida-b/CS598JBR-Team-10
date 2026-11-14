@@ -27,21 +27,18 @@
     "rustc_warnings": 2
   },
   "unsafe": {
+    "pointer_arithmetic": 0,
     "unsafe_lines": 0,
     "unsafe_calls": 0,
     "unsafe_casts": 0,
-    "pointer_arithmetic": 0,
-    "unsafe_blocks": 0,
-    "unsafe_fns": 0,
-    "unsafe_impls": 0,
-    "raw_pointer_types": 0,
-    "ffi": 0,
-    "manual_alloc": 0,
-    "transmute": 0,
-    "forbid_unsafe_code": 1,
-    "primary_total": 0
+    "total_spans": 21306,
+    "raw_pointer_dereferences": 0,
+    "raw_pointer_declarations": 0,
+    "unsafe_ratio": 0.0,
+    "primary_total": 0,
+    "forbid_unsafe_code": 1
   },
-  "unsafe_tool": "builtin-approximate",
+  "unsafe_tool": "bash {mp4}/src/newmetrics/run_newmetrics.sh {crate}",
   "model_requests_by_provider": {
     "gemini": 22
   },
@@ -89,5 +86,5 @@
       "paused_for_quota": false
     }
   ],
-  "finished_at": "2026-11-14T13:30:03-06:00"
+  "finished_at": "2026-11-14T15:26:11-06:00"
 }
