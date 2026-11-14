@@ -88,7 +88,7 @@
     "type": "function",
     "function": {
       "name": "unsafe_metrics",
-      "description": "Run the unsafe-metrics analysis on the Rust crate. Returns unsafe lines, unsafe calls, unsafe casts and pointer arithmetic counts with locations.",
+      "description": "Run the course NewMetrics unsafe-metrics tool on the Rust crate. Returns unsafe lines, unsafe calls, unsafe casts, pointer arithmetic, raw-pointer declarations/dereferences, and the source locations of unsafe spans.",
       "parameters": {"type": "object", "properties": {}}
     }
   },

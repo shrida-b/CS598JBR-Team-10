@@ -248,6 +248,8 @@ def main() -> int:
 
     load_env_file()
     cfg = load_config()
+    if not shutil.which("cargo-newmetrics"):
+        ap.error("the course unsafe-metrics tool (cargo-newmetrics) is not installed; see README > Setup")
     if args.project not in cfg["projects"]:
         ap.error(f"unknown project {args.project}; choose from {list(cfg['projects'])}")
     proj = cfg["projects"][args.project]

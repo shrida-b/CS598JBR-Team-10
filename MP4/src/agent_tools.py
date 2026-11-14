@@ -13,6 +13,7 @@ from pathlib import Path
 
 from common import truncate
 from evaluate import Evaluator
+from unsafe_metrics import UnsafeMetricsError
 
 TEXT_SUFFIXES = {".c", ".h", ".rs", ".toml", ".md", ".txt", "", ".lock", ".cfg", ".mk"}
 SKIP_DIRS = {"target", ".git"}
@@ -177,7 +178,10 @@ class ToolExecutor:
         raise ToolError("command must be one of check, build, test, clippy")
 
     def tool_unsafe_metrics(self):
-        u = self.ev.unsafe()
+        try:
+            u = self.ev.unsafe()
+        except UnsafeMetricsError as e:
+            raise ToolError(str(e))
         text = json.dumps(u["metrics"]) + ("\n" + "\n".join(u.get("locations", [])[:40]) if u.get("locations") else "")
         return text, {"metrics": u["metrics"]}
 

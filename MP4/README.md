@@ -30,7 +30,7 @@ paid credits.
 | Optional local runtime | **Ollama** (OpenAI-compatible endpoint `localhost:11434/v1`), `qwen2.5-coder:7b` | Ollama 0.40.4. Not used by default: 8 GB RAM limits it to ~7B models |
 | Rust toolchain | `nightly-2025-05-13`: rustc 1.89.0-nightly (8405332bd 2025-05-12), cargo 1.89.0-nightly (056f5f4f3 2025-05-09) | Same toolchain as grading |
 | Linter | Clippy 0.1.88 (8405332bdf 2025-05-12), categories correctness / style / complexity / perf | |
-| Safety analysis | **NewMetrics**, the instructional team's unsafe-metrics tool (`Intelligent-CAT-Lab/CS598JBR-Team-0`, `MP4/newmetrics`, commit `4597e75`), run through `src/newmetrics/run_newmetrics.sh`. If NewMetrics is not installed, the built-in approximate scanner `src/unsafe_metrics.py` is used | `cargo newmetrics \| python3 aggregate.py` |
+| Safety analysis | **NewMetrics**, the instructional team's unsafe-metrics tool (`Intelligent-CAT-Lab/CS598JBR-Team-0`, `MP4/newmetrics`, commit `4597e75`), run through `src/newmetrics/run_newmetrics.sh`. It is the only safety tool: both the agent's `unsafe_metrics` tool and the controller's evaluation call it, and the pipeline refuses to start without it | `cargo newmetrics \| python3 aggregate.py` |
 | Benchmark | CRUST-Bench (`github.com/anirudhkhatry/CRUST-bench`, `datasets/CRUST_bench.zip`) | C from `CBench/`, Rust spec from `RBench/` |
 
 A **single agent** runs with **one active model** at a time. The cascade can move a
@@ -75,7 +75,7 @@ The agent works in a sandboxed view: `c/` is the original C project (read-only) 
 | `list_files`, `read_file`, `search` | inspect the C project, the Rust interface, and the tests |
 | `write_file`, `replace_in_file` | modify Rust code. Only `.rs` files under `rust/src/` can be written. `src/bin/*` (tests), `src/interfaces/*` (spec copy), `Cargo.toml` and `Cargo.lock` are protected |
 | `cargo` (`check` \| `build` \| `test` \| `clippy`) | always `cargo +nightly-2025-05-13 …`. `check`/`build` also report interface conformance. `clippy` uses the graders' 4 categories and reports per-category counts |
-| `unsafe_metrics` | unsafe lines / calls / casts / pointer arithmetic (+ extra metrics), via `[unsafe_metrics].command` |
+| `unsafe_metrics` | runs **NewMetrics**: unsafe lines / calls / casts / pointer arithmetic, raw-pointer declarations and dereferences, plus the source locations of every unsafe span |
 | `finish` | ends the iteration; the controller then evaluates independently |
 
 ### API / usage limits affecting the experiment
@@ -242,7 +242,8 @@ MP4/
 │   ├── llm.py           # OpenAI-compatible client, quota-aware model cascade, rate limiting
 │   ├── agent_tools.py   # sandboxed tool implementations (file, cargo, unsafe_metrics, finish)
 │   ├── evaluate.py      # integrity guard, build, tests, clippy per category, score, feedback text
-│   ├── unsafe_metrics.py# runs the configured unsafe-metrics tool; built-in approximate scanner as fallback
+│   ├── unsafe_metrics.py# runs NewMetrics and parses its metrics + span locations for the agent
+│   ├── rust_source.py   # strips comments/strings from Rust source (used by the interface checks)
 │   ├── newmetrics/      # run_newmetrics.sh + unmodified copy of the course's aggregate.py
 │   ├── trajectory.py    # redacting JSONL/JSON/Markdown trajectory writer
 │   ├── common.py        # config/env loading, secret redaction, subprocess helpers
@@ -337,7 +338,8 @@ agent.
 | 2026-11-13 | Pipeline improvements after project_1 runs 2–3: (a) the prompts carry an auto-extracted **required public API checklist** from the interface file; (b) the agent's `cargo check/build` tool also reports interface violations; (c) the controller never reverts to the untouched skeleton (iteration 0), only to an earlier real translation; (d) repair prompts inline the C sources as well as the current Rust; (e) `--provider` overrides still fall back to the default provider | Every model dropped interface items the tests do not use (`ExprNode::new`, `expr_free`, `state_t`). Run 3 (OpenRouter) was reverted to the skeleton after iteration 1, and was stopped by hand during iteration 2 to save quota. Runs 2–3 are archived in `trajectories/project_1/previous_runs/` | No. Only prompts and controller changed; nothing is project-specific |
 | 2026-11-13 | The untouched skeleton (iteration 0) no longer competes for "best": the first real translation always becomes the best snapshot, and later regressions revert to the best translation | In run 4 the skeleton (builds, 0 tests, 0 violations) outscored real translations that built but failed tests. The run would have ended on the skeleton, and a non-building iteration could not be reverted | No. Controller only |
 | 2026-11-14 | `src/llm.py`: a timed-out or dropped connection is no longer retried on the same model; the model is benched for 30 min and the cascade moves on | `gemini-3.8-flash` repeatedly hung until the 300 s timeout, and each hang was retried 3×. The project_2 rerun on the final pipeline was stopped by hand mid-iteration and restarted with `--fresh`; the stopped run is archived in `trajectories/project_2/previous_runs/` | No. Controller only |
-| 2026-11-14 | Switched `[unsafe_metrics].command` to the course NewMetrics tool (released after our runs started), added `src/newmetrics/`, and re-ran the final evaluation of both crates with `--refresh-summary` (no model calls) | During the final runs, the agent's `unsafe_metrics` tool used our built-in scanner, which reported 0 for both crates. NewMetrics confirms 0 on all metrics | No. Evaluation only |
+| 2026-11-14 | Switched `[unsafe_metrics].command` to the course NewMetrics tool (we only picked it up after our runs had started), added `src/newmetrics/`, and re-ran the final evaluation of both crates with `--refresh-summary` (no model calls) | During the final runs, the agent's `unsafe_metrics` tool used our built-in scanner, which reported 0 for both crates. NewMetrics confirms 0 on all metrics | No. Evaluation only |
+| 2026-11-14 | (a) NewMetrics became the **only** safety tool: our approximate scanner was removed from the pipeline, the agent's `unsafe_metrics` tool now returns NewMetrics' metrics and span locations, and the pipeline refuses to start without it. (b) `configs/prompts/system.md` gained generic idiomatic-Rust guidance (iterators over hand-rolled loops, smaller functions, borrowing over cloning, no needless `unwrap`, no `#[allow]` unless the interface forces it). Both projects are then rerun with `--fresh`; earlier runs stay in `previous_runs/` | The handout asks teams to use the course tool during development, and the rubric grades structural idiomaticity (ownership, control flow, error handling) as well as Clippy counts | No. Prompts and controller only |
 
 ## Credentials
 

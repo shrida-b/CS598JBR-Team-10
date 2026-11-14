@@ -9,7 +9,8 @@ import shutil
 from pathlib import Path
 
 from common import run_cmd, truncate
-from unsafe_metrics import blank_comments_and_strings, run_metrics
+from rust_source import blank_comments_and_strings
+from unsafe_metrics import run_metrics
 
 
 def strip_lifetimes(sig: str) -> str:

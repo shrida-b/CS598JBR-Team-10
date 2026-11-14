@@ -168,12 +168,11 @@ command_timeout_seconds = 300
 test_timeout_seconds = 120            # catches infinite loops in translated code
 
 [unsafe_metrics]
-# The instructional team's NewMetrics tool (released 2026-11-09, course repo MP4/newmetrics),
-# run through src/newmetrics/run_newmetrics.sh (`cargo newmetrics | aggregate.py`).
-# "{crate}" -> crate path, "{mp4}" -> MP4/ directory. If the tool is not installed or fails,
-# the built-in approximate scanner (src/unsafe_metrics.py) is used instead.
-# NOTE: the final project runs (2026-11-14) gave the agent the built-in scanner; the final
-# evaluation of both crates was then redone with this command (see README).
+# The instructional team's NewMetrics tool (course repo MP4/newmetrics), run through
+# src/newmetrics/run_newmetrics.sh (`cargo newmetrics | aggregate.py`). It is the only
+# safety tool: the agent's `unsafe_metrics` tool and the controller's evaluation both call it,
+# and the pipeline refuses to start if it is not installed.
+# "{crate}" -> crate path, "{mp4}" -> MP4/ directory.
 command = "bash {mp4}/src/newmetrics/run_newmetrics.sh {crate}"
 primary_metrics = ["unsafe_lines", "unsafe_calls", "unsafe_casts", "pointer_arithmetic"]
 

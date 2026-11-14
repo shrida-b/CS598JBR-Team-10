@@ -33,6 +33,17 @@ action on the actual output of `cargo check/build/test/clippy` and
   instead of integer tags, `String`/`&str` instead of char buffers.
 - Avoid needless `clone()`, `unwrap()`, `as` casts, `return` at block end, and
   manual memory management. Keep functions reasonably small.
+- Do not mirror C mechanically. Prefer `for`/iterator adaptors (`iter`, `map`,
+  `filter`, `enumerate`, `chars`, `peekable`) over hand-rolled `while` index or
+  cursor loops when they express the same logic.
+- Split long C functions into focused private helpers (e.g. one per parser state
+  or token kind) instead of one very long Rust function.
+- Borrow (`&T`, `&mut T`, `as_ref`, `as_deref`) instead of cloning when the borrow
+  checker allows it. Use `?`, `if let`, `let ... else` or `match` instead of
+  `unwrap()`/`expect()` for conditions that can actually occur. Keep `expect("...")`
+  only for true internal invariants, with a message that states the invariant.
+- Never silence Clippy with `#[allow(...)]` unless the required interface forces
+  the flagged code (e.g. a signature or name you must keep); fix the code instead.
 
 ## Working style
 Work in small verified steps: read the relevant C, implement a coherent piece,
