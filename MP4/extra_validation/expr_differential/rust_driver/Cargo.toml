@@ -1,0 +1,9 @@
+[package]
+name = "expr_diff_driver"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+
+[dependencies]
+expr = { path = "../../../translations/project_1" }

@@ -255,6 +255,8 @@ MP4/
 │   ├── prompts/         # system.md, translate.md (iteration 1), repair.md (iterations 2..N)
 │   └── .env.example     # names of required env vars (real configs/.env is git-ignored)
 ├── benchmark/RBench/    # (addition) unmodified CRUST-Bench Rust interfaces + tests
+├── extra_validation/   # (addition) post-hoc checks beyond the benchmark tests: expr vs original C,
+│                        # rbtree C-suite ports + randomized invariant stress (`bash extra_validation/run.sh`)
 ├── subjects/            # original C projects: project_1 = expr, project_2 = rbtree-lab
 ├── translations/        # final generated Rust crates (project_1/, project_2/)
 └── trajectories/        # per-project execution logs (project_1/, project_2/)
