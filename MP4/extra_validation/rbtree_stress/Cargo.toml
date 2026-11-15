@@ -1,9 +1,0 @@
-[package]
-name = "rbtree_stress"
-version = "0.1.0"
-edition = "2021"
-
-[workspace]
-
-[dependencies]
-rbtree = { path = "../../translations/project_2" }
