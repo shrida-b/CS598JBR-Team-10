@@ -169,21 +169,25 @@
     "passed": 0,
     "total": 6,
     "status": {
-      "test_multi_instance": "FAILED",
       "test_find_single": "FAILED",
+      "test_erase_root": "FAILED",
+      "test_to_array": "FAILED",
       "test_init": "FAILED",
       "test_insert_single": "FAILED",
-      "test_to_array": "FAILED",
-      "test_erase_root": "FAILED"
+      "test_multi_instance": "FAILED"
     },
     "failures": [
       {
-        "test": "test_multi_instance",
-        "message": "thread 'test_multi_instance' panicked at src/rbtree.rs:30:9:\nnot implemented"
-      },
-      {
         "test": "test_find_single",
         "message": "thread 'test_find_single' panicked at src/rbtree.rs:30:9:\nnot implemented"
+      },
+      {
+        "test": "test_erase_root",
+        "message": "thread 'test_erase_root' panicked at src/rbtree.rs:30:9:\nnot implemented\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace"
+      },
+      {
+        "test": "test_to_array",
+        "message": "thread 'test_to_array' panicked at src/rbtree.rs:30:9:\nnot implemented"
       },
       {
         "test": "test_init",
@@ -191,15 +195,11 @@
       },
       {
         "test": "test_insert_single",
-        "message": "thread 'test_insert_single' panicked at src/rbtree.rs:30:9:\nnot implemented\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace"
+        "message": "thread 'test_insert_single' panicked at src/rbtree.rs:30:9:\nnot implemented"
       },
       {
-        "test": "test_to_array",
-        "message": "thread 'test_to_array' panicked at src/rbtree.rs:30:9:\nnot implemented"
-      },
-      {
-        "test": "test_erase_root",
-        "message": "thread 'test_erase_root' panicked at src/rbtree.rs:30:9:\nnot implemented"
+        "test": "test_multi_instance",
+        "message": "thread 'test_multi_instance' panicked at src/rbtree.rs:30:9:\nnot implemented"
       }
     ],
     "compile_errors": [],
@@ -243,6 +243,14 @@
       },
       {
         "category": "style",
+        "lint": "clippy::ptr_arg",
+        "file": "src/rbtree.rs",
+        "line": 94,
+        "message": "writing `&mut Vec` instead of `&mut [_]` involves a new object where a slice will do",
+        "rendered": "warning: writing `&mut Vec` instead of `&mut [_]` involves a new object where a slice will do\n  --> src/rbtree.rs:94:64\n   |\n94 |     pub fn subtree_to_array(&self, curr: Option<NodeRef>, arr: &mut Vec<Key>, n: usize, count: &mut usize) {\n   |                                                                ^^^^^^^^^^^^^ help: change this to: `&mut [Key]`\n   |\n   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg\n   = note: `-W clippy::ptr-arg` implied by `-W clippy::style`\n   = help: to override `-W clippy::style` add `#[allow(clippy::ptr_arg)]`\n\n"
+      },
+      {
+        "category": "style",
         "lint": "clippy::new_without_default",
         "file": "src/rbtree.rs",
         "line": 29,
@@ -256,37 +264,22 @@
         "line": 94,
         "message": "writing `&mut Vec` instead of `&mut [_]` involves a new object where a slice will do",
         "rendered": "warning: writing `&mut Vec` instead of `&mut [_]` involves a new object where a slice will do\n  --> src/rbtree.rs:94:64\n   |\n94 |     pub fn subtree_to_array(&self, curr: Option<NodeRef>, arr: &mut Vec<Key>, n: usize, count: &mut usize) {\n   |                                                                ^^^^^^^^^^^^^ help: change this to: `&mut [Key]`\n   |\n   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg\n   = note: `-W clippy::ptr-arg` implied by `-W clippy::style`\n   = help: to override `-W clippy::style` add `#[allow(clippy::ptr_arg)]`\n\n"
-      },
-      {
-        "category": "style",
-        "lint": "clippy::ptr_arg",
-        "file": "src/rbtree.rs",
-        "line": 94,
-        "message": "writing `&mut Vec` instead of `&mut [_]` involves a new object where a slice will do",
-        "rendered": "warning: writing `&mut Vec` instead of `&mut [_]` involves a new object where a slice will do\n  --> src/rbtree.rs:94:64\n   |\n94 |     pub fn subtree_to_array(&self, curr: Option<NodeRef>, arr: &mut Vec<Key>, n: usize, count: &mut usize) {\n   |                                                                ^^^^^^^^^^^^^ help: change this to: `&mut [Key]`\n   |\n   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg\n   = note: `-W clippy::ptr-arg` implied by `-W clippy::style`\n   = help: to override `-W clippy::style` add `#[allow(clippy::ptr_arg)]`\n\n"
       }
     ]
   },
   "unsafe": {
-    "tool": "builtin-approximate",
-    "files": [
-      "src/lib.rs",
-      "src/rbtree.rs"
-    ],
+    "tool": "NewMetrics (cargo newmetrics | aggregate.py)",
     "metrics": {
+      "pointer_arithmetic": 0,
       "unsafe_lines": 0,
       "unsafe_calls": 0,
       "unsafe_casts": 0,
-      "pointer_arithmetic": 0,
-      "unsafe_blocks": 0,
-      "unsafe_fns": 0,
-      "unsafe_impls": 0,
-      "raw_pointer_types": 0,
-      "ffi": 0,
-      "manual_alloc": 0,
-      "transmute": 0,
-      "forbid_unsafe_code": 0,
-      "primary_total": 0
+      "total_spans": 5979,
+      "raw_pointer_dereferences": 0,
+      "raw_pointer_declarations": 0,
+      "unsafe_ratio": 0.0,
+      "primary_total": 0,
+      "forbid_unsafe_code": 0
     },
     "locations": []
   },

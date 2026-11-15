@@ -11,10 +11,11 @@ paid credits.
 > **Status:** Tasks 1–3 are complete, and the Task 4 report text is in
 > `PROGRESS_REPORT_MP4.tex` / `.md`. Both final translations build, pass every
 > benchmark test, score 0 on all unsafe metrics from the course NewMetrics tool, and
-> have 0 Clippy warnings in the translated code. Both come from the final pipeline:
-> project_1 ran before the last `llm.py` change, which only affects retries after a
-> network timeout. See `trajectories/project_<N>/TRAJECTORY.md`; earlier development
-> runs are kept in `trajectories/project_<N>/previous_runs/`.
+> have 0 Clippy warnings in the translated code. Both come from `--fresh` runs on
+> 2026-11-15 with the final pipeline (NewMetrics as the agent's and the controller's
+> only safety tool, plus the idiomatic-Rust prompt guidance); each succeeded in one
+> iteration. See `trajectories/project_<N>/TRAJECTORY.md`; earlier development runs,
+> including the 2026-11-14 runs, are kept in `trajectories/project_<N>/previous_runs/`.
 
 ## Environment
 
@@ -36,9 +37,11 @@ paid credits.
 A **single agent** runs with **one active model** at a time. The cascade can move a
 run to the next model when a quota runs out, so one run may span several models.
 Each saved request in the trajectories records which model served it. The final
-translations were produced by `gemini-4-hydrogen` (20 calls) and `gemini-3.6-flash`
-(3 calls) for expr, and by `gemini-3-flash-preview` (18 calls) and `gemini-3.6-flash`
-(2 calls) for rbtree-lab.
+translations were produced by `gemini-4-hydrogen` (16 turns; 21 requests including
+503/429 retries) and `gemini-3.8-flash` (2 turns; 4 requests) for expr, and by
+`gemini-3.8-flash` (1 turn; 3 requests) and `gemini-3.6-flash` (14 turns; 14 requests)
+for rbtree-lab. expr exhausted `gemini-4-hydrogen`'s 20 RPD, so rbtree-lab, run
+second, started further down the cascade.
 
 All six Gemini models passed `python3 src/check_setup.py --provider gemini --all-models`
 (a real function-calling request) on 2026-11-13. The exception was `gemini-3.8-flash`,
@@ -110,8 +113,8 @@ The agent works in a sandboxed view: `c/` is the original C project (read-only) 
 - **Effect on the experiment.** The strong models' daily quota was the binding
   constraint. On 2026-11-13 it ran out before expr could be solved. The weaker
   remaining models (Flash-Lite, Nemotron Ultra) could not pass the expr tests (runs
-  2–4 in `previous_runs/`). The successful run happened after the quota reset on
-  2026-11-14.
+  2–4 in `previous_runs/`). The first successful runs happened after the quota reset
+  on 2026-11-14; the submitted runs are the 2026-11-15 reruns.
 - **Fallback.** If a provider's free quota runs out mid-run, the controller switches
   to the next provider in `provider_fallbacks` or checkpoints and stops. Either way,
   the switch is logged in the trajectory.
@@ -293,15 +296,19 @@ Final results, graders' commands, `nightly-2025-05-13`:
 
 | Project | Compiles | Tests passed / total | Agent iterations | Model calls |
 |---|---|---|---|---|
-| expr | yes | 2 / 2 | 2 | 23 |
-| rbtree-lab | yes | 6 / 6 | 1 | 20 |
+| expr | yes | 2 / 2 | 1 | 25 requests (18 turns) |
+| rbtree-lab | yes | 6 / 6 | 1 | 17 requests (15 turns) |
+
+"Requests" counts every API request, including 503/429 responses that were retried;
+"turns" counts successful model responses. expr also has 4 unit tests written by the
+agent and rbtree-lab 3; all pass.
 
 Safety, from the course **NewMetrics** tool (`trajectories/project_N/newmetrics/summary.json`):
 
 | Project | Unsafe lines | Unsafe calls | Unsafe casts | Pointer arithmetic | Raw-ptr derefs | Raw-ptr decls | Total spans |
 |---|---|---|---|---|---|---|---|
-| expr | 0 | 0 | 0 | 0 | 0 | 0 | 42,047 |
-| rbtree-lab | 0 | 0 | 0 | 0 | 0 | 0 | 21,306 |
+| expr | 0 | 0 | 0 | 0 | 0 | 0 | 34,145 |
+| rbtree-lab | 0 | 0 | 0 | 0 | 0 | 0 | 22,028 |
 
 Both crates compile with `#![forbid(unsafe_code)]`. As a sanity check, the same tool
 reported 5 unsafe lines, 2 unsafe calls, 1 unsafe cast and 2 pointer-arithmetic
@@ -340,6 +347,7 @@ agent.
 | 2026-11-14 | `src/llm.py`: a timed-out or dropped connection is no longer retried on the same model; the model is benched for 30 min and the cascade moves on | `gemini-3.8-flash` repeatedly hung until the 300 s timeout, and each hang was retried 3×. The project_2 rerun on the final pipeline was stopped by hand mid-iteration and restarted with `--fresh`; the stopped run is archived in `trajectories/project_2/previous_runs/` | No. Controller only |
 | 2026-11-14 | Switched `[unsafe_metrics].command` to the course NewMetrics tool (we only picked it up after our runs had started), added `src/newmetrics/`, and re-ran the final evaluation of both crates with `--refresh-summary` (no model calls) | During the final runs, the agent's `unsafe_metrics` tool used our built-in scanner, which reported 0 for both crates. NewMetrics confirms 0 on all metrics | No. Evaluation only |
 | 2026-11-14 | (a) NewMetrics became the **only** safety tool: our approximate scanner was removed from the pipeline, the agent's `unsafe_metrics` tool now returns NewMetrics' metrics and span locations, and the pipeline refuses to start without it. (b) `configs/prompts/system.md` gained generic idiomatic-Rust guidance (iterators over hand-rolled loops, smaller functions, borrowing over cloning, no needless `unwrap`, no `#[allow]` unless the interface forces it). Both projects are then rerun with `--fresh`; earlier runs stay in `previous_runs/` | The handout asks teams to use the course tool during development, and the rubric grades structural idiomaticity (ownership, control flow, error handling) as well as Clippy counts | No. Prompts and controller only |
+| 2026-11-15 | Ran `python3 src/run_pipeline.py --project project_1 --fresh`, then the same for project_2, after the daily quota reset. No code or config changed. The 2026-11-14 runs were archived to `previous_runs/run_20261114T123915` (project_1) and `previous_runs/run_20261114T131941` (project_2). Afterwards `trajectories/project_N/newmetrics/` was regenerated by running NewMetrics by hand on the final crates, and `extra_validation/run.sh` was re-run (all checks pass) | These are the first runs in which the agent itself used NewMetrics in the loop and had the idiomatic guidance. Both succeeded in one iteration | No. The agent produced both translations unaided; the hand-run steps are evaluation only |
 
 ## Credentials
 

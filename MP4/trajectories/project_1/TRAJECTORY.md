@@ -1,12 +1,11 @@
 # Trajectory: expr (project_1)
 
-Status: **success**; best iteration 2.
+Status: **success**; best iteration 1.
 
 | Iter | Score (builds, tests, integrity, unsafe, clippy) | Turns | Improved | Reverted | Agent summary |
 |---|---|---|---|---|---|
 | 0 | builds=1 tests_passed=0 integrity_violations=0 unsafe=0 clippy_src=4 | - | - |  | skeleton baseline |
-| 1 | builds=1 tests_passed=2 integrity_violations=0 unsafe=0 clippy_src=2 | 13 | True |  | Implemented `rust/src/mapper_expr.rs` and added `#![forbid(unsafe_code)]` to `rust/src/lib.rs`. Translated the lexer (`expr_lex`), full 28-function table (`FUNCTION_TABLE` including `logbf`, `minf`, ` |
-| 2 | builds=1 tests_passed=2 integrity_violations=0 unsafe=0 clippy_src=0 | 10 | True |  | Fixed compiler warning regarding private type Token in pub field ExprNode::tok by making Token public. Resolved Clippy needless_lifetimes warning in mapper_expr_evaluate by allowing the lint for that  |
+| 1 | builds=1 tests_passed=2 integrity_violations=0 unsafe=0 clippy_src=0 | 18 | True |  | Translated mapper_expr from C to safe Rust: - Added #![forbid(unsafe_code)] to src/lib.rs. - Implemented MapperSignalValue (as_f32, as_i32, and coercion helpers). - Implemented function lookup table w |
 
 ## Final evaluation
 
@@ -46,7 +45,7 @@ correctness: 0, style: 0, complexity: 0, perf: 0 (warnings inside the read-only 
 
 ## Unsafe metrics
 ```
-{"pointer_arithmetic": 0, "unsafe_lines": 0, "unsafe_calls": 0, "unsafe_casts": 0, "total_spans": 42047, "raw_pointer_dereferences": 0, "raw_pointer_declarations": 0, "unsafe_ratio": 0.0, "primary_total": 0, "forbid_unsafe_code": 1}
+{"pointer_arithmetic": 0, "unsafe_lines": 0, "unsafe_calls": 0, "unsafe_casts": 0, "total_spans": 34145, "raw_pointer_dereferences": 0, "raw_pointer_declarations": 0, "unsafe_ratio": 0.0, "primary_total": 0, "forbid_unsafe_code": 1}
 ```
 
 

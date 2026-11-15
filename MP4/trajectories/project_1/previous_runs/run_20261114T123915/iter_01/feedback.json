@@ -1,0 +1,121 @@
+{
+  "integrity": {
+    "ok": true,
+    "violations": [],
+    "restored": []
+  },
+  "build": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      {
+        "level": "warning",
+        "code": "private_interfaces",
+        "file": "src/mapper_expr.rs",
+        "line": 385,
+        "message": "type `Token` is more private than the item `ExprNode::tok`",
+        "rendered": "warning: type `Token` is more private than the item `ExprNode::tok`\n   --> src/mapper_expr.rs:385:5\n    |\n385 |     pub tok: Token,\n    |     ^^^^^^^^^^^^^^ field `ExprNode::tok` is reachable at visibility `pub`\n    |\nnote: but type `Token` is only usable at visibility `pub(self)`\n   --> src/mapper_expr.rs:198:1\n    |\n198 | struct Token {\n    | ^^^^^^^^^^^^\n    = note: `#[warn(private_interfaces)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/lib.rs"
+      },
+      {
+        "level": "warning",
+        "code": "unused_imports",
+        "file": "src/bin/test.rs",
+        "line": 1,
+        "message": "unused import: `expr::mapper_expr`",
+        "rendered": "warning: unused import: `expr::mapper_expr`\n --> src/bin/test.rs:1:5\n  |\n1 | use expr::mapper_expr;\n  |     ^^^^^^^^^^^^^^^^^\n  |\n  = note: `#[warn(unused_imports)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/bin/test.rs"
+      }
+    ],
+    "timed_out": false
+  },
+  "tests": {
+    "compiled": true,
+    "passed": 2,
+    "total": 2,
+    "status": {
+      "test2": "ok",
+      "test1": "ok"
+    },
+    "failures": [],
+    "compile_errors": [],
+    "timed_out": false
+  },
+  "clippy": {
+    "compiled": true,
+    "categories": {
+      "correctness": {
+        "src": 0,
+        "tests": 0
+      },
+      "style": {
+        "src": 0,
+        "tests": 3
+      },
+      "complexity": {
+        "src": 2,
+        "tests": 1
+      },
+      "perf": {
+        "src": 0,
+        "tests": 0
+      }
+    },
+    "src_total": 2,
+    "tests_total": 4,
+    "grader_command": {
+      "clippy_warnings": 6,
+      "clippy_warnings_src": 2,
+      "rustc_warnings": 4
+    },
+    "warnings": [
+      {
+        "category": "complexity",
+        "lint": "clippy::needless_lifetimes",
+        "file": "src/mapper_expr.rs",
+        "line": 1132,
+        "message": "the following explicit lifetimes could be elided: 'a",
+        "rendered": "warning: the following explicit lifetimes could be elided: 'a\n    --> src/mapper_expr.rs:1132:29\n     |\n1132 | pub fn mapper_expr_evaluate<'a>(\n     |                             ^^\n1133 |     mapper: &mut MapperExpr,\n1134 |     input: &'a MapperSignalValue,\n     |             ^^\n     |\n     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_lifetimes\n     = note: `-W clippy::needless-lifetimes` implied by `-W clippy::complexity`\n     = help: to override `-W clippy::complexity` add `#[allow(clippy::needless_lifetimes)]`\nhelp: elide the lifetimes\n     |\n1132 ~ pub fn mapper_expr_evaluate(\n1133 |     mapper: &mut MapperExpr,\n1134 ~     input: &MapperSignalValue,\n     |\n\n"
+      },
+      {
+        "category": "complexity",
+        "lint": "clippy::needless_lifetimes",
+        "file": "src/mapper_expr.rs",
+        "line": 1132,
+        "message": "the following explicit lifetimes could be elided: 'a",
+        "rendered": "warning: the following explicit lifetimes could be elided: 'a\n    --> src/mapper_expr.rs:1132:29\n     |\n1132 | pub fn mapper_expr_evaluate<'a>(\n     |                             ^^\n1133 |     mapper: &mut MapperExpr,\n1134 |     input: &'a MapperSignalValue,\n     |             ^^\n     |\n     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_lifetimes\n     = note: `-W clippy::needless-lifetimes` implied by `-W clippy::complexity`\n     = help: to override `-W clippy::complexity` add `#[allow(clippy::needless_lifetimes)]`\nhelp: elide the lifetimes\n     |\n1132 ~ pub fn mapper_expr_evaluate(\n1133 |     mapper: &mut MapperExpr,\n1134 ~     input: &MapperSignalValue,\n     |\n\n"
+      }
+    ]
+  },
+  "unsafe": {
+    "tool": "builtin-approximate",
+    "files": [
+      "src/lib.rs",
+      "src/mapper_expr.rs"
+    ],
+    "metrics": {
+      "unsafe_lines": 0,
+      "unsafe_calls": 0,
+      "unsafe_casts": 0,
+      "pointer_arithmetic": 0,
+      "unsafe_blocks": 0,
+      "unsafe_fns": 0,
+      "unsafe_impls": 0,
+      "raw_pointer_types": 0,
+      "ffi": 0,
+      "manual_alloc": 0,
+      "transmute": 0,
+      "forbid_unsafe_code": 1,
+      "primary_total": 0
+    },
+    "locations": []
+  },
+  "score": [
+    1,
+    2,
+    0,
+    0,
+    -2
+  ],
+  "success": false
+}

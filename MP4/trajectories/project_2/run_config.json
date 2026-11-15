@@ -175,7 +175,7 @@
     "test_timeout_seconds": 120
   },
   "unsafe_metrics": {
-    "command": "",
+    "command": "bash {mp4}/src/newmetrics/run_newmetrics.sh {crate}",
     "primary_metrics": [
       "unsafe_lines",
       "unsafe_calls",

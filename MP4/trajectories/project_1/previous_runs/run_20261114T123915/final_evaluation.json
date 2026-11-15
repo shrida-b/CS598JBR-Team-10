@@ -1,0 +1,105 @@
+{
+  "integrity": {
+    "ok": true,
+    "violations": [],
+    "restored": []
+  },
+  "build": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      {
+        "level": "warning",
+        "code": "unused_imports",
+        "file": "src/bin/test.rs",
+        "line": 1,
+        "message": "unused import: `expr::mapper_expr`",
+        "rendered": "warning: unused import: `expr::mapper_expr`\n --> src/bin/test.rs:1:5\n  |\n1 | use expr::mapper_expr;\n  |     ^^^^^^^^^^^^^^^^^\n  |\n  = note: `#[warn(unused_imports)]` on by default\n\n",
+        "target": "/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_1/src/bin/test.rs"
+      }
+    ],
+    "timed_out": false
+  },
+  "tests": {
+    "compiled": true,
+    "passed": 2,
+    "total": 2,
+    "status": {
+      "test1": "ok",
+      "test2": "ok"
+    },
+    "failures": [],
+    "compile_errors": [],
+    "timed_out": false
+  },
+  "clippy": {
+    "compiled": true,
+    "categories": {
+      "correctness": {
+        "src": 0,
+        "tests": 0
+      },
+      "style": {
+        "src": 0,
+        "tests": 3
+      },
+      "complexity": {
+        "src": 0,
+        "tests": 1
+      },
+      "perf": {
+        "src": 0,
+        "tests": 0
+      }
+    },
+    "src_total": 0,
+    "tests_total": 4,
+    "grader_command": {
+      "clippy_warnings": 4,
+      "clippy_warnings_src": 0,
+      "rustc_warnings": 2
+    },
+    "warnings": []
+  },
+  "unsafe": {
+    "tool": "bash {mp4}/src/newmetrics/run_newmetrics.sh {crate}",
+    "raw_output": "{\n  \"pointer_arithmetic\": 0,\n  \"unsafe_lines\": 0,\n  \"unsafe_calls\": 0,\n  \"unsafe_casts\": 0,\n  \"total_spans\": 42047,\n  \"raw_pointer_dereferences\": 0,\n  \"raw_pointer_declarations\": 0,\n  \"unsafe_ratio\": 0.0\n}\n",
+    "returncode": 0,
+    "metrics": {
+      "pointer_arithmetic": 0,
+      "unsafe_lines": 0,
+      "unsafe_calls": 0,
+      "unsafe_casts": 0,
+      "total_spans": 42047,
+      "raw_pointer_dereferences": 0,
+      "raw_pointer_declarations": 0,
+      "unsafe_ratio": 0.0,
+      "primary_total": 0,
+      "forbid_unsafe_code": 1
+    },
+    "builtin": {
+      "unsafe_lines": 0,
+      "unsafe_calls": 0,
+      "unsafe_casts": 0,
+      "pointer_arithmetic": 0,
+      "unsafe_blocks": 0,
+      "unsafe_fns": 0,
+      "unsafe_impls": 0,
+      "raw_pointer_types": 0,
+      "ffi": 0,
+      "manual_alloc": 0,
+      "transmute": 0,
+      "forbid_unsafe_code": 1,
+      "primary_total": 0
+    },
+    "locations": []
+  },
+  "score": [
+    1,
+    2,
+    0,
+    0,
+    0
+  ],
+  "success": true
+}

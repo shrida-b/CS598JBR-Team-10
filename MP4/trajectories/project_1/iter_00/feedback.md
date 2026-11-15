@@ -65,6 +65,7 @@ warning: type `state_t` should have an upper camel case name
 ```
 thread 'test1' panicked at src/mapper_expr.rs:201:5:
 not implemented
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
 
 #### test2
@@ -73,7 +74,6 @@ Parsing: y=26.0*2.0/2.0 + x*30.0/(20.0*1.0)
 
 thread 'test2' panicked at src/mapper_expr.rs:201:5:
 not implemented
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
 
 ## Clippy
@@ -161,6 +161,6 @@ help: elide the lifetimes
 
 ## Unsafe metrics
 ```
-{"unsafe_lines": 0, "unsafe_calls": 0, "unsafe_casts": 0, "pointer_arithmetic": 0, "unsafe_blocks": 0, "unsafe_fns": 0, "unsafe_impls": 0, "raw_pointer_types": 0, "ffi": 0, "manual_alloc": 0, "transmute": 0, "forbid_unsafe_code": 0, "primary_total": 0}
+{"pointer_arithmetic": 0, "unsafe_lines": 0, "unsafe_calls": 0, "unsafe_casts": 0, "total_spans": 6337, "raw_pointer_dereferences": 0, "raw_pointer_declarations": 0, "unsafe_ratio": 0.0, "primary_total": 0, "forbid_unsafe_code": 0}
 Note: add `#![forbid(unsafe_code)]` at the top of src/lib.rs.
 ```

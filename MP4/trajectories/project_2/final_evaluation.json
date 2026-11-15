@@ -35,8 +35,8 @@
     "total": 6,
     "status": {
       "test_erase_root": "ok",
-      "test_find_single": "ok",
       "test_init": "ok",
+      "test_find_single": "ok",
       "test_insert_single": "ok",
       "test_multi_instance": "ok",
       "test_to_array": "ok"
@@ -75,35 +75,18 @@
     "warnings": []
   },
   "unsafe": {
-    "tool": "bash {mp4}/src/newmetrics/run_newmetrics.sh {crate}",
-    "raw_output": "{\n  \"pointer_arithmetic\": 0,\n  \"unsafe_lines\": 0,\n  \"unsafe_calls\": 0,\n  \"unsafe_casts\": 0,\n  \"total_spans\": 21306,\n  \"raw_pointer_dereferences\": 0,\n  \"raw_pointer_declarations\": 0,\n  \"unsafe_ratio\": 0.0\n}\n",
-    "returncode": 0,
+    "tool": "NewMetrics (cargo newmetrics | aggregate.py)",
     "metrics": {
       "pointer_arithmetic": 0,
       "unsafe_lines": 0,
       "unsafe_calls": 0,
       "unsafe_casts": 0,
-      "total_spans": 21306,
+      "total_spans": 22028,
       "raw_pointer_dereferences": 0,
       "raw_pointer_declarations": 0,
       "unsafe_ratio": 0.0,
       "primary_total": 0,
       "forbid_unsafe_code": 1
-    },
-    "builtin": {
-      "unsafe_lines": 0,
-      "unsafe_calls": 0,
-      "unsafe_casts": 0,
-      "pointer_arithmetic": 0,
-      "unsafe_blocks": 0,
-      "unsafe_fns": 0,
-      "unsafe_impls": 0,
-      "raw_pointer_types": 0,
-      "ffi": 0,
-      "manual_alloc": 0,
-      "transmute": 0,
-      "forbid_unsafe_code": 1,
-      "primary_total": 0
     },
     "locations": []
   },

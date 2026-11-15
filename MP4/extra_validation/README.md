@@ -21,7 +21,7 @@ Reproduce everything with one command (about a minute):
 bash MP4/extra_validation/run.sh
 ```
 
-## Results (2026-11-14)
+## Results (2026-11-14; re-run on the 2026-11-15 translations with identical results)
 
 **expr: differential testing against the original C implementation.**
 `expr_differential/` compiles the unmodified `subjects/project_1/mapper_expr.c` with a

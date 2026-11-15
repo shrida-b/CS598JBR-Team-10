@@ -2,19 +2,19 @@ Running cargo newmetrics
 Testing sysroot consistency...
 Done
 Target name: rbtree
-     Removed 0 files
+     Removed 23 files, 1.9MiB total
     Checking rbtree v0.1.0 (/Users/sahanahariharan/Desktop/CS598JBR-Team-10/MP4/translations/project_2)
 Running cargo rustc
 Pointer arithmetic: 0
 Unsafe lines: 0
 Unsafe calls: 0
 Unsafe casts: 0
-Total spans: 18112
+Total spans: 18834
 Unsafe ratio: 0
 Raw pointer dereferences: 0
 Raw pointer declarations: 0
 cargo rustc finished
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.45s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.89s
 Target name: test
 Running cargo rustc
 cargo rustc finished
@@ -46,5 +46,5 @@ Raw pointer dereferences: 0
 Raw pointer declarations: 0
 cargo rustc finished
 warning: `rbtree` (bin "test") generated 2 warnings (run `cargo fix --bin "test"` to apply 1 suggestion)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.04s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
 cargo newmetrics finished
