@@ -9,6 +9,5 @@ __pycache__/
 .DS_Store
 # Local quota ledger
 .cache/
-# Report drafts and group-review material (shared with the team separately, not part of the repo)
+# Report drafts (shared with the team separately, not part of the repo)
 PROGRESS_REPORT_MP4.*
-extra_validation/
